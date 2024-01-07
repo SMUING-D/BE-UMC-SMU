@@ -1,4 +1,5 @@
 import express from 'express';
+import dotenv from "dotenv";
 import { response } from './config/response.js';
 import { tempRouter } from './src/routes/temp.route.js';
 import { userRouter } from './src/routes/user.route.js';
@@ -6,15 +7,16 @@ import { storeRouter } from './src/routes/store.route.js';
 import { BaseError } from './config/error.js';
 import { status } from './config/response.status.js';
 
+dotenv.config({ path: "./.env" });
 
 const app = express();
-const port = 3000;
 
 // server setting - veiw, static, body-parser etc..
-app.set('port', process.env.PORT || 3000)   // 서버 포트 지정
-app.use(express.static('public'));          // 정적 파일 접근
-app.use(express.json());                    // request의 본문을 json으로 해석할 수 있도록 함
-app.use(express.urlencoded({extended: false}));
+app.set('port', process.env.server_port || 3000)    // 서버 포트 지정
+app.use(cors());                                    // cors 방식 허용
+app.use(express.static('public'));                  // 정적 파일 접근
+app.use(express.json());                            // request의 본문을 json으로 해석할 수 있도록 함
+app.use(express.urlencoded({extended: false}));     // 단순 객체 문자열 형태로 본문 데이터 해석
 
 // router setting
 app.use('/temp', tempRouter);
