@@ -1,12 +1,6 @@
 const bcrypt = require('bcrypt');
 const User = require('../../models/users');
 
-const checkStudentIdExist = async (studentId) => {
-    const EX_USER = await User.findOne({ where: { studentId: studentId } });
-    if (EX_USER) return EX_USER;
-    else return null;
-};
-
 async function join(studentId, name, password, nickname, major, email) {
     try {
         // 학번 중복 체크
