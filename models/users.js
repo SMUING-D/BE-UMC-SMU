@@ -33,6 +33,10 @@ const UmcUser = sequelize.define(
             type: DataTypes.STRING(30),
             allowNull: true,
         },
+        role: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
         profileImgUrl: {
             type: DataTypes.STRING(2084),
             allowNull: true,
