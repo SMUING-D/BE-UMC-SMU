@@ -14,6 +14,11 @@ async function join(studentId, name, password, nickname, major, email) {
         if (existingUser) {
             throw new Error(status.MEMBER_ALREADY_EXISTS.message);
         }
+        // 학과 정보 확인
+        const major = await Major.findByPk(majorId);
+        if (!major) {
+            throw new Error(status.BAD_REQUEST.message);
+        }
 
         // 비밀번호 조건 확인
         if (!isValidPassword(password)) {
@@ -29,7 +34,7 @@ async function join(studentId, name, password, nickname, major, email) {
             name,
             password: hashedPassword,
             nickname,
-            major,
+            majorId,
             email,
         });
 

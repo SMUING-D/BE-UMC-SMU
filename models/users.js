@@ -1,6 +1,5 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../config/db'); // sequelize 인스턴스를 가져오는 부분에 맞게 수정해야 합니다.
-
+const sequelize = require('../config/db');
 const UmcUser = sequelize.define(
     'UmcUser',
     {
@@ -22,9 +21,9 @@ const UmcUser = sequelize.define(
             type: DataTypes.STRING(50),
             allowNull: true,
         },
-        major: {
-            type: DataTypes.STRING(15),
-            allowNull: true,
+        majorId: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
         },
         email: {
             type: DataTypes.STRING(50),
@@ -57,5 +56,8 @@ const UmcUser = sequelize.define(
         paranoid: true,
     }
 );
+
+// User 모델과 Major 모델 간의 관계 설정
+User.belongsTo(Major, { foreignKey: 'majorId' });
 
 module.exports = UmcUser;
