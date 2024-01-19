@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const User = require('../../models/users');
 const { status } = require('../config/response.status.js');
+const jwt = require('jsonwebtoken');
 
 async function join(studentId, name, password, nickname, major, email) {
     try {
@@ -45,6 +46,46 @@ function isValidPassword(password) {
     return passwordRegex.test(password);
 }
 
+async function login(studentId, password) {
+    try {
+        // 필수 정보 누락 여부 체크
+        if (!studentId || !password) {
+            throw new Error(status.JOIN_EMPTY.message);
+        }
+
+        // 사용자 확인
+        const user = await User.findOne({ where: { studentId } });
+        if (!user) {
+            throw new Error(status.MEMBER_NOT_FOUND.message);
+        }
+
+        // 비밀번호 확인
+        const passwordMatch = await bcrypt.compare(password, user.password);
+        if (!passwordMatch) {
+            throw new Error(status.INVALID_PASSWORD_RULES.message);
+        }
+
+        // JWT 토큰 생성
+        const accessToken = generateAccessToken(user.id);
+
+        return { user, accessToken };
+    } catch (error) {
+        throw error;
+    }
+}
+
+function generateAccessToken(userId) {
+    const payload = {
+        id: userId,
+    };
+
+    return jwt.sign(payload, process.env.JWT_SECRET, {
+        algorithm: process.env.JWT_SIGN_ALGORITHM,
+        expiresIn: process.env.JWT_ACCESS_TOKEN_EXPIRESIN,
+    });
+}
+
 module.exports = {
     join,
+    login,
 };
