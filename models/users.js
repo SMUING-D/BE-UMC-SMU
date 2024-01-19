@@ -33,7 +33,7 @@ const UmcUser = sequelize.define(
             type: DataTypes.STRING(30),
             allowNull: true,
         },
-        role: {
+        roleId: {
             type: DataTypes.INTEGER,
             allowNull: false,
         },
@@ -63,5 +63,13 @@ const UmcUser = sequelize.define(
 
 // User 모델과 Major 모델 간의 관계 설정
 User.belongsTo(Major, { foreignKey: 'majorId' });
+// User 모델과 Role 모델 간의 관계 설정
+User.belongsTo(Role, { foreignKey: 'roleId' });
+
+// 사용자 생성 시 기본 역할 설정
+User.addHook('beforeCreate', async (user) => {
+    const defaultRole = await Role.findOne({ where: { roleName: '게스트' } });
+    user.roleId = defaultRole.id;
+});
 
 module.exports = UmcUser;

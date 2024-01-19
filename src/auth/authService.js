@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const User = require('../../models/users');
+const Role = require('../../models/role');
 const { status } = require('../config/response.status.js');
 
 async function join(studentId, name, password, nickname, major, email) {
@@ -50,6 +51,32 @@ function isValidPassword(password) {
     return passwordRegex.test(password);
 }
 
+//사용자 권한 변경
+async function changeUserRole(userId, newRoleId) {
+    try {
+        // 사용자 확인
+        const user = await User.findByPk(userId);
+        if (!user) {
+            throw new Error(status.MEMBER_NOT_FOUND.message);
+        }
+
+        // 새로운 역할 확인
+        const newRole = await Role.findByPk(newRoleId);
+        if (!newRole) {
+            throw new Error(status.ROLE_NOT_FOUND.message);
+        }
+
+        // 권한 변경
+        user.roleId = newRole.id;
+        await user.save();
+
+        return user;
+    } catch (error) {
+        throw error;
+    }
+}
+
 module.exports = {
     join,
+    changeUserRole,
 };
