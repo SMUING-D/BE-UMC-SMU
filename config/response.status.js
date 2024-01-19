@@ -31,6 +31,19 @@ export const status = {
     // member err
     MEMBER_NOT_FOUND: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: 'MEMBER4001', message: '사용자가 없습니다.' },
     NICKNAME_NOT_EXIST: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: 'MEMBER4002', message: '닉네임은 필수입니다.' },
+    JOIN_EMPTY: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: 'MEMBER4003', message: '필수 정보가 누락되었습니다.' },
+    MEMBER_ALREADY_EXISTS: {
+        status: StatusCodes.BAD_REQUEST,
+        isSuccess: false,
+        code: 'MEMBER4004',
+        message: '이미 존재하는 회원입니다.',
+    },
+    INVALID_PASSWORD_RULES: {
+        status: StatusCodes.BAD_REQUEST,
+        isSuccess: false,
+        code: 'MEMBER4005',
+        message: '비밀번호는 8자 이상이어야 하며, 영문과 숫자가 섞여 있어야 합니다.',
+    },
 
     // article err
     ARTICLE_NOT_FOUND: { status: StatusCodes.NOT_FOUND, isSuccess: false, code: 'ARTICLE4001', message: '게시글이 없습니다.' },
