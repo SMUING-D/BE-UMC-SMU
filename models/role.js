@@ -1,37 +1,44 @@
 // models/Role.js
 
-const { DataTypes } = require('sequelize');
-const { sequelize } = require('../config/database');
+const Sequelize = require('sequelize');
 
-const Role = sequelize.define(
-    'Role',
-    {
-        id: {
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            autoIncrement: true,
-        },
-        roleName: {
-            type: DataTypes.STRING(20),
-            allowNull: false,
-        },
-        createdAt: {
-            type: DataTypes.TIMESTAMP,
-            allowNull: false,
-        },
-        updatedAt: {
-            type: DataTypes.TIMESTAMP,
-            allowNull: false,
-        },
-        deletedAt: {
-            type: DataTypes.TIMESTAMP,
-            allowNull: true,
-        },
-    },
-    {
-        tableName: 'role',
-        paranoid: true,
+module.exports = class Role extends Sequelize.Model {
+    static init(sequelize) {
+        return super.init(
+            {
+                id: {
+                    type: Sequelize.INTEGER,
+                    allowNull: false,
+                    primaryKey: true,
+                },
+                Field: {
+                    type: Sequelize.STRING(30),
+                    allowNull: true,
+                },
+                createdAt: {
+                    type: Sequelize.DATE,
+                    allowNull: true,
+                },
+                deletedAt: {
+                    type: Sequelize.DATE,
+                    allowNull: true,
+                },
+                updatedAt: {
+                    type: Sequelize.DATE,
+                    allowNull: true,
+                },
+            },
+            {
+                sequelize,
+                modelName: 'Role',
+                tableName: 'role',
+                timestamps: true,
+                paranoid: true,
+            }
+        );
     }
-);
-
-module.exports = Role;
+    static associate(db) {
+        // Role 모델과 UmcUser 모델 간의 일대다 관계 설정
+        Role.hasMany(UmcUser, { foreignKey: 'roleId' });
+    }
+};

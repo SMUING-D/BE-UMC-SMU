@@ -1,40 +1,41 @@
 // models/Major.js
 
-const { DataTypes } = require('sequelize');
-const { sequelize } = require('../config/database');
+const Sequelize = require('sequelize');
 
-const Major = sequelize.define(
-    'Major',
-    {
-        id: {
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            autoIncrement: true,
-        },
-        majorName: {
-            type: DataTypes.STRING(50),
-            allowNull: false,
-        },
-        createdAt: {
-            type: DataTypes.TIMESTAMP,
-            allowNull: false,
-        },
-        updatedAt: {
-            type: DataTypes.TIMESTAMP,
-            allowNull: false,
-        },
-        deletedAt: {
-            type: DataTypes.TIMESTAMP,
-            allowNull: true,
-        },
-    },
-    {
-        tableName: 'major',
-        paranoid: true,
+module.exports = class Major extends Sequelize.Model {
+    static init(sequelize) {
+        return super.init(
+            {
+                id: {
+                    type: Sequelize.INTEGER,
+                    allowNull: false,
+                    primaryKey: true,
+                    autoIncrement: true,
+                },
+                majorName: {
+                    type: Sequelize.STRING(50),
+                    allowNull: false,
+                },
+                updatedAt: {
+                    type: Sequelize.DATE,
+                    allowNull: false,
+                },
+                deletedAt: {
+                    type: Sequelize.DATE,
+                    allowNull: true,
+                },
+            },
+            {
+                sequelize,
+                modelName: 'Major',
+                tableName: 'major',
+                timestamps: true,
+                paranoid: true,
+            }
+        );
     }
-);
-
-// Major 모델과 User 모델 간의 관계 설정
-Major.hasMany(User, { foreignKey: 'majorId' });
-
-module.exports = Major;
+    static associate(db) {
+        // Major 모델과 User 모델 간의 관계 설정
+        Major.hasMany(UmcUser, { foreignKey: 'majorId' });
+    }
+};
