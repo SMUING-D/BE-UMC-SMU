@@ -1,19 +1,43 @@
-// const authService = require('./authService');
-// const { status } = require('../config/response.status');
+const authService = require('./authService');
+const { response, errResponse } = require('../../config/response');
+const baseResponse = require('../../config/response.status');
 
-// //사용자 권한 변경 api
-// async function changeUserRole(req, res) {
-//     const userId = req.params.userId;
-//     const newRoleId = req.body.newRoleId; //새로운 역할 ID
+//학번 중복 확인 요청
+exports.checkStudentId = async (req, res, next) => {
+    try {
+        if (!req.headers.studentId) {
+            return res.send(errResponse(baseResponse.BAD_REQUEST));
+        }
 
-//     try {
-//         const updatedUser = await authService.changeUserRole(userId, newRoleId);
-//         res.json(response(status.SUCCESS, updatedUser));
-//     } catch (error) {
-//         res.status(400).json(response(status.BAD_REQUEST, null, error.message));
-//     }
-// }
+        const result = await authService.checkStudentId(req.headers.studentId);
+        return res.send(result);
+    } catch (err) {
+        console.error(err);
+        next(err);
+    }
+};
 
-// module.exports = {
-//     changeUserRole,
-// };
+//회원가입 요청
+exports.join = async (req, res, next) => {
+    const { studentId, name, password, nickname, majorName, email } = req.body;
+    const userData = { studentId, name, password, nickname, majorName, email };
+
+    try {
+        const result = await authService.join(userData);
+        return res.send(result);
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+};
+
+//인증 메일 보내기 요청
+exports.sendVerificationEmail = async (req, res) => {
+    try {
+        const { studentId } = req.body;
+        const result = await authService.sendVerificationEmail(studentId);
+        return res.send(result);
+    } catch (error) {
+        console.error(error);
+    }
+};

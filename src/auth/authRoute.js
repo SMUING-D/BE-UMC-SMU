@@ -1,5 +1,7 @@
 module.exports = function (app) {
-    const authService = require('./authService');
+    const authController = require('./authController');
     // 1.회원가입
-    app.post('/api/users/join', authService.join);
+    app.post('/api/users/join', authController.join);
+    //2.인증 메일 보내기
+    app.post('/api/users/send-verification-email', authController.sendVerificationEmail);
 };
