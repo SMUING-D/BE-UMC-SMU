@@ -5,6 +5,7 @@ module.exports = {
         database: 'UMC_SMU',
         host: 'localhost',
         dialect: 'mysql',
+        logging: false,
     },
     test: {
         username: 'root',
@@ -12,6 +13,7 @@ module.exports = {
         database: process.env.database,
         host: process.env.host,
         dialect: 'mysql',
+        logging: false,
     },
     production: {
         username: 'root',
@@ -19,5 +21,6 @@ module.exports = {
         database: process.env.database,
         host: process.env.host,
         dialect: 'mysql',
+        logging: false,
     },
 };

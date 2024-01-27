@@ -8,6 +8,7 @@ module.exports = class umcUser extends Sequelize.Model {
                     type: Sequelize.INTEGER,
                     allowNull: false,
                     primaryKey: true,
+                    autoIncrement: true,
                 },
                 studentId: {
                     type: Sequelize.INTEGER,
@@ -18,7 +19,7 @@ module.exports = class umcUser extends Sequelize.Model {
                     allowNull: true,
                 },
                 password: {
-                    type: Sequelize.STRING(50),
+                    type: Sequelize.STRING(100),
                     allowNull: true,
                 },
                 email: {
@@ -31,16 +32,17 @@ module.exports = class umcUser extends Sequelize.Model {
                 },
                 majorId: {
                     type: Sequelize.INTEGER,
-                    allowNull: false,
+                    allowNull: true,
                 },
                 roleId: {
                     type: Sequelize.INTEGER,
-                    allowNull: false,
+                    allowNull: true,
                 },
                 profileImgUrl: {
                     type: Sequelize.STRING(2084),
                     allowNull: true,
                 },
+
                 createdAt: {
                     type: Sequelize.DATE,
                     allowNull: true,

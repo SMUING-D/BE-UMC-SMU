@@ -1,7 +1,5 @@
-// const express = require('express');
-// const router = express.Router();
-// const authController = require('./authController');
-// // 1.사용자 권한 부여
-// router.put('/changeUserRole/:userId/:newRoleId', authController.changeUserRole);
-
-// module.exports = router;
+module.exports = function (app) {
+    const authService = require('./authService');
+    // 1.회원가입
+    app.post('/api/users/join', authService.join);
+};
