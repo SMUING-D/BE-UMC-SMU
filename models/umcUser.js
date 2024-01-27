@@ -37,6 +37,7 @@ module.exports = class umcUser extends Sequelize.Model {
                 roleId: {
                     type: Sequelize.INTEGER,
                     allowNull: true,
+                    defaultValue: 1,
                 },
                 profileImgUrl: {
                     type: Sequelize.STRING(2084),

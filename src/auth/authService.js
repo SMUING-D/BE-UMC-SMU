@@ -86,9 +86,9 @@ exports.join = async (req, res, next) => {
             studentId,
             name,
             password: hashedPassword,
+            email,
             nickname,
             majorId: major.id,
-            email,
         });
 
         //이메일 인증 랜덤 코드 생성
