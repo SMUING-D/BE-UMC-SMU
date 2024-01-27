@@ -14,8 +14,8 @@ const checkStudentIdExist = async (studentId) => {
 
 //major 선택
 const findMajors = async (majorName) => {
-    const majors = await Major.findAll({ where: { majorName } });
-    if (majors) return majors;
+    const major = await Major.findOne({ where: { majorName } });
+    if (major) return major;
     else return null;
 };
 
