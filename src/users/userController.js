@@ -6,7 +6,7 @@ const baseResponse = require('../../config/response.status');
 exports.getAllUsersRole = async (req, res) => {
     try {
         const result = await userService.getAllUsersRole();
-        return res.send(response(baseResponse.SUCCESS, result));
+        return res.send(result);
     } catch (error) {
         console.error(error);
         return res.status(500).json(errResponse(baseResponse.INTERNAL_SERVER_ERROR));
@@ -18,7 +18,7 @@ exports.updateUserRole = async (req, res) => {
     try {
         const { userId, newRoleId } = req.body;
         const result = await userService.updateUserRole(userId, newRoleId);
-        return res.send(response(baseResponse.SUCCESS, result));
+        return res.send(result);
     } catch (error) {
         console.error(error);
     }

@@ -47,7 +47,7 @@ exports.verifyEmail = async (req, res) => {
     try {
         const { code } = req.query;
         const result = await authService.verifyEmail(code);
-        return res.send(response(baseResponse.SUCCESS, result));
+        return res.send(result);
     } catch (error) {
         console.error(error);
     }
