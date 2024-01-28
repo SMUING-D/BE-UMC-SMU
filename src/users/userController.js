@@ -1,11 +1,22 @@
-// const authService = require('../auth/authService');
+const userService = require('./userService');
 
-// exports.joinUser = async (req, res) => {
-//     const { studentId, name, password, nickname, major, email } = req.body;
-//     try {
-//         const newUser = await authService.registerUser(studentId, name, password, nickname, major, email);
-//         res.json({ success: true, user: newUser });
-//     } catch (error) {
-//         res.status(400).json({ success: false, message: error.message });
-//     }
-// };
+//사용자 권한 조회
+exports.getAllUsersRole = async (req, res) => {
+    try {
+        const result = await userService.getAllUsersRole();
+        return res.send(response(baseResponse.SUCCESS, result));
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+//사용자 권한 변경 요청
+exports.updateUserRole = async (req, res) => {
+    try {
+        const { userId, newRoleId } = req.body;
+        const result = await userService.updateUserRole(userId, newRoleId);
+        return res.send(response(baseResponse.SUCCESS, result));
+    } catch (error) {
+        console.error(error);
+    }
+};

@@ -12,7 +12,7 @@ module.exports = class Role extends Sequelize.Model {
                     primaryKey: true,
                     autoIncrement: true,
                 },
-                Field: {
+                roleName: {
                     type: Sequelize.STRING(30),
                     allowNull: true,
                 },
