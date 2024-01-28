@@ -7,6 +7,7 @@ module.exports = {
     SUCCESSFUL_REGISTRATION: { isSuccess: true, code: 2002, message: '회원가입이 성공적으로 완료되었습니다.' },
     SUCCESSFUL_EMAIL_SEND: { isSuccess: true, code: 2003, message: '인증 메일 전송 성공!' },
     SUCCESSFUL_EMAIL_VERIFICATION: { isSuccess: true, code: 2004, message: '메일 인증에 성공했습니다.' },
+    SUCCESSFUL_UPDATE_ROLE: { isSuccess: true, code: 2005, message: '권한 변경에  성공했습니다.' },
     // error
 
     // common err
