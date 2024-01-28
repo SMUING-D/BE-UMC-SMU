@@ -1,11 +1,11 @@
 const Major = require('../../models/major');
-const umcUser = require('../../models/umcUser');
+const User = require('../../models/umcUser');
 const { response, errResponse } = require('../../config/response');
 const baseResponse = require('../../config/response.status');
 
 //학번 중복 확인
 exports.checkStudentIdExist = async (studentId) => {
-    const EX_USER = await umcUser.findOne({ where: { studentId: studentId } });
+    const EX_USER = await User.findOne({ where: { studentId: studentId } });
 
     if (EX_USER) return EX_USER;
     else return null;
@@ -24,7 +24,7 @@ exports.findMajorByName = async (majorName) => {
 
 exports.findUserByOptions = async (studentId, verificationCode) => {
     try {
-        const user = await umcUser.findOne({ where: { studentId, verificationCode } });
+        const user = await User.findOne({ where: { studentId, verificationCode } });
         return user;
     } catch (error) {
         console.error(error);
@@ -32,10 +32,10 @@ exports.findUserByOptions = async (studentId, verificationCode) => {
     }
 };
 
-//umcUser테이블에 사용자 추가
+//User테이블에 사용자 추가
 exports.createUser = async (userData) => {
     try {
-        const newUser = await umcUser.create(userData);
+        const newUser = await User.create(userData);
         return newUser;
     } catch (error) {
         console.error('Error creating user:', error);
@@ -46,13 +46,13 @@ exports.createUser = async (userData) => {
 //AUTH_CODE 업데이트
 exports.saveVerificationCode = async (studentId, verificationCode) => {
     try {
-        const user = await umcUser.findOne({
+        const user = await User.findOne({
             where: { studentId },
         });
         if (!user) {
             throw new Error(errResponse(baseResponse.MEMBER_NOT_FOUND));
         }
-        const updateUser = await umcUser.update(
+        const updateUser = await User.update(
             { verificationCode }, // Properties to be updated
             { where: { studentId } } // Where clause to identify the record
         );
@@ -68,7 +68,7 @@ exports.saveVerificationCode = async (studentId, verificationCode) => {
 
 exports.updateVerificationStatus = async (studentId) => {
     try {
-        const updateStatus = await umcUser.update(
+        const updateStatus = await User.update(
             { isVerified: true },
             {
                 where: { studentId },

@@ -4,7 +4,7 @@ const userService = require('./userService');
 exports.getAllUsersRole = async (req, res) => {
     try {
         const result = await userService.getAllUsersRole();
-        return res.send(response(baseResponse.SUCCESS, result));
+        return res.send(result);
     } catch (error) {
         console.error(error);
     }
