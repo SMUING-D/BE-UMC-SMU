@@ -10,7 +10,7 @@ exports.checkStudentId = async (req, res, next) => {
         }
 
         const result = await authService.checkStudentId(req.headers.studentId);
-        return res.send(result);
+        return res.send(response(baseResponse.SUCCESS, result));
     } catch (error) {
         console.error(error);
         next(error);
@@ -24,7 +24,7 @@ exports.join = async (req, res, next) => {
 
     try {
         const result = await authService.join(userData);
-        return res.send(result);
+        return res.send(response(baseResponse.SUCCESS, result));
     } catch (error) {
         console.error(error);
         next(error);
@@ -36,7 +36,7 @@ exports.sendVerificationEmail = async (req, res) => {
     try {
         const { studentId } = req.body;
         const result = await authService.sendVerificationEmail(studentId);
-        return res.send(result);
+        return res.send(response(baseResponse.SUCCESS, result));
     } catch (error) {
         console.error(error);
     }
@@ -47,7 +47,7 @@ exports.verifyEmail = async (req, res) => {
     try {
         const { code } = req.query;
         const result = await authService.verifyEmail(code);
-        return res.send(result);
+        return res.send(response(baseResponse.SUCCESS, result));
     } catch (error) {
         console.error(error);
     }
