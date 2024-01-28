@@ -73,7 +73,7 @@ exports.sendVerificationEmail = async (studentId) => {
         // 이메일 렌더링
         const AUTH_HTML = await renderAuthEmail.renderAuthEmail(AUTH_URL);
         // 이메일 보내기
-        const sendMail = emailService.sendVerificationEmail(studentId, AUTH_HTML);
+        const sendMail = emailService.sendVerificationEmail(studentId, '이메일 인증', AUTH_HTML);
         console.log('메일보내기:', sendMail);
         return response(baseResponse.SUCCESSFUL_EMAIL_SEND);
     } catch (error) {
