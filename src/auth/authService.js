@@ -83,21 +83,24 @@ exports.sendVerificationEmail = async (studentId) => {
 };
 
 // 이메일 인증
-exports.verifyEmail = async (studentId, code) => {
+exports.verifyEmail = async (code) => {
     try {
+        if (!code) {
+            throw new Error(errResponse(baseResponse.INVALID_EMAIL_VERIFICATION_CODE));
+        }
+
+        //코드 일치 확인
+        const [studentId, verificationCode] = code.split('&&');
+
         //사용자 확인
-        const user = await authProvider.findUserBystudentId(studentId);
+        const user = await authProvider.findUserByOptions(studentId, verificationCode);
         if (!user) {
             return errResponse(baseResponse.MEMBER_NOT_FOUND);
         }
 
-        //코드 일치 확인
-        if (code !== user.verificationCode) {
-            return errResponse(baseResponse.INVALID_EMAIL_VERIFICATION_CODE);
-        }
-
         //인증 상태 업데이트
         const updateVerificationStatus = await authProvider.updateVerificationStatus(studentId);
+
         if (!updateVerificationStatus) {
             return errResponse(baseResponse.FAILED_EMAIL_VERIFICATION);
         }
@@ -129,6 +132,7 @@ const generateAuthUrl = (studentId, randomCode) => {
     const AUTH_QUERY = `${studentId}&&${randomCode}`;
     // const CRYPTED_QUERY = encrypt(AUTH_QUERY, process.env.AUTH_QUERY_SECRET_KEY);
     // const ENCODED_QUERY = encodeURIComponent(CRYPTED_QUERY);
+    const ENCODED_QUERY = encodeURIComponent(AUTH_QUERY);
     const LINK_DOMAIN = 'http://localhost:3000'; //서버 열면 변경
-    return `${LINK_DOMAIN}/auth/auth_email?code=${AUTH_QUERY}`;
+    return `${LINK_DOMAIN}/auth/auth_email?code=${ENCODED_QUERY}`;
 };

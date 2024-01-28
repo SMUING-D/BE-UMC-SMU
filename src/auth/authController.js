@@ -45,8 +45,8 @@ exports.sendVerificationEmail = async (req, res) => {
 // 메일 인증 확인하기
 exports.verifyEmail = async (req, res) => {
     try {
-        const { studentId, code } = req.query;
-        const result = await authService.verifyEmail(studentId, code);
+        const { code } = req.query;
+        const result = await authService.verifyEmail(code);
         return res.send(result);
     } catch (error) {
         console.error(error);

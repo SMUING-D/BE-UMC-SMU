@@ -22,9 +22,9 @@ exports.findMajorByName = async (majorName) => {
     }
 };
 
-exports.findUserBystudentId = async (studentId) => {
+exports.findUserByOptions = async (studentId, verificationCode) => {
     try {
-        const user = await umcUser.findOne({ where: { studentId } });
+        const user = await umcUser.findOne({ where: { studentId, verificationCode } });
         return user;
     } catch (error) {
         console.error(error);
