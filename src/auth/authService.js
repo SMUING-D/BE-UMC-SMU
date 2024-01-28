@@ -15,9 +15,9 @@ exports.checkStudentId = async (studentId) => {
         } else {
             return errResponse(baseResponse.MEMBER_ALREADY_EXISTS);
         }
-    } catch (err) {
-        console.error(err);
-        throw err;
+    } catch (error) {
+        console.error(error);
+        next(error);
     }
 };
 
@@ -83,28 +83,29 @@ exports.sendVerificationEmail = async (studentId) => {
 };
 
 // 이메일 인증
-exports.verifyEmail = async (req, res, next) => {
-    const { studentId, code } = req.query;
+exports.verifyEmail = async (studentId, code) => {
     try {
-        if (!studentId || !code) {
-            return errResponse(baseResponse.BAD_REQUEST);
+        //사용자 확인
+        const user = await authProvider.findUserBystudentId(studentId);
+        if (!user) {
+            return errResponse(baseResponse.MEMBER_NOT_FOUND);
         }
 
-        // 이메일 인증 로직 추가
-        const decodedCode = decodeURIComponent(code);
-        const authQueryArray = decrypt(decodedCode, process.env.AUTH_QUERY_SECRET_KEY).split('&&');
-        const urlStudentId = authQueryArray[0];
-
-        if (studentId !== urlStudentId) {
-            return errResponse(baseResponse.BAD_REQUEST);
+        //코드 일치 확인
+        if (code !== user.verificationCode) {
+            return errResponse(baseResponse.INVALID_EMAIL_VERIFICATION_CODE);
         }
 
-        // 이메일 인증에 성공하면 응답으로만 처리
-        res.response(baseResponse.SUCCESS.status);
+        //인증 상태 업데이트
+        const updateVerificationStatus = await authProvider.updateVerificationStatus(studentId);
+        if (!updateVerificationStatus) {
+            return errResponse(baseResponse.FAILED_EMAIL_VERIFICATION);
+        }
+
+        return response(baseResponse.SUCCESSFUL_EMAIL_VERIFICATION);
     } catch (error) {
-        throw error;
+        console.error(error);
     }
-    next(error);
 };
 
 //비밀번호 유효성 검사

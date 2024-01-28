@@ -11,9 +11,9 @@ exports.checkStudentId = async (req, res, next) => {
 
         const result = await authService.checkStudentId(req.headers.studentId);
         return res.send(result);
-    } catch (err) {
-        console.error(err);
-        next(err);
+    } catch (error) {
+        console.error(error);
+        next(error);
     }
 };
 
@@ -36,6 +36,17 @@ exports.sendVerificationEmail = async (req, res) => {
     try {
         const { studentId } = req.body;
         const result = await authService.sendVerificationEmail(studentId);
+        return res.send(result);
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+// 메일 인증 확인하기
+exports.verifyEmail = async (req, res) => {
+    try {
+        const { studentId, code } = req.query;
+        const result = await authService.verifyEmail(studentId, code);
         return res.send(result);
     } catch (error) {
         console.error(error);

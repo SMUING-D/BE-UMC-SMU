@@ -22,6 +22,16 @@ exports.findMajorByName = async (majorName) => {
     }
 };
 
+exports.findUserBystudentId = async (studentId) => {
+    try {
+        const user = await umcUser.findOne({ where: { studentId } });
+        return user;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
+
 //umcUser테이블에 사용자 추가
 exports.createUser = async (userData) => {
     try {
@@ -48,6 +58,27 @@ exports.saveVerificationCode = async (studentId, verificationCode) => {
         );
 
         return updateUser ? true : false;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
+
+//인증 상태 업데이트
+
+exports.updateVerificationStatus = async (studentId) => {
+    try {
+        const updateStatus = await umcUser.update(
+            { isVerified: true },
+            {
+                where: { studentId },
+            }
+        );
+        if (updateStatus[0] > 0) {
+            return true;
+        } else {
+            return false;
+        }
     } catch (error) {
         console.error(error);
         throw error;

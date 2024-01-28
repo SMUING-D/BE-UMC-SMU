@@ -47,6 +47,11 @@ module.exports = class umcUser extends Sequelize.Model {
                     type: Sequelize.STRING(50),
                     allowNull: true,
                 },
+                isVerified: {
+                    type: Sequelize.BOOLEAN,
+                    allowNull: true,
+                    defaultValue: false,
+                },
 
                 createdAt: {
                     type: Sequelize.DATE,
