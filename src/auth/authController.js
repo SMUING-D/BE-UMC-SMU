@@ -52,3 +52,18 @@ exports.verifyEmail = async (req, res) => {
         console.error(error);
     }
 };
+
+//비밀번호 찾기
+exports.findPassword = async (req, res, next) => {
+    try {
+        const { studentId } = req.body;
+        if (!studentId) {
+            return res.send(errResponse(baseResponse.BAD_REQUEST));
+        }
+        const result = await authService.findPassword(studentId);
+        return res.send(result);
+    } catch (error) {
+        console.error(error);
+        return next(error);
+    }
+};

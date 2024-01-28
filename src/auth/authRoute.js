@@ -6,4 +6,6 @@ module.exports = function (app) {
     app.post('/api/users/send-verification-email', authController.sendVerificationEmail);
     // 3.메일 인증 확인하기
     app.get('/auth/auth_email', authController.verifyEmail);
+    // 4.비밀번호 찾기
+    app.post('/api/users/find-password', authController.findPassword);
 };
