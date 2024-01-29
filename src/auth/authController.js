@@ -31,6 +31,21 @@ exports.join = async (req, res, next) => {
     }
 };
 
+//로그인
+exports.login = async (req, res, next) => {
+    try {
+        const { studentId, password } = req.body;
+        if (!studentId || !password) {
+            return res.send(errResponse(baseResponse.JOIN_EMPTY));
+        }
+        const result = await authService.login(studentId, password);
+        return res.send(result);
+    } catch (error) {
+        console.error(error);
+        return next(error);
+    }
+};
+
 //인증 메일 보내기 요청
 exports.sendVerificationEmail = async (req, res) => {
     try {

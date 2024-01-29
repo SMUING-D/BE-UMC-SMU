@@ -59,6 +59,10 @@ exports.join = async (userData) => {
         next(error);
     }
 };
+//로그인
+exports.login = async (studentId, password) => {};
+
+//
 
 //이메일 보내기
 exports.sendVerificationEmail = async (studentId) => {
