@@ -138,6 +138,24 @@ exports.findPassword = async (studentId) => {
     }
 };
 
+//비밀번호 확인
+exports.checkPassword = async (now_user, password) => {
+    try {
+        const user = await authProvider.checkUserExistByUserId(now_user);
+        if (!user) {
+            return errResponse(baseResponse.MEMBER_NOT_FOUND);
+        }
+        //입력 비밀번호화 DB 비밀번호 비교
+        const isEqual = await bcrypt.compare(password, user.password);
+        if (isEqual === false) {
+            return errResponse(baseResponse.WRONG_PASSWORD);
+        }
+        return response(baseResponse.CHECK_PASSWORD);
+    } catch (error) {
+        return next(error);
+    }
+};
+
 //비밀번호 유효성 검사
 const isValidPassword = async (password) => {
     // 비밀번호는 8자 이상, 영문 + 숫자 혼합

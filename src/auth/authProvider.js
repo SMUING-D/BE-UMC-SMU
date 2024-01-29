@@ -10,6 +10,17 @@ exports.checkStudentIdExist = async (studentId) => {
     if (EX_USER) return EX_USER;
     else return null;
 };
+//userId로 조회하기
+exports.checkUserExistByUserId = async (userId) => {
+    const EX_USER = await User.findOne({
+        where: {
+            id: userId,
+        },
+    });
+    //사용자 미존재
+    if (EX_USER === null) return false;
+    else return EX_USER;
+};
 
 //major 찾는 함수
 exports.findMajorByName = async (majorName) => {
@@ -21,7 +32,7 @@ exports.findMajorByName = async (majorName) => {
         throw error;
     }
 };
-
+//여러 옵션들로 사용자 조회
 exports.findUserByOptions = async (studentId, verificationCode) => {
     try {
         const user = await User.findOne({ where: { studentId, verificationCode } });

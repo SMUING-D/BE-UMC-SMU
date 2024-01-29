@@ -67,3 +67,16 @@ exports.findPassword = async (req, res, next) => {
         return next(error);
     }
 };
+
+//비밀번호 확인하기
+exports.checkPassword = async (req, res, next) => {
+    try {
+        // const user = await this.checkStudentId(res.locals.decodes.user_id);
+        const { user, password } = req.body;
+        const result = await authService.checkPassword(user, password);
+        return res.send(result);
+    } catch (error) {
+        console.error(error);
+        return next(error);
+    }
+};
