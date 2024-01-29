@@ -4,11 +4,13 @@ module.exports = {
     // success
     SUCCESS: { isSuccess: true, code: 2000, message: 'success!' },
     USER_CAN_SIGNUP: { isSuccess: true, code: 2001, message: '가입이 가능한 학번입니다.' },
-    SUCCESSFUL_REGISTRATION: { isSuccess: true, code: 2002, message: '회원가입이 성공적으로 완료되었습니다.' },
-    SUCCESSFUL_EMAIL_SEND: { isSuccess: true, code: 2003, message: '인증 메일 전송 성공!' },
-    SUCCESSFUL_EMAIL_VERIFICATION: { isSuccess: true, code: 2004, message: '메일 인증에 성공했습니다.' },
-    SUCCESSFUL_UPDATE_ROLE: { isSuccess: true, code: 2005, message: '권한 변경에  성공했습니다.' },
+    SUCCESS_REGISTRATION: { isSuccess: true, code: 2002, message: '회원가입이 성공적으로 완료되었습니다.' },
+    SUCCESS_EMAIL_SEND: { isSuccess: true, code: 2003, message: '인증 메일 전송 성공!' },
+    SUCCESS_EMAIL_VERIFICATION: { isSuccess: true, code: 2004, message: '메일 인증에 성공했습니다.' },
+    SUCCESS_UPDATE_ROLE: { isSuccess: true, code: 2005, message: '권한 변경에  성공했습니다.' },
     CHECK_PASSWORD: { isSuccess: true, code: 2006, message: '비민번호가 확인되었습니다.' },
+    SUCCESS_CHANGE_PASSWORD: { isSuccess: true, code: 2007, message: '비밀번호가 변경되었습니다.' },
+
     // error
 
     // common err

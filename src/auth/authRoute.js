@@ -8,6 +8,8 @@ module.exports = function (app) {
     app.get('/auth/auth_email', authController.verifyEmail);
     // 4.비밀번호 찾기
     app.post('/api/auth/find-password', authController.findPassword);
-    // 5.비민번호 확인하기
+    // 5.비밀번호 확인하기
     app.post('/api/auth/check-password', authController.checkPassword);
+    // 6.비밀번호 변경하기
+    app.put('/api/auth/change-password', authController.changePassword);
 };

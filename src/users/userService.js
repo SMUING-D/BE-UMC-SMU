@@ -22,7 +22,7 @@ exports.updateUserRole = async (userId, newRoleId) => {
             return errResponse(baseResponse.BAD_REQUEST);
         }
         console.log('update Role : ', updateRole);
-        return response(baseResponse.SUCCESSFUL_UPDATE_ROLE);
+        return response(baseResponse.SUCCESS_UPDATE_ROLE);
     } catch (error) {
         console.error(error);
         throw error;
