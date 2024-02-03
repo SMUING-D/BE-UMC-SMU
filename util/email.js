@@ -16,7 +16,7 @@ const ADMIN_EMAIL_SETTING = {
 };
 
 //이메일 보내기
-exports.sendVerificationEmail = (studentId, html) => {
+exports.sendVerificationEmail = (studentId, subject, html) => {
     const toEmail = studentId + '@sangmyung.kr';
     console.log('받는이메일주소:', toEmail);
     console.log('보내는이메일주소:', process.env.email);
@@ -25,7 +25,7 @@ exports.sendVerificationEmail = (studentId, html) => {
         const mailOptions = {
             from: process.env.email,
             to: toEmail,
-            subject: '이메일 인증',
+            subject: subject,
             html: html,
         };
         transporter.sendMail(mailOptions, (error, info) => {

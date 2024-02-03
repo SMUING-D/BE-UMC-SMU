@@ -84,3 +84,14 @@ exports.updateVerificationStatus = async (studentId) => {
         throw error;
     }
 };
+
+//비밀번호 찾기
+exports.updatePassword = async (TEMPORARY_PW_HASH, studentId) => {
+    try {
+        const updatePassword = await User.update({ password: TEMPORARY_PW_HASH }, { where: { studentId: studentId } });
+        return updatePassword ? true : false;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};

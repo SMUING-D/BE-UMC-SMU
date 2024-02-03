@@ -73,7 +73,7 @@ exports.sendVerificationEmail = async (studentId) => {
         // 이메일 렌더링
         const AUTH_HTML = await renderAuthEmail.renderAuthEmail(AUTH_URL);
         // 이메일 보내기
-        const sendMail = emailService.sendVerificationEmail(studentId, AUTH_HTML);
+        const sendMail = emailService.sendVerificationEmail(studentId, '이메일 인증', AUTH_HTML);
         console.log('메일보내기:', sendMail);
         return response(baseResponse.SUCCESSFUL_EMAIL_SEND);
     } catch (error) {
@@ -111,6 +111,33 @@ exports.verifyEmail = async (code) => {
     }
 };
 
+//비밀번호 찾기
+exports.findPassword = async (studentId) => {
+    try {
+        //학번으로 사용자 조회
+        const user = await authProvider.checkStudentIdExist(studentId);
+        if (!user) {
+            return errResponse(baseResponse.MEMBER_NOT_FOUND);
+        }
+
+        //임시 비밀번호 생성
+        const temporaryPw = generateRandomCode(8);
+        const TEMPORARY_PW_HASH = await bcrypt.hash(temporaryPw, 8);
+        //기존 비밀번호 임시 비밀번호로 변경
+        const updatePassword = await authProvider.updatePassword(TEMPORARY_PW_HASH, studentId);
+        if (!updatePassword) {
+            return errResponse(baseResponse.BAD_REQUEST);
+        }
+        //임시 비밀번호 메일 보내기
+        const TEMPORARY_PW_EMAIL_HTML = await renderAuthEmail.rendertemporaryPwEmail(temporaryPw);
+        const sendMail = await emailService.sendVerificationEmail(studentId, '임시비밀번호', TEMPORARY_PW_EMAIL_HTML);
+        console.log('메일보내기:', sendMail);
+        return response(baseResponse.SUCCESSFUL_EMAIL_SEND);
+    } catch (error) {
+        console.error(error);
+    }
+};
+
 //비밀번호 유효성 검사
 const isValidPassword = async (password) => {
     // 비밀번호는 8자 이상, 영문 + 숫자 혼합
@@ -126,6 +153,13 @@ const generateRandomCode = (digit) => {
     }
     return randomCode;
 };
+
+// //임시비밀번호 생성
+// const generateTemporaryPw = () => {
+//     const temporaryPw = generateRandomCode(8);
+//     const TEMPORARY_PW_HASH = bcrypt.hash(temporaryPw, 8);
+//     return TEMPORARY_PW_HASH;
+// };
 
 //인증링크 생성
 const generateAuthUrl = (studentId, randomCode) => {
