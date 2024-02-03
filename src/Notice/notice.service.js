@@ -6,7 +6,7 @@ exports.createNotice = async (body) => {
 
     try {
         //접근권한 설정
-        if(!roleId){
+        if(roleId !== 3){
             throw new Error(status.ACCESS_DENIED.message);
         }
 
