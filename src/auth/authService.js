@@ -53,7 +53,7 @@ exports.join = async (userData) => {
             nickname,
             majorId: major.id,
         });
-        return response(baseResponse.SUCCESSFUL_REGISTRATION);
+        return response(baseResponse.SUCCESSFUL_REGISTRATION, newUser);
     } catch (error) {
         console.error(error);
         next(error);

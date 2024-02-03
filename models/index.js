@@ -5,7 +5,7 @@ const config = require('../config/config.js')[env];
 
 const Major = require('./major');
 const Role = require('./role');
-const UmcUser = require('./umcUser.js');
+const User = require('./umcUser');
 
 const db = {};
 const sequelize = new Sequelize(config.database, config.username, config.password, config);
@@ -13,10 +13,14 @@ const sequelize = new Sequelize(config.database, config.username, config.passwor
 db.sequelize = sequelize;
 db.Major = Major;
 db.Role = Role;
-db.UmcUser = UmcUser;
+db.User = User;
 
 Major.init(sequelize);
 Role.init(sequelize);
-UmcUser.init(sequelize);
+User.init(sequelize);
+
+Major.associate(db);
+Role.associate(db);
+User.associate(db);
 
 module.exports = db;

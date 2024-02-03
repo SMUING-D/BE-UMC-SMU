@@ -1,7 +1,7 @@
-// const express = require('express');
-// const router = express.Router();
-// const userController = require('./userController');
-// // 1. 회원가입 API
-// router.post('/api/users/join', userController.joinUser);
-
-// module.exports = router;
+module.exports = function (app) {
+    const userController = require('./userController');
+    // 1.사용자 권한 조회
+    app.get('/api/get/users-role', userController.getAllUsersRole);
+    // 2.사용자 권한 변경
+    app.put('/api/put/update-user-role', userController.updateUserRole);
+};

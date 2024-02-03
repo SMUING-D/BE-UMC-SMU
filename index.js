@@ -32,16 +32,19 @@
 // });
 const db = require('./models');
 require('./seeders/major.seed');
+require('./seeders/role.seed');
 const express = require('./config/express');
 
 require('dotenv').config();
 // const { insertMajorList } = require('./seeders/major.seed');
+// const { insertRoleList } = require('./seeders/role.seed');
 
 db.sequelize
     .sync()
     .then(async () => {
         console.log('db 연결 성공');
         // await insertMajorList(db.Major);
+        // await insertRoleList(db.Role);
     })
     .catch(console.error);
 

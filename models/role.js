@@ -12,7 +12,7 @@ module.exports = class Role extends Sequelize.Model {
                     primaryKey: true,
                     autoIncrement: true,
                 },
-                Field: {
+                roleName: {
                     type: Sequelize.STRING(30),
                     allowNull: true,
                 },
@@ -39,7 +39,7 @@ module.exports = class Role extends Sequelize.Model {
         );
     }
     static associate(db) {
-        // Role 모델과 UmcUser 모델 간의 일대다 관계 설정
-        Role.hasMany(UmcUser, { foreignKey: 'roleId' });
+        // Role 모델과 User 모델 간의 일대다 관계 설정
+        Role.hasMany(db.User, { foreignKey: 'roleId' });
     }
 };

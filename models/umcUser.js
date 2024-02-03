@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 
-module.exports = class umcUser extends Sequelize.Model {
+module.exports = class User extends Sequelize.Model {
     static init(sequelize) {
         return super.init(
             {
@@ -68,18 +68,18 @@ module.exports = class umcUser extends Sequelize.Model {
             },
             {
                 sequelize,
-                modelName: 'UmcUser',
-                tableName: 'umcUser',
+                modelName: 'User',
+                tableName: 'User',
                 timestamps: true,
                 paranoid: true,
             }
         );
     }
     static associate(db) {
-        // UmcUser 모델과 Major 모델 간의 다대일 관계 설정
-        UmcUser.belongsTo(Major, { foreignKey: 'majorId' });
+        // User 모델과 Major 모델 간의 다대일 관계 설정
+        User.belongsTo(db.Major, { foreignKey: 'majorId' });
 
-        // UmcUser 모델과 Role 모델 간의 다대일 관계 설정
-        UmcUser.belongsTo(Role, { foreignKey: 'roleId' });
+        // User 모델과 Role 모델 간의 다대일 관계 설정
+        User.belongsTo(db.Role, { foreignKey: 'roleId' });
     }
 };
