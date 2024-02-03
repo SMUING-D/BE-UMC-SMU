@@ -4,10 +4,13 @@ module.exports = {
     // success
     SUCCESS: { isSuccess: true, code: 2000, message: 'success!' },
     USER_CAN_SIGNUP: { isSuccess: true, code: 2001, message: '가입이 가능한 학번입니다.' },
-    SUCCESSFUL_REGISTRATION: { isSuccess: true, code: 2002, message: '회원가입이 성공적으로 완료되었습니다.' },
-    SUCCESSFUL_EMAIL_SEND: { isSuccess: true, code: 2003, message: '인증 메일 전송 성공!' },
-    SUCCESSFUL_EMAIL_VERIFICATION: { isSuccess: true, code: 2004, message: '메일 인증에 성공했습니다.' },
-    SUCCESSFUL_UPDATE_ROLE: { isSuccess: true, code: 2005, message: '권한 변경에  성공했습니다.' },
+    SUCCESS_REGISTRATION: { isSuccess: true, code: 2002, message: '회원가입이 성공적으로 완료되었습니다.' },
+    SUCCESS_EMAIL_SEND: { isSuccess: true, code: 2003, message: '인증 메일 전송 성공!' },
+    SUCCESS_EMAIL_VERIFICATION: { isSuccess: true, code: 2004, message: '메일 인증에 성공했습니다.' },
+    SUCCESS_UPDATE_ROLE: { isSuccess: true, code: 2005, message: '권한 변경에  성공했습니다.' },
+    CHECK_PASSWORD: { isSuccess: true, code: 2006, message: '비민번호가 확인되었습니다.' },
+    SUCCESS_CHANGE_PASSWORD: { isSuccess: true, code: 2007, message: '비밀번호가 변경되었습니다.' },
+
     // error
 
     // common err
@@ -35,9 +38,15 @@ module.exports = {
         code: 'MEMBER4006',
         message: '비밀번호는 8자 이상이어야 하며, 영문과 숫자가 섞여 있어야 합니다.',
     },
-    FAILED_EMAIL_SEND: { isSuccess: false, code: 'MEMBER4007', message: '메일 전송에 실패했습니다.' },
-    INVALID_EMAIL_VERIFICATION_CODE: { isSuccess: false, code: 'MEMBER4008', message: '유효하지 않은 코드입니다.' },
-    FAILED_EMAIL_VERIFICATION: { isSuccess: false, code: 'MEMBER4009', message: '이메일 인증에 실패했습니다.' },
+    WRONG_PASSWORD: { isSuccess: false, code: 'MEMBER4007', message: '비밀번호가 틀렸습니다.' },
+    SAME_WITH_PREVIOUS_PASSWORD: {
+        isSuccess: false,
+        code: 'MEMBER4008',
+        message: '변경하려는 비밀번호가 전에 사용하던 비밀번호와 같습니다.',
+    },
+    FAILED_EMAIL_SEND: { isSuccess: false, code: 'MEMBER4009', message: '메일 전송에 실패했습니다.' },
+    INVALID_EMAIL_VERIFICATION_CODE: { isSuccess: false, code: 'MEMBER4010', message: '유효하지 않은 코드입니다.' },
+    FAILED_EMAIL_VERIFICATION: { isSuccess: false, code: 'MEMBER4011', message: '이메일 인증에 실패했습니다.' },
 
     // article err
     ARTICLE_NOT_FOUND: { isSuccess: false, code: 'ARTICLE4001', message: '게시글이 없습니다.' },

@@ -67,3 +67,30 @@ exports.findPassword = async (req, res, next) => {
         return next(error);
     }
 };
+
+//비밀번호 확인하기
+exports.checkPassword = async (req, res, next) => {
+    try {
+        //jwt토큰 추가 후 수정
+        // const user = await this.checkStudentId(res.locals.decodes.user_id);
+        const { user, password } = req.body;
+        const result = await authService.checkPassword(user, password);
+        return res.send(result);
+    } catch (error) {
+        console.error(error);
+        return next(error);
+    }
+};
+//비밀번호 변경하기
+exports.changePassword = async (req, res, next) => {
+    try {
+        //jwt토큰 추가 후 수정
+        // const user = await this.checkStudentId(res.locals.decodes.user_id);
+        const { userId, newPassword, confirmPassword } = req.body;
+        const result = await authService.changePassword(userId, newPassword, confirmPassword);
+        return res.send(result);
+    } catch (error) {
+        console.error(error);
+        return next(error);
+    }
+};
