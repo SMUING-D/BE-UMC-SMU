@@ -22,8 +22,8 @@ paths:
               type: string
               description: 내용
               example: testContent1
-      - in: formData
-        name: 
+      # - in: formData
+      #   name: 
       responses:
         '200':
           description: 공지사항 생성 완료!
