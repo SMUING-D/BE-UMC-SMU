@@ -1,6 +1,6 @@
 // models/Major.js
 
-const Sequelize = require('sequelize');
+const {Sequelize} = require('sequelize');
 
 module.exports = class Major extends Sequelize.Model {
     static init(sequelize) {

@@ -1,0 +1,105 @@
+paths:
+  /project/create:
+    post:
+      tags:
+        - Project
+      summary: 프로젝트 생성
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          properties:
+            roleId:
+              type: integer
+              description: 역할아이디
+              example: 1
+            title:
+              type: string
+              description: 제목
+              example: testTitle1
+            content:
+              type: string
+              description: 내용
+              example: testContent1
+            startDate:
+              type: string
+              description: 시작일
+              example: 2000 01 01
+            endDate:
+              type: string
+              description: 종료일
+              example: 2000 02 02
+            frontEnd:
+              type: string
+              description: 프론트엔드 스택
+              example: REACT
+            backEnd:
+              type: string
+              description: 백엔드 스택
+              example: NODE JS
+      responses:
+        '200':
+          description: 프로젝트 생성 완료!
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 200
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: "success!"
+              data:
+                type: object
+                example: {
+                  "roleId": 1,
+                  "title": "testTitle1",
+                  "content": "testContent1",
+                  "startDate": "2000 01 01",
+                  "endDate": "2000 02 02",
+                  "frontEnd": "REACT",
+                  "backEnd": "NODE JS"
+                }
+                
+        '400':
+          description: 잘못된 요청
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 400
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON001
+              message:
+                type: string
+                example: 잘못된 요청입니다
+
+        '500':
+          description: 서버 에러
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 500
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON000
+              message:
+                type: string
+                example: 서버 에러, 관리자에게 문의 바랍니다.
