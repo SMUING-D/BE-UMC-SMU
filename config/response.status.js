@@ -1,4 +1,4 @@
-// const { StatusCodes } = require('http-status-codes');
+const { StatusCodes } = require('http-status-codes');
 
 module.exports = {
     // success
@@ -10,6 +10,7 @@ module.exports = {
     SUCCESS_UPDATE_ROLE: { isSuccess: true, code: 2005, message: '권한 변경에  성공했습니다.' },
     CHECK_PASSWORD: { isSuccess: true, code: 2006, message: '비민번호가 확인되었습니다.' },
     SUCCESS_CHANGE_PASSWORD: { isSuccess: true, code: 2007, message: '비밀번호가 변경되었습니다.' },
+    SUCCESS_CREATE_NOTICE: { isSuccess: true, code: 2002, message: '공지사항이 성공적으로 작성되었습니다.' },
 
     // error
 
@@ -20,6 +21,7 @@ module.exports = {
     METHOD_NOT_ALLOWED: { isSuccess: false, code: 'COMMON003', message: '지원하지 않는 Http Method 입니다.' },
     FORBIDDEN: { isSuccess: false, code: 'COMMON004', message: '금지된 요청입니다.' },
     NOT_FOUND: { isSuccess: false, code: 'COMMON005', message: '요청한 페이지를 찾을 수 없습니다. 관리자에게 문의 바랍니다.' },
+    WRONG_EXTENSION: {status: StatusCodes.WRONG_EXTENSION, "isSuccess": false, "code": "COMMON006", "message": "잘못된 확장자입니다." },
 
     //jwt err
     JWT_TOKEN_NOT_FOUND: { isSuccess: false, code: 'JWT000', message: '토큰을 찾지 못해 사용자 인증을 할 수 없습니다.' },
@@ -50,4 +52,9 @@ module.exports = {
 
     // article err
     ARTICLE_NOT_FOUND: { isSuccess: false, code: 'ARTICLE4001', message: '게시글이 없습니다.' },
+
+    //notice, project err
+    ACCESS_DENIED: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: 'NOTICE4001', message: '작성 권한이 없습니다.' },
+    PARAMETER_IS_EMPTY: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: 'NOTICE4002', message: '필수 내용이 누락되었습니다.' },
+    CREATION_FAILED: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: 'NOTICE4003', message: '생성을 실패하였습니다.' },
 };
