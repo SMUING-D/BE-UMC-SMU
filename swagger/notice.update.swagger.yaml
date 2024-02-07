@@ -1,0 +1,110 @@
+paths:
+  /notice/update/{id}:
+    put:
+      tags:
+        - Notice
+      summary: Update an existing notice
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Notice ID to be updated
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              roleId:
+                type: integer
+                description: Role ID
+                example: 1
+              title:
+                type: string
+                description: Title
+                example: updatedTitle
+              content:
+                type: string
+                description: Content
+                example: updatedContent
+        - name: images
+          in: formData
+          type: array
+          items:
+            type: file
+          description: Array of images to upload
+      responses:
+        '200':
+          description: Notice update successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  isSuccess:
+                    type: boolean
+                    example: true
+                  code:
+                    type: integer
+                    example: 2000
+                  message:
+                    type: string
+                    example: "success!"
+                  data:
+                    type: object
+                    properties:
+                      roleId:
+                        type: integer
+                        example: 1
+                      title:
+                        type: string
+                        example: updatedTitle
+                      content:
+                        type: string
+                        example: updatedContent
+                      updatedAt:
+                        type: string
+                        example: "2022-02-07T12:34:56.789Z"
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 400
+                  isSuccess:
+                    type: boolean
+                    example: false
+                  code:
+                    type: integer
+                    example: COMMON001
+                  message:
+                    type: string
+                    example: "Bad request"
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 500
+                  isSuccess:
+                    type: boolean
+                    example: false
+                  code:
+                    type: integer
+                    example: COMMON000
+                  message:
+                    type: string
+                    example: "Server error, please contact the administrator"
