@@ -45,7 +45,7 @@ exports.noticeEdit = async (req, res, next) => {
     }
 };
 
-exports.deleteNotice = async (req, res, next) => {
+exports.noticeDelete = async (req, res, next) => {
     try {
         const noticeId = req.params.id;
         // 삭제된 공지사항 정보 반환

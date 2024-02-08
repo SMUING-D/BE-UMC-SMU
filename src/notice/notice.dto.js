@@ -27,8 +27,6 @@ exports.previewNoticeResponseDTO = async (noticeId, size) => {
         return notice;
     }));
 
-    console.log("EX_NOTICE_IMG: ", EX_NOTICE_IMG);
-
     // 공지사항 미존재
     if (EX_NOTICE_IMG === null) return false;
     else return EX_NOTICE_IMG;

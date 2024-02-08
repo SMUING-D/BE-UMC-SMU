@@ -1,7 +1,7 @@
-const previewProjectResponseDTO = require('./project.dto.js');
-const getPreviewProject = require('./project.dao.js');
+const projectDto = require('./project.dto.js');
 
-export const getProject = async (query) => {
-    const {projectId, size = 10} = query;
-    return previewProjectResponseDTO(await getPreviewProject(projectId, size));
+exports.getProject = async (query, period) => {
+    const size = query.size;
+    const projectId = query.projectId;
+    return projectDto.previewProjectResponseDTO(period, projectId, size);
 };

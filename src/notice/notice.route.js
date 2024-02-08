@@ -15,6 +15,6 @@ router.post('/create', imageUploader.imageUploader.array('images', 10), asyncHan
 router.put('/update/:id', imageUploader.imageUploader.array('images', 10), asyncHandler(noticeController.noticeEdit));
 
 // 공지사항 및 이미지 삭제
-router.delete('/delete/:id', asyncHandler(noticeController.deleteNotice));
+router.delete('/delete/:id', asyncHandler(noticeController.noticeDelete));
 
 module.exports = router;

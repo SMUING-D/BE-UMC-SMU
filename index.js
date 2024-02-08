@@ -6,6 +6,8 @@ const db = require('./models/index.js');
 const { response, errResponse } = require('./config/response.js');
 const projectRouter = require('./src/project/project.route.js');
 const noticeRouter = require('./src/notice/notice.route.js');
+const userRouter = require('./src/users/userRoute.js');
+const authRouter = require('./src/auth/authRoute.js');
 const BaseError = require('./config/error.js');
 const status = require('./config/response.status.js');
 const {specs} = require('./config/swagger.config.js');
@@ -38,6 +40,8 @@ app.use('/api-docs', SwaggerUi.serve, SwaggerUi.setup(specs));
 // router setting
 app.use('/project', projectRouter);
 app.use('/notice', noticeRouter);
+app.use('/user', userRouter);
+app.use('/auth', authRouter);
     
 // error handling
 app.use((req, res, next) => {
