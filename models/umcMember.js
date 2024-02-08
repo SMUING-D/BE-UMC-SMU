@@ -1,6 +1,6 @@
 const {Sequelize} = require('sequelize');
 
-module.exports = class User extends Sequelize.Model {
+module.exports = class Member extends Sequelize.Model {
     static init(sequelize) {
         return super.init(
             {
@@ -18,14 +18,6 @@ module.exports = class User extends Sequelize.Model {
                     type: Sequelize.STRING(15),
                     allowNull: true,
                 },
-                password: {
-                    type: Sequelize.STRING(100),
-                    allowNull: true,
-                },
-                email: {
-                    type: Sequelize.STRING(50),
-                    allowNull: true,
-                },
                 nickname: {
                     type: Sequelize.STRING(30),
                     allowNull: true,
@@ -34,25 +26,6 @@ module.exports = class User extends Sequelize.Model {
                     type: Sequelize.INTEGER,
                     allowNull: true,
                 },
-                roleId: {
-                    type: Sequelize.INTEGER,
-                    allowNull: true,
-                    defaultValue: 1,
-                },
-                profileImgUrl: {
-                    type: Sequelize.STRING(2084),
-                    allowNull: true,
-                },
-                verificationCode: {
-                    type: Sequelize.STRING(50),
-                    allowNull: true,
-                },
-                isVerified: {
-                    type: Sequelize.BOOLEAN,
-                    allowNull: true,
-                    defaultValue: false,
-                },
-
                 createdAt: {
                     type: Sequelize.DATE,
                     allowNull: true,
@@ -68,8 +41,8 @@ module.exports = class User extends Sequelize.Model {
             },
             {
                 sequelize,
-                modelName: 'User',
-                tableName: 'User',
+                modelName: 'Member',
+                tableName: 'member',
                 timestamps: true,
                 paranoid: true,
             }
@@ -77,12 +50,9 @@ module.exports = class User extends Sequelize.Model {
     }
     static associate(db) {
         // User 모델과 Major 모델 간의 다대일 관계 설정
-        User.belongsTo(db.Major, { foreignKey: 'majorId' });
-
-        // User 모델과 Role 모델 간의 다대일 관계 설정
-        User.belongsTo(db.Role, { foreignKey: 'roleId' });
+        Member.belongsTo(db.Major, { foreignKey: 'majorId' });
 
         // User 모델과 ProjectUser 모델 간의 일대다 관계 설정
-        User.hasMany(db.ProjectUser, { foreignKey: 'userId' });
+        Member.hasMany(db.ProjectUser, { foreignKey: 'userId' });
     }
 };

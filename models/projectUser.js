@@ -1,6 +1,6 @@
 const {Sequelize} = require('sequelize');
 
-module.exports = class Notice extends Sequelize.Model {
+module.exports = class ProjectUser extends Sequelize.Model {
     static init(sequelize) {
         return super.init(
             {
@@ -10,17 +10,13 @@ module.exports = class Notice extends Sequelize.Model {
                     primaryKey: true,
                     autoIncrement: true,
                 },
-                roleId: {
+                userId: {
                     type: Sequelize.INTEGER,
                     allowNull: false,
                 },
-                title: {
-                    type: Sequelize.STRING,
-                    allowNull: true,
-                },
-                content: {
-                    type: Sequelize.STRING,
-                    allowNull: true,
+                projectId: {
+                    type: Sequelize.INTEGER,
+                    allowNull: false,
                 },
                 createdAt: {
                     type: Sequelize.DATE,
@@ -37,18 +33,21 @@ module.exports = class Notice extends Sequelize.Model {
             },
             {
                 sequelize,
-                modelName: 'Notice',
-                tableName: 'notice',
+                modelName: 'ProjectUser',
+                tableName: 'projectUser',
                 timestamps: true,
                 paranoid: true,
             }
         );
     }
     static associate(db) {
-        // Notice 모델과 Role 모델 간의 다대일 관계 설정
-        Notice.belongsTo(db.Role, { foreignKey: 'roleId' });
+        // ProjectUser 모델과 Project 모델 간의 다대일 관계 설정
+        ProjectUser.belongsTo(db.Project, { foreignKey: 'projectId' });
+
+        // ProjectUser 모델과 User 모델 간의 다대일 관계 설정
+        ProjectUser.belongsTo(db.User, { foreignKey: 'userId' });
         
-        // Notice 모델과 Image 모델 간의 일대다 관계 설정
-        Notice.hasMany(db.Image, { foreignKey: 'contentId' });
+        // ProjectUser 모델과 Member 모델 간의 다대일 관계 설정
+        ProjectUser.belongsTo(db.Member, { foreignKey: 'userId' });
     }
 };

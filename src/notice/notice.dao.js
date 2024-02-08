@@ -8,7 +8,6 @@ exports.addNotice = async (body) => {
         //공지 생성
         const newNotice = await Notice.create(body);
 
-
         return newNotice;
     }catch (err) {
         console.error('Error creating notice:', err);
@@ -28,8 +27,7 @@ exports.addNoticeImage = async (body) => {
 
 exports.updateNotice = async (noticeId, body) => {
     try {
-        // 여기에서 필요한 유효성 검사 및 권한 확인 등을 수행할 수 있습니다.
-
+        //공지 수정
         const [updatedRows] = await Notice.update(body, {
             where: { id: noticeId },
             returning: true,
