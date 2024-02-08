@@ -1,8 +1,6 @@
-// models/Role.js
-
 const {Sequelize} = require('sequelize');
 
-module.exports = class Role extends Sequelize.Model {
+module.exports = class Image extends Sequelize.Model {
     static init(sequelize) {
         return super.init(
             {
@@ -12,15 +10,19 @@ module.exports = class Role extends Sequelize.Model {
                     primaryKey: true,
                     autoIncrement: true,
                 },
-                roleName: {
-                    type: Sequelize.STRING(30),
+                directory: {
+                    type: Sequelize.STRING,
+                    allowNull: true,
+                },
+                contentId: {
+                    type: Sequelize.INTEGER,
+                    allowNull: true,
+                },
+                location: {
+                    type: Sequelize.STRING,
                     allowNull: true,
                 },
                 createdAt: {
-                    type: Sequelize.DATE,
-                    allowNull: true,
-                },
-                deletedAt: {
                     type: Sequelize.DATE,
                     allowNull: true,
                 },
@@ -28,24 +30,25 @@ module.exports = class Role extends Sequelize.Model {
                     type: Sequelize.DATE,
                     allowNull: true,
                 },
+                deletedAt: {
+                    type: Sequelize.DATE,
+                    allowNull: true,
+                },
             },
             {
                 sequelize,
-                modelName: 'Role',
-                tableName: 'role',
+                modelName: 'Image',
+                tableName: 'image',
                 timestamps: true,
                 paranoid: true,
             }
         );
     }
     static associate(db) {
-        // Role 모델과 User 모델 간의 일대다 관계 설정
-        Role.hasMany(db.User, { foreignKey: 'roleId' });
+        // Image 모델과 Notice 모델 간의 다대일 관계 설정
+        Image.belongsTo(db.Notice, { foreignKey: 'contentId' });
 
-        // Role 모델과 Notice 모델 간의 일대다 관계 설정
-        Role.hasMany(db.Notice, { foreignKey: 'roleId' });
-
-        // Role 모델과 Project 모델 간의 일대다 관계 설정
-        Role.hasMany(db.Project, { foreignKey: 'roleId' });
+        // Image 모델과 Project 모델 간의 다대일 관계 설정
+        Image.belongsTo(db.Project, { foreignKey: 'contentId' });
     }
 };
