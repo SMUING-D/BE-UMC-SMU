@@ -6,6 +6,7 @@ paths:
       summary: 공지사항 생성
       consumes:
         - multipart/form-data
+        - application/json
       parameters:
         - name: data
           in: body

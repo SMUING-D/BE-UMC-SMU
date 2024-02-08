@@ -1,0 +1,111 @@
+paths:
+  /notice/delete/{id}:
+    delete:
+      tags:
+        - Notice
+      summary: Delete an existing notice
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Notice ID to be deleted
+        - name: roleId
+          in: query
+          required: true
+          schema:
+            type: integer
+          description: Role ID for access control
+      responses:
+        '200':
+          description: Notice deletion successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  isSuccess:
+                    type: boolean
+                    example: true
+                  code:
+                    type: integer
+                    example: 2000
+                  message:
+                    type: string
+                    example: "success!"
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 123
+                      title:
+                        type: string
+                        example: "Deleted Notice"
+                      content:
+                        type: string
+                        example: "This notice has been deleted."
+                      createdAt:
+                        type: string
+                        example: "2022-02-07T12:34:56.789Z"
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 400
+                  isSuccess:
+                    type: boolean
+                    example: false
+                  code:
+                    type: integer
+                    example: COMMON001
+                  message:
+                    type: string
+                    example: "Bad request"
+        '403':
+          description: Access Denied
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 403
+                  isSuccess:
+                    type: boolean
+                    example: false
+                  code:
+                    type: integer
+                    example: ACCESS_DENIED
+                  message:
+                    type: string
+                    example: "Access Denied"
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 500
+                  isSuccess:
+                    type: boolean
+                    example: false
+                  code:
+                    type: integer
+                    example: COMMON000
+                  message:
+                    type: string
+                    example: "Server error, please contact the administrator"
