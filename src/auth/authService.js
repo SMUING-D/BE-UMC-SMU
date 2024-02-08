@@ -9,8 +9,8 @@ const baseResponse = require('../../config/response.status');
 //학번 중복 확인
 exports.checkStudentId = async (studentId) => {
     try {
-        const USER_INFO = await authProvider.checkStudentIdExist(studentId);
-        if (USER_INFO === null) {
+        const user = await authProvider.checkStudentIdExist(studentId);
+        if (user === null) {
             return response(baseResponse.USER_CAN_SIGNUP);
         } else {
             return errResponse(baseResponse.MEMBER_ALREADY_EXISTS);
@@ -60,7 +60,30 @@ exports.join = async (userData) => {
     }
 };
 //로그인
-exports.login = async (studentId, password) => {};
+exports.login = async (studentId, password) => {
+    try {
+        //학번 일치 확인
+        const user = await this.checkStudentId(studentId);
+        if (user === null) {
+            return errResponse(baseResponse.MEMBER_NOT_FOUND);
+        }
+        if (user.password === null) {
+            return errResponse(baseResponse.MEMBER_NOT_FOUND);
+        }
+        //비밀번호 일치 확인
+        const passwordHash = await bcrypt.hash(password, 10);
+        const comparePassword = await bcrypt.compare(password, user.password);
+        if (!comparePassword) {
+            return errResponse(baseResponse.WRONG_PASSWORD);
+        }
+        const aToken = jwtUtil.signAToken(user.id);
+        const rToken = await jwtUtil.signRToken(user.id);
+        return response(baseResponse.SUCCESS_LOGIN);
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+};
 
 //
 

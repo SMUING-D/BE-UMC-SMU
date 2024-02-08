@@ -10,6 +10,7 @@ module.exports = {
     SUCCESS_UPDATE_ROLE: { isSuccess: true, code: 2005, message: '권한 변경에  성공했습니다.' },
     CHECK_PASSWORD: { isSuccess: true, code: 2006, message: '비민번호가 확인되었습니다.' },
     SUCCESS_CHANGE_PASSWORD: { isSuccess: true, code: 2007, message: '비밀번호가 변경되었습니다.' },
+    SUCCESS_LOGIN: { isSuccess: true, code: 2008, message: '로그인되었습니다.' },
 
     // error
 
