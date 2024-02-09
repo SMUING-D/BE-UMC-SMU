@@ -24,7 +24,7 @@ exports.join = async (req, res, next) => {
 
     try {
         const result = await authService.join(userData);
-        return res.send(response(baseResponse.SUCCESS, result));
+        return res.send(result);
     } catch (error) {
         console.error(error);
         next(error);
@@ -66,7 +66,7 @@ exports.sendVerificationEmail = async (req, res) => {
     try {
         const { studentId } = req.body;
         const result = await authService.sendVerificationEmail(studentId);
-        return res.send(response(baseResponse.SUCCESS, result));
+        return res.send(result);
     } catch (error) {
         console.error(error);
     }
@@ -75,8 +75,8 @@ exports.sendVerificationEmail = async (req, res) => {
 // 메일 인증 확인하기
 exports.verifyEmail = async (req, res) => {
     try {
-        const { code } = req.query;
-        const result = await authService.verifyEmail(code);
+        const { userCode, authCode } = req.body;
+        const result = await authService.verifyEmail(userCode, authCode);
         return res.send(result);
     } catch (error) {
         console.error(error);

@@ -42,7 +42,7 @@ module.exports = {
     INVALID_PASSWORD_RULES: {
         isSuccess: false,
         code: 'MEMBER4006',
-        message: '비밀번호는 8자 이상이어야 하며, 영문과 숫자가 섞여 있어야 합니다.',
+        message: '비밀번호는 8자 이상이어야 하며, 영문,숫자,기호가 섞여 있어야 합니다.',
     },
     WRONG_PASSWORD: { isSuccess: false, code: 'MEMBER4007', message: '비밀번호가 틀렸습니다.' },
     SAME_WITH_PREVIOUS_PASSWORD: {
@@ -52,7 +52,7 @@ module.exports = {
     },
     FAILED_EMAIL_SEND: { isSuccess: false, code: 'MEMBER4009', message: '메일 전송에 실패했습니다.' },
     INVALID_EMAIL_VERIFICATION_CODE: { isSuccess: false, code: 'MEMBER4010', message: '유효하지 않은 코드입니다.' },
-    FAILED_EMAIL_VERIFICATION: { isSuccess: false, code: 'MEMBER4011', message: '이메일 인증에 실패했습니다.' },
+    FAILED_EMAIL_VERIFICATION: { isSuccess: false, code: 'MEMBER4011', message: '메일 인증에 실패했습니다.' },
 
     // article err
     ARTICLE_NOT_FOUND: { isSuccess: false, code: 'ARTICLE4001', message: '게시글이 없습니다.' },

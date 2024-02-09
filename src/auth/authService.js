@@ -35,14 +35,18 @@ exports.join = async (userData) => {
         if (EX_USER) {
             return errResponse(baseResponse.MEMBER_ALREADY_EXISTS);
         }
+
+        const isValidUser = await this.verifyEmail;
         // 비밀번호 조건 확인
-        if (!isValidPassword(password)) {
-            throw new Error(errResponse(baseResponse.INVALID_PASSWORD_RULES.message));
+        const isValidPwd = await isValidPassword(password);
+        if (!isValidPwd) {
+            return errResponse(baseResponse.INVALID_PASSWORD_RULES);
         }
         // 비밀번호 암호화
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Major 테이블에서 해당 학과 찾기
+        // majorId로 나와도 상관없지 않을까나...
         const major = await authProvider.findMajorByName(majorName);
 
         // 유저 생성
@@ -59,7 +63,6 @@ exports.join = async (userData) => {
         return response(baseResponse.SUCCESS_REGISTRATION);
     } catch (error) {
         console.error(error);
-        next(error);
     }
 };
 //로그인
@@ -113,17 +116,11 @@ exports.sendVerificationEmail = async (studentId) => {
     try {
         // 이메일 인증 랜덤 코드 생성
         const AUTH_CODE = generateRandomCode(10);
-        const saveCode = await authProvider.saveVerificationCode(studentId, AUTH_CODE);
-        console.log('코드:', saveCode);
-        console.log('authcode', AUTH_CODE);
-        // 이메일 인증 링크 생성
-        const AUTH_URL = generateAuthUrl(studentId, AUTH_CODE);
-        // 이메일 렌더링
-        const AUTH_HTML = await renderAuthEmail.renderAuthEmail(AUTH_URL);
+        const AUTH_HTML = await renderAuthEmail.renderAuthEmail(AUTH_CODE);
         // 이메일 보내기
         const sendMail = emailService.sendVerificationEmail(studentId, '이메일 인증', AUTH_HTML);
-        console.log('메일보내기:', sendMail);
-        return response(baseResponse.SUCCESS_EMAIL_SEND);
+
+        return response(baseResponse.SUCCESS_EMAIL_SEND, { authCode: AUTH_CODE });
     } catch (error) {
         console.error('Send Email Error: ' + error.message);
         throw new Error(errResponse(baseResponse.FAILED_EMAIL_SEND));
@@ -131,28 +128,15 @@ exports.sendVerificationEmail = async (studentId) => {
 };
 
 // 이메일 인증
-exports.verifyEmail = async (code) => {
+exports.verifyEmail = async (userCode, authCode) => {
     try {
-        if (!code) {
-            throw new Error(errResponse(baseResponse.INVALID_EMAIL_VERIFICATION_CODE));
+        if (!userCode) {
+            throw new Error(errResponse(baseResponse.JOIN_EMPTY));
         }
-
-        //코드 일치 확인
-        const [studentId, verificationCode] = code.split('&&');
-
-        //사용자 확인
-        const user = await authProvider.findUserByOptions(studentId, verificationCode);
-        if (!user) {
-            return errResponse(baseResponse.MEMBER_NOT_FOUND);
-        }
-
-        //인증 상태 업데이트
-        const updateVerificationStatus = await authProvider.updateVerificationStatus(studentId);
-
-        if (!updateVerificationStatus) {
+        // 사용자가 입력한 코드와 받은 코드 비교
+        if (userCode !== authCode) {
             return errResponse(baseResponse.FAILED_EMAIL_VERIFICATION);
         }
-
         return response(baseResponse.SUCCESS_EMAIL_VERIFICATION);
     } catch (error) {
         console.error(error);
@@ -241,7 +225,9 @@ exports.changePassword = async (userId, newPassword, confirmPassword) => {
 //비밀번호 유효성 검사
 const isValidPassword = async (password) => {
     // 비밀번호는 8자 이상, 영문 + 숫자 혼합
-    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    // const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    // 비밀번호는 8자 이상, 영문 + 숫자 + 특수기호 중 2가지 이상 조합
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     return passwordRegex.test(password);
 };
 
