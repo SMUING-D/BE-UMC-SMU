@@ -36,13 +36,15 @@ exports.join = async (userData) => {
             return errResponse(baseResponse.MEMBER_ALREADY_EXISTS);
         }
         // 비밀번호 조건 확인
-        if (!isValidPassword(password)) {
-            throw new Error(errResponse(baseResponse.INVALID_PASSWORD_RULES.message));
+        const isValidPwd = await isValidPassword(password);
+        if (!isValidPwd) {
+            return errResponse(baseResponse.INVALID_PASSWORD_RULES);
         }
         // 비밀번호 암호화
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Major 테이블에서 해당 학과 찾기
+        // majorId로 나와도 상관없지 않을까나...
         const major = await authProvider.findMajorByName(majorName);
 
         // 유저 생성
@@ -59,7 +61,6 @@ exports.join = async (userData) => {
         return response(baseResponse.SUCCESS_REGISTRATION);
     } catch (error) {
         console.error(error);
-        next(error);
     }
 };
 //로그인
@@ -241,7 +242,9 @@ exports.changePassword = async (userId, newPassword, confirmPassword) => {
 //비밀번호 유효성 검사
 const isValidPassword = async (password) => {
     // 비밀번호는 8자 이상, 영문 + 숫자 혼합
-    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    // const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    // 비밀번호는 8자 이상, 영문 + 숫자 + 특수기호 중 2가지 이상 조합
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     return passwordRegex.test(password);
 };
 

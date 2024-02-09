@@ -24,7 +24,7 @@ exports.join = async (req, res, next) => {
 
     try {
         const result = await authService.join(userData);
-        return res.send(response(baseResponse.SUCCESS, result));
+        return res.send(result);
     } catch (error) {
         console.error(error);
         next(error);

@@ -42,7 +42,7 @@ module.exports = {
     INVALID_PASSWORD_RULES: {
         isSuccess: false,
         code: 'MEMBER4006',
-        message: '비밀번호는 8자 이상이어야 하며, 영문과 숫자가 섞여 있어야 합니다.',
+        message: '비밀번호는 8자 이상이어야 하며, 영문,숫자,기호가 섞여 있어야 합니다.',
     },
     WRONG_PASSWORD: { isSuccess: false, code: 'MEMBER4007', message: '비밀번호가 틀렸습니다.' },
     SAME_WITH_PREVIOUS_PASSWORD: {
