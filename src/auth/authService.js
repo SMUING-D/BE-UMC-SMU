@@ -2,7 +2,8 @@ const bcrypt = require('bcrypt');
 const authProvider = require('./authProvider');
 const emailService = require('../../util/email');
 const { encrypt, decrypt } = require('../../util/crypter');
-const jwtUtil = require('../../util/jwtUtil');
+const jwtUtil = require('../../util/jwt');
+
 const redisClient = require('../../util/redis');
 const renderAuthEmail = require('../../views/ejsRender');
 const { response, errResponse, getSuccessSignInJson } = require('../../config/response');
