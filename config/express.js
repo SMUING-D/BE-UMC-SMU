@@ -16,6 +16,7 @@ const compression = require('compression');
 const methodOverride = require('method-override');
 const morgan = require('morgan');
 var cors = require('cors');
+require('dotenv').config();
 
 module.exports = function () {
     const app = express();

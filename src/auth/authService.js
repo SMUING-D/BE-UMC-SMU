@@ -3,7 +3,6 @@ const authProvider = require('./authProvider');
 const emailService = require('../../util/email');
 const { encrypt, decrypt } = require('../../util/crypter');
 const jwtUtil = require('../../util/jwt');
-
 const redisClient = require('../../util/redis');
 const renderAuthEmail = require('../../views/ejsRender');
 const { response, errResponse, getSuccessSignInJson } = require('../../config/response');
@@ -93,12 +92,13 @@ exports.login = async (studentId, password) => {
 exports.refreshAToken = async (aToken, rToken) => {
     try {
         const user = jwt.decode(aToken);
+        console.log(user);
         //rToken 유효기간 검증
         const rTokenStatus = await jwtUtil.verifyRToken(rToken, user.id);
         //rToken 유효
         if (rTokenStatus) {
             const refreshAToken = jwtUtil.signAToken(user.id);
-            return response(baseResponse.JWT_GET_ACCESS_TOKEN_SUCCESS);
+            return response(baseResponse.JWT_GET_ACCESS_TOKEN_SUCCESS, refreshAToken);
         } else {
             //rToken 무효
             return errResponse(baseResponse.JWT_REFRESH_TOKEN_EXPIRED);

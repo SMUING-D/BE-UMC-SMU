@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken');
+const { promisify } = require('util');
 const moment = require('moment');
+const redisClient = require('./redis');
 const User = require('../models/umcUser');
 
 module.exports = {
@@ -47,7 +49,7 @@ module.exports = {
                 try {
                     jwt.verify(rToken, process.env.JWT_SECRET); //유효 시간 체크
                     return true;
-                } catch (err) {
+                } catch (error) {
                     return false;
                 }
             } else return false;
