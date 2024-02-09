@@ -1,43 +1,46 @@
-'use strict';
+const {Sequelize} = require('sequelize');
+const env = process.env.NODE_ENV  || 'development';
+const config = require('../config/config.js')[env];
 
-const fs = require('fs');
-const path = require('path');
-const Sequelize = require('sequelize');
-const process = require('process');
-const basename = path.basename(__filename);
-const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + '/../config/config.json')[env];
+const Major = require('./major.js');
+const Role = require('./role.js');
+const User = require('./umcUser.js');
+const Project = require('./project.js');
+const Notice = require('./notice.js');
+const Image = require('./image.js');
+const ProjectUser = require('./projectUser.js');
+const Member = require('./umcMember.js');
+
 const db = {};
-
-let sequelize;
-if (config.use_env_variable) {
-  sequelize = new Sequelize(process.env[config.use_env_variable], config);
-} else {
-  sequelize = new Sequelize(config.database, config.username, config.password, config);
-}
-
-fs
-  .readdirSync(__dirname)
-  .filter(file => {
-    return (
-      file.indexOf('.') !== 0 &&
-      file !== basename &&
-      file.slice(-3) === '.js' &&
-      file.indexOf('.test.js') === -1
-    );
-  })
-  .forEach(file => {
-    const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
-    db[model.name] = model;
-  });
-
-Object.keys(db).forEach(modelName => {
-  if (db[modelName].associate) {
-    db[modelName].associate(db);
-  }
-});
+const sequelize = new Sequelize(config.database, config.username, config.password, config);
 
 db.sequelize = sequelize;
-db.Sequelize = Sequelize;
+db.Major = Major;
+db.Role = Role;
+db.User = User;
+db.Notice = Notice;
+db.Project = Project;
+db.Image = Image;
+db.ProjectUser = ProjectUser;
+db.Member = Member;
 
-module.exports = db;
+Major.init(sequelize);
+Role.init(sequelize);
+User.init(sequelize);
+Notice.init(sequelize);
+Project.init(sequelize);
+Image.init(sequelize);
+ProjectUser.init(sequelize);
+Member.init(sequelize);
+
+Major.associate(db);
+Role.associate(db);
+User.associate(db);
+Notice.associate(db);
+Project.associate(db);
+Image.associate(db);
+ProjectUser.associate(db);
+Member.associate(db);
+
+// export default db;
+module.exports = db
