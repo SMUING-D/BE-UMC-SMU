@@ -56,7 +56,7 @@ exports.join = async (userData) => {
             github,
             sex,
         });
-        return response(baseResponse.SUCCESS_REGISTRATION, newUser);
+        return response(baseResponse.SUCCESS_REGISTRATION);
     } catch (error) {
         console.error(error);
         next(error);
