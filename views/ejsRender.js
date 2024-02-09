@@ -1,10 +1,10 @@
 const ejs = require('ejs');
 
 //보낼 인증 이메일 내용 렌더링
-exports.renderAuthEmail = async (authUrl) => {
+exports.renderAuthEmail = async (authNum) => {
     try {
         let emailTemplate;
-        await ejs.renderFile('./views/authEmailFormat.ejs', { auth_url: authUrl }, function (err, data) {
+        await ejs.renderFile('./views/authEmailFormat.ejs', { auth_num: authNum }, function (err, data) {
             if (err) {
                 throw new Error(err);
             }

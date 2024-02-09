@@ -35,6 +35,8 @@ exports.join = async (userData) => {
         if (EX_USER) {
             return errResponse(baseResponse.MEMBER_ALREADY_EXISTS);
         }
+
+        const isValidUser = await this.verifyEmail;
         // 비밀번호 조건 확인
         const isValidPwd = await isValidPassword(password);
         if (!isValidPwd) {
@@ -114,17 +116,11 @@ exports.sendVerificationEmail = async (studentId) => {
     try {
         // 이메일 인증 랜덤 코드 생성
         const AUTH_CODE = generateRandomCode(10);
-        const saveCode = await authProvider.saveVerificationCode(studentId, AUTH_CODE);
-        console.log('코드:', saveCode);
-        console.log('authcode', AUTH_CODE);
-        // 이메일 인증 링크 생성
-        const AUTH_URL = generateAuthUrl(studentId, AUTH_CODE);
-        // 이메일 렌더링
-        const AUTH_HTML = await renderAuthEmail.renderAuthEmail(AUTH_URL);
+        const AUTH_HTML = await renderAuthEmail.renderAuthEmail(AUTH_CODE);
         // 이메일 보내기
         const sendMail = emailService.sendVerificationEmail(studentId, '이메일 인증', AUTH_HTML);
-        console.log('메일보내기:', sendMail);
-        return response(baseResponse.SUCCESS_EMAIL_SEND);
+
+        return response(baseResponse.SUCCESS_EMAIL_SEND, { authCode: AUTH_CODE });
     } catch (error) {
         console.error('Send Email Error: ' + error.message);
         throw new Error(errResponse(baseResponse.FAILED_EMAIL_SEND));
@@ -132,28 +128,15 @@ exports.sendVerificationEmail = async (studentId) => {
 };
 
 // 이메일 인증
-exports.verifyEmail = async (code) => {
+exports.verifyEmail = async (userCode, authCode) => {
     try {
-        if (!code) {
-            throw new Error(errResponse(baseResponse.INVALID_EMAIL_VERIFICATION_CODE));
+        if (!userCode) {
+            throw new Error(errResponse(baseResponse.JOIN_EMPTY));
         }
-
-        //코드 일치 확인
-        const [studentId, verificationCode] = code.split('&&');
-
-        //사용자 확인
-        const user = await authProvider.findUserByOptions(studentId, verificationCode);
-        if (!user) {
-            return errResponse(baseResponse.MEMBER_NOT_FOUND);
-        }
-
-        //인증 상태 업데이트
-        const updateVerificationStatus = await authProvider.updateVerificationStatus(studentId);
-
-        if (!updateVerificationStatus) {
+        // 사용자가 입력한 코드와 받은 코드 비교
+        if (userCode !== authCode) {
             return errResponse(baseResponse.FAILED_EMAIL_VERIFICATION);
         }
-
         return response(baseResponse.SUCCESS_EMAIL_VERIFICATION);
     } catch (error) {
         console.error(error);
