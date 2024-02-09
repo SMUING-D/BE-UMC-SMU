@@ -35,3 +35,30 @@ exports.updateUserRole = async (userId, newRoleId) => {
         throw error;
     }
 };
+
+//닉네임 변경하기
+exports.updateNickname = async (userId, nickname) => {
+    try {
+        const updateNickname = await User.update(
+            { nickname: nickname },
+            {
+                where: { id: userId },
+            }
+        );
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
+
+//userId로 조회하기
+exports.findExistUser = async (userId) => {
+    const user = await User.findOne({
+        where: {
+            id: userId,
+        },
+    });
+    //사용자 미존재
+    if (user === null) return false;
+    else return user;
+};

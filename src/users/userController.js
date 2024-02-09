@@ -23,3 +23,15 @@ exports.updateUserRole = async (req, res) => {
         console.error(error);
     }
 };
+
+//닉네임 변경하기
+exports.updateNickname = async (req, res) => {
+    try {
+        const userId = res.locals.decoded.userId;
+        const { nickname } = req.body;
+        const result = await userService.updateNickname(userId, nickname);
+        return res.send(result);
+    } catch (error) {
+        console.error(error);
+    }
+};
