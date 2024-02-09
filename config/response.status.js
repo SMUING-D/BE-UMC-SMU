@@ -24,11 +24,14 @@ module.exports = {
     NOT_FOUND: { isSuccess: false, code: 'COMMON005', message: '요청한 페이지를 찾을 수 없습니다. 관리자에게 문의 바랍니다.' },
     WRONG_EXTENSION: { status: StatusCodes.WRONG_EXTENSION, isSuccess: false, code: 'COMMON006', message: '잘못된 확장자입니다.' },
 
-    //jwt err
+    //jwt
     JWT_TOKEN_NOT_FOUND: { isSuccess: false, code: 'JWT000', message: '토큰을 찾지 못해 사용자 인증을 할 수 없습니다.' },
     JWT_TOKEN_WRONG: { isSuccess: false, code: 'JWT001', message: '잘못된 토큰입니다.' },
     JWT_TOKEN_EXPIRED: { isSuccess: false, code: 'JWT002', message: '토큰이 만료되었습니다.' },
-    JWT_REFRESH_TOKEN_EXPIRED: { isSuccess: false, code: 'JWT003', message: 'Refresh 토큰이 만료되었습니다.' },
+    JWT_REFRESH_TOKEN_EXPIRED: { isSuccess: false, code: 'JWT002', message: 'Refresh 토큰이 만료되었습니다.' },
+
+    JWT_GET_ACCESS_TOKEN_SUCCESS: { isSuccess: true, code: 'JWT003', message: 'Access 토큰이 발급되었습니다. ' },
+    JWT_GET_REFRESH_TOKEN_SUCCESS: { isSuccess: true, code: 'JWT003', message: 'Refresh 토큰이 발급되었습니다. ' },
 
     // member err
     MEMBER_NOT_FOUND: { isSuccess: false, code: 'MEMBER4001', message: '사용자가 없습니다.' },

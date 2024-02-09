@@ -2,21 +2,22 @@ const bcrypt = require('bcrypt');
 const authProvider = require('./authProvider');
 const emailService = require('../../util/email');
 const { encrypt, decrypt } = require('../../util/crypter');
+const jwtUtil = require('../../util/jwtUtil');
+const redisClient = require('../../util/redis');
 const renderAuthEmail = require('../../views/ejsRender');
-const { response, errResponse } = require('../../config/response');
+const { response, errResponse, getSuccessSignInJson } = require('../../config/response');
 const baseResponse = require('../../config/response.status');
 
 //학번 중복 확인
 exports.checkStudentId = async (studentId) => {
     try {
         const user = await authProvider.checkStudentIdExist(studentId);
-        if (user === null) {
-            return response(baseResponse.USER_CAN_SIGNUP);
+        if (user) {
+            return user;
         } else {
-            return errResponse(baseResponse.MEMBER_ALREADY_EXISTS);
+            return null;
         }
     } catch (error) {
-        console.error(error);
         next(error);
     }
 };
@@ -24,9 +25,9 @@ exports.checkStudentId = async (studentId) => {
 //회원가입
 exports.join = async (userData) => {
     try {
-        const { studentId, name, password, nickname, majorName, email } = userData;
+        const { studentId, name, password, nickname, majorName, email, github, sex } = userData;
         // 필수 정보 누락 여부 체크
-        if (!studentId || !name || !password || !nickname || !majorName || !email) {
+        if (!studentId || !name || !password || !nickname || !majorName || !email || !sex) {
             return errResponse(baseResponse.JOIN_EMPTY);
         }
         //회원 존재 확인
@@ -49,9 +50,11 @@ exports.join = async (userData) => {
             studentId,
             name,
             password: hashedPassword,
-            email,
             nickname,
             majorId: major.id,
+            email,
+            github,
+            sex,
         });
         return response(baseResponse.SUCCESS_REGISTRATION, newUser);
     } catch (error) {
@@ -78,14 +81,31 @@ exports.login = async (studentId, password) => {
         }
         const aToken = jwtUtil.signAToken(user.id);
         const rToken = await jwtUtil.signRToken(user.id);
-        return response(baseResponse.SUCCESS_LOGIN);
+        redisClient.set(user.id, rToken);
+        return getSuccessSignInJson(user.id, aToken, rToken.resfreshToken, rToken.expirationDateTime);
     } catch (error) {
         console.error(error);
-        next(error);
     }
 };
 
-//
+//refresh AccessToken
+exports.refreshAToken = async (aToken, rToken) => {
+    try {
+        const user = jwt.decode(aToken);
+        //rToken 유효기간 검증
+        const rTokenStatus = await jwtUtil.verifyRToken(rToken, user.id);
+        //rToken 유효
+        if (rTokenStatus) {
+            const refreshAToken = jwtUtil.signAToken(user.id);
+            return response(baseResponse.JWT_GET_ACCESS_TOKEN_SUCCESS);
+        } else {
+            //rToken 무효
+            return errResponse(baseResponse.JWT_REFRESH_TOKEN_EXPIRED);
+        }
+    } catch (error) {
+        return next(error);
+    }
+};
 
 //이메일 보내기
 exports.sendVerificationEmail = async (studentId) => {

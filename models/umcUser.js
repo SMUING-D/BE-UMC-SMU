@@ -1,4 +1,4 @@
-const {Sequelize} = require('sequelize');
+const { Sequelize } = require('sequelize');
 
 module.exports = class User extends Sequelize.Model {
     static init(sequelize) {
@@ -26,6 +26,10 @@ module.exports = class User extends Sequelize.Model {
                     type: Sequelize.STRING(50),
                     allowNull: true,
                 },
+                github: {
+                    type: Sequelize.STRING(50),
+                    allowNull: true,
+                },
                 nickname: {
                     type: Sequelize.STRING(30),
                     allowNull: true,
@@ -38,6 +42,10 @@ module.exports = class User extends Sequelize.Model {
                     type: Sequelize.INTEGER,
                     allowNull: true,
                     defaultValue: 1,
+                },
+                sex: {
+                    type: Sequelize.ENUM('MALE', 'FEMALE'),
+                    allowNull: true,
                 },
                 profileImgUrl: {
                     type: Sequelize.STRING(2084),

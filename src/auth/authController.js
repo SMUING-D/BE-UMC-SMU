@@ -19,8 +19,8 @@ exports.checkStudentId = async (req, res, next) => {
 
 //회원가입 요청
 exports.join = async (req, res, next) => {
-    const { studentId, name, password, nickname, majorName, email } = req.body;
-    const userData = { studentId, name, password, nickname, majorName, email };
+    const { studentId, name, password, nickname, majorName, email, github, sex } = req.body;
+    const userData = { studentId, name, password, nickname, majorName, email, github, sex };
 
     try {
         const result = await authService.join(userData);
@@ -42,6 +42,21 @@ exports.login = async (req, res, next) => {
         return res.send(result);
     } catch (error) {
         console.error(error);
+        return next(error);
+    }
+};
+
+//AccessToken Refresh
+
+exports.refreshAToken = async (req, res, next) => {
+    if (!req.headers.accessToken || !req.headers.refreshToken) {
+        return res.send(errResponse(baseResponse.JWT_TOKEN_NOT_FOUND));
+    }
+    try {
+        const result = await authService.refreshAToken(req.headers.accessToken, req.headers.refreshToken);
+        return res.send(result);
+    } catch (error) {
+        // logger.error(`토큰 재발급 에러: {에러문: ${error}}`);
         return next(error);
     }
 };

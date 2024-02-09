@@ -1,10 +1,22 @@
-// const jwt = require('jsonwebtoken');
-// const mixpanel = require('mixpanel');
-// const {  decrypt } = require('../../util/crypter');
-// const umcUser = require('../models/umcUser');
+const jwt = require('jsonwebtoken');
+const { response, errResponse, getSuccessSignInJson } = require('../config/response');
+const baseResponse = require('../config/response.status');
 
-// const mixpanelClient = mixpanel.init(process.env.MIXPANEL_TOKEN);
+exports.verifyAToken = (req, res, next) => {
+    if (!req.headers.authorization) return res.send(errResponse(baseResponse.JWT_TOKEN_WRONG));
 
-// exports.trackEvent = async(req, res,next)=>{
-//     //case 1: 이메일 인증을 했을 경우
-// }
+    try {
+        const decoded = jwt.verify(req.headers.authorization, process.env.JWT_SECRET);
+        res.locals.decoded = decoded;
+        return next();
+    } catch (error) {
+        //logger.error(error);
+        if (error.name === 'TokenExpiredError') {
+            // 유효 기간 초과
+            return res.send(errResponse(baseResponse.JWT_ACCESS_TOKEN_EXPIRESIN));
+        } else {
+            // 잘못된 토큰
+            return res.send(errResponse(baseResponse.JWT_TOKEN_WRONG));
+        }
+    }
+};
