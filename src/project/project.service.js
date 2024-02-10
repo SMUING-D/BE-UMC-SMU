@@ -29,7 +29,7 @@ exports.createProject = async (body, path) => {
             }
         }));
         
-        //공지 생성
+        //프로젝트 생성
         const newProject = await projectDao.addProject({
             roleId, 
             title, 
@@ -93,7 +93,7 @@ exports.modifyProject = async (projectId, body, path) => {
             updatedImages = await projectDao.updateProjectImages(projectId, path);
         }
 
-        // 업데이트된 이미지 정보를 updatedNotice에 추가
+        // 업데이트된 이미지 정보를 updatedProject에 추가
         updatedProject.dataValues.img = updatedImages.map(image => image.location);
 
         return updatedProject;

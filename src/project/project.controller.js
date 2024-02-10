@@ -49,7 +49,7 @@ exports.projectEdit = async (req, res, next) => {
 exports.projectDelete = async (req, res, next) => {
     try {
         const projectId = req.params.id;
-        // 삭제된 공지사항 정보 반환
+        // 삭제된 프로젝트 정보 반환
         const deleteProject = await projectService.deleteNotice(projectId, req.query);
 
         // 성공 응답

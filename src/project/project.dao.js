@@ -5,7 +5,7 @@ const Image = require('../../models/image.js');
 
 exports.addProject = async (body) => {
     try{
-        //공지 생성
+        //프로젝트 생성
         const newProject = await Project.create(body);
 
 
@@ -49,7 +49,7 @@ exports.updateProject = async (project, body) => {
 
 exports.updateProjectImages = async (projectId, paths) => {
     try {
-        // 기존에 데이터베이스에 연결된 noticeId에 해당하는 이미지를 모두 삭제
+        // 기존에 데이터베이스에 연결된 projectId에 해당하는 이미지를 모두 삭제
         await Image.destroy({
             where: { contentId: projectId, directory: 'project' },
         });
@@ -79,7 +79,7 @@ exports.updateProjectImages = async (projectId, paths) => {
 
 exports.deleteProject = async (projectId) => {
     try {
-        // 삭제된 공지사항 정보를 가져오고 공지사항을 삭제
+        // 삭제된 프로젝트 정보를 가져오고 프로젝트를 삭제
         const deletedProject = await Project.findByPk(projectId);
         await Project.destroy({ where: { id: projectId } });
         await Image.destroy({ where: { contentId: projectId, directory: 'project' } });

@@ -31,6 +31,8 @@ module.exports = function () {
 
     require('../src/auth/authRoute')(app);
     require('../src/users/userRoute')(app);
+    require('../src/notice/notice.route')(app);
+    require('../src/project/project.route')(app);
 
     return app;
 };
