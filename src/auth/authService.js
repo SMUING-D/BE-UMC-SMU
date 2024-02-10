@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const authProvider = require('./authProvider');
 const emailService = require('../../util/email');
 const { encrypt, decrypt } = require('../../util/crypter');
-const jwtUtil = require('../../util/jwt');
+const jwtUtil = require('../../util/jwtUtil');
 const redisClient = require('../../util/redis');
 const renderAuthEmail = require('../../views/ejsRender');
 const { response, errResponse, getSuccessSignInJson } = require('../../config/response');
@@ -65,15 +65,18 @@ exports.join = async (userData) => {
         console.error(error);
     }
 };
+
 //로그인
 exports.login = async (studentId, password) => {
     try {
         //학번 일치 확인
-        const user = await this.checkStudentId(studentId);
-        if (user === null) {
+        const user = await authProvider.checkStudentIdExist(studentId);
+        console.log(user);
+        console.log('id,', user.id);
+        if (!user) {
             return errResponse(baseResponse.MEMBER_NOT_FOUND);
         }
-        if (user.password === null) {
+        if (!user.password) {
             return errResponse(baseResponse.MEMBER_NOT_FOUND);
         }
         //비밀번호 일치 확인
@@ -84,8 +87,8 @@ exports.login = async (studentId, password) => {
         }
         const aToken = jwtUtil.signAToken(user.id);
         const rToken = await jwtUtil.signRToken(user.id);
-        redisClient.set(user.id, rToken);
-        return getSuccessSignInJson(user.id, aToken, rToken.resfreshToken, rToken.expirationDateTime);
+        // redisClient.set(user.id, rToken.refreshToken);
+        return getSuccessSignInJson(user.id, aToken, rToken.refreshToken, rToken.expirationDateTime);
     } catch (error) {
         console.error(error);
     }
@@ -97,7 +100,7 @@ exports.refreshAToken = async (aToken, rToken) => {
         const user = jwt.decode(aToken);
         console.log(user);
         //rToken 유효기간 검증
-        const rTokenStatus = await jwtUtil.verifyRToken(rToken, user.id);
+        const rTokenStatus = await jwtUtil.verifyRToken(user.id, rToken);
         //rToken 유효
         if (rTokenStatus) {
             const refreshAToken = jwtUtil.signAToken(user.id);
