@@ -1,7 +1,7 @@
 const { verifyAToken } = require('../../middlewares/index.js');
-const authController = require('./authController.js');
 
 module.exports = function (app) {
+    const authController = require('./authController.js');
     // 1.회원가입
     app.post('/api/auth/join', authController.join);
     // 2.로그인

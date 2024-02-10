@@ -23,7 +23,7 @@ module.exports = {
     signRToken: async (userId) => {
         const expiresIn = process.env.JWT_REFRESH_TOKEN_EXPIRESIN;
 
-        const RToken = jwt.sign({}, process.env.JWT_SECRET, {
+        const rToken = jwt.sign({}, process.env.JWT_SECRET, {
             algorithm: process.env.JWT_SIGN_ALGORITHM,
             expiresIn: expiresIn,
         });
@@ -33,18 +33,18 @@ module.exports = {
         const unit = expiresIn.replace(numericValue.toString(), '');
 
         const expirationDateTime = moment().add(numericValue, unit).add(9, 'hours').format('YYYY.MM.DD HH:mm:ss');
-
-        await User.update({ refresh_token: RToken }, { where: { id: userId } });
-        return { resfreshToken: RToken, expirationDateTime: expirationDateTime };
+        redisClient.set(toString(userId), rToken);
+        // await User.update({ refresh_token: RToken }, { where: { id: userId } });
+        return { refreshToken: rToken, expirationDateTime: expirationDateTime };
     },
 
     /*verifyAToken -> middlewares.index.js*/
 
-    verifyRToken: async (rToken, userId) => {
+    verifyRToken: async (userId, rToken) => {
         const getAsync = promisify(redisClient.get).bind(redisClient);
         try {
             //redis에서 refreshToken 가져오기
-            const redisToken = await getAsync(userId);
+            const redisToken = await getAsync(toString(userId));
             if (rToken === redisToken) {
                 try {
                     jwt.verify(rToken, process.env.JWT_SECRET); //유효 시간 체크
