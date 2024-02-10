@@ -36,7 +36,7 @@ exports.updateNickname = async (userId, nickname) => {
         if (!user) {
             return errResponse(baseResponse.MEMBER_NOT_FOUND);
         }
-        const updateUser = await userProvider.updateNickname(user.id, nickname);
+        const updateNickname = await userProvider.updateNickname(user.id, nickname);
         return response(baseResponse.SUCCESS_CHANGE_NICKNAME);
     } catch (error) {
         console.error(error);

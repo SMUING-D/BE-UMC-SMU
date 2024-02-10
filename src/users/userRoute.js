@@ -8,5 +8,5 @@ module.exports = function (app) {
     // 2.사용자 권한 변경
     app.put('/api/put/update-user-role', verifyAToken, userController.updateUserRole);
     // 3.닉네임 변경하기
-    app.put('api/put/update-nickname', verifyAToken, userController.updateNickname);
+    app.put('/api/put/update-nickname', verifyAToken, userController.updateNickname);
 };
