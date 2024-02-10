@@ -187,7 +187,7 @@ exports.checkPassword = async (now_user, password) => {
         }
         return response(baseResponse.CHECK_PASSWORD);
     } catch (error) {
-        return next(error);
+        console.error(error);
     }
 };
 exports.changePassword = async (userId, newPassword, confirmPassword) => {
@@ -221,7 +221,7 @@ exports.changePassword = async (userId, newPassword, confirmPassword) => {
         await authProvider.updatePassword(hashNewPassword, user.studentId);
         return response(baseResponse.SUCCESS_CHANGE_PASSWORD);
     } catch (error) {
-        return next(error);
+        console.error(error);
     }
 };
 
