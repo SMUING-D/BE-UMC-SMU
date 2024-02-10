@@ -7,8 +7,7 @@ const baseResponse = require('../../config/response.status');
 exports.checkStudentIdExist = async (studentId) => {
     const EX_USER = await User.findOne({ where: { studentId: studentId } });
 
-    if (EX_USER) return EX_USER;
-    else return null;
+    return EX_USER;
 };
 //userId로 조회하기
 exports.checkUserExistByUserId = async (userId) => {
