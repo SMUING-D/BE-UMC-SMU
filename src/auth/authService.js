@@ -28,7 +28,7 @@ exports.join = async (userData) => {
         const { studentId, name, password, nickname, majorName, email, github, sex } = userData;
         // 필수 정보 누락 여부 체크
         if (!studentId || !name || !password || !nickname || !majorName || !email || !sex) {
-            return errResponse(baseResponse.JOIN_EMPTY);
+            return errResponse(baseResponse.IS_REQUIRED_EMPTY);
         }
         //회원 존재 확인
         const EX_USER = await authProvider.checkStudentIdExist(studentId);
