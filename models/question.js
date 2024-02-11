@@ -1,6 +1,6 @@
 const { Sequelize } = require('sequelize');
 
-module.exports = class Member extends Sequelize.Model {
+module.exports = class Question extends Sequelize.Model {
     static init(sequelize) {
         return super.init(
             {
@@ -10,29 +10,30 @@ module.exports = class Member extends Sequelize.Model {
                     primaryKey: true,
                     autoIncrement: true,
                 },
-                studentId: {
+                content: {
+                    type: Sequelize.STRING,
+                    allowNull: false,
+                },
+                type: {
+                    type: Sequelize.ENUM('SHORT,LONG,SINGLE,MULTIPLE,UPLOAD'),
+                    allowNull: false,
+                },
+                IsEmpty: {
+                    type: Sequelize.BOOLEAN,
+                    allowNull: false,
+                    default: false, //기본값은 빈 값 안됨
+                },
+                formId: {
                     type: Sequelize.INTEGER,
-                    allowNull: true,
-                },
-                name: {
-                    type: Sequelize.STRING(15),
-                    allowNull: true,
-                },
-                nickname: {
-                    type: Sequelize.STRING(30),
-                    allowNull: true,
-                },
-                majorId: {
-                    type: Sequelize.INTEGER,
-                    allowNull: true,
+                    allowNull: false,
                 },
                 createdAt: {
                     type: Sequelize.DATE,
-                    allowNull: true,
+                    allowNull: false,
                 },
                 updatedAt: {
                     type: Sequelize.DATE,
-                    allowNull: true,
+                    allowNull: false,
                 },
                 deletedAt: {
                     type: Sequelize.DATE,
@@ -41,18 +42,15 @@ module.exports = class Member extends Sequelize.Model {
             },
             {
                 sequelize,
-                modelName: 'Member',
-                tableName: 'member',
+                modelName: 'Question',
+                tableName: 'question',
                 timestamps: true,
                 paranoid: true,
             }
         );
     }
     static associate(db) {
-        // User 모델과 Major 모델 간의 다대일 관계 설정
-        Member.belongsTo(db.Major, { foreignKey: 'majorId' });
-
-        // User 모델과 ProjectUser 모델 간의 일대다 관계 설정
-        Member.hasMany(db.ProjectUser, { foreignKey: 'userId' });
+        Question.belongsTo(db.Form, { foreignKey: 'formId' });
+        Question.hasMany(db.Options, { foreignKey: 'questionId' });
     }
 };
