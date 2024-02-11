@@ -6,8 +6,7 @@ const Role = require('../../models/role');
 exports.getAllUsersRole = async () => {
     try {
         const users = await User.findAll({
-            attributes: ['id', 'name', 'roleId'],
-            include: [{ model: Role, attributes: ['roleName'] }],
+            attributes: ['id', 'name', 'role'],
         });
         return users;
     } catch (error) {
@@ -17,10 +16,10 @@ exports.getAllUsersRole = async () => {
 };
 
 // 사용자 권한 변경
-exports.updateUserRole = async (userId, newRoleId) => {
+exports.updateUserRole = async (userId, role) => {
     try {
         const updateRole = await User.update(
-            { roleId: newRoleId },
+            { role: role },
             {
                 where: { id: userId },
             }
