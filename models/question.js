@@ -18,7 +18,7 @@ module.exports = class Question extends Sequelize.Model {
                     type: Sequelize.ENUM('SHORT,LONG,SINGLE,MULTIPLE,UPLOAD'),
                     allowNull: false,
                 },
-                IsEmpty: {
+                isNecessary: {
                     type: Sequelize.BOOLEAN,
                     allowNull: false,
                     default: false, //기본값은 빈 값 안됨

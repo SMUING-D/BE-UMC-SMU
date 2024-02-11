@@ -14,6 +14,7 @@ module.exports = {
     CHECK_PASSWORD: { isSuccess: true, code: 2006, message: '비민번호가 확인되었습니다.' },
     SUCCESS_CREATE_NOTICE: { isSuccess: true, code: 2002, message: '공지사항이 성공적으로 작성되었습니다.' },
     SUCCESS_LOGIN: { isSuccess: true, code: 2008, message: '로그인되었습니다.' },
+    SUCCESS_CREATE_FORM: { isSuccess: true, code: 2002, message: '지원서가 생성되었습니다.' },
     SUCCESS_CREATE_QUESTION: { isSuccess: true, code: 2002, message: '질문이 생성되었습니다.' },
 
     // error
