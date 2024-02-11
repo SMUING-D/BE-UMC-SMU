@@ -1,6 +1,6 @@
 const { Sequelize } = require('sequelize');
 
-module.exports = class Answer extends Sequelize.Model {
+module.exports = class Response extends Sequelize.Model {
     static init(sequelize) {
         return super.init(
             {
@@ -45,21 +45,21 @@ module.exports = class Answer extends Sequelize.Model {
             },
             {
                 sequelize,
-                modelName: 'Answer',
-                tableName: 'answer',
+                modelName: 'Response',
+                tableName: 'response',
                 timestamps: true,
                 paranoid: true,
             }
         );
     }
     static associate(db) {
-        // Answer 모델과 Question 모델 간의 다대일 관계 설정
-        Answer.belongsTo(db.Question, { foreignKey: 'questionId' });
+        // Response 모델과 Question 모델 간의 다대일 관계 설정
+        Response.belongsTo(db.Question, { foreignKey: 'questionId' });
 
-        // Answer 모델과 User 모델 간의 다대일 관계 설정
-        Answer.belongsTo(db.User, { foreignKey: 'userId' });
+        // Response 모델과 User 모델 간의 다대일 관계 설정
+        Response.belongsTo(db.User, { foreignKey: 'userId' });
 
-        // Answer 모델과 Form 모델 간의 다대일 관계 설정
-        Answer.belongsTo(db.Form, { foreignKey: 'formId' });
+        // Response 모델과 Form 모델 간의 다대일 관계 설정
+        Response.belongsTo(db.Form, { foreignKey: 'formId' });
     }
 };
