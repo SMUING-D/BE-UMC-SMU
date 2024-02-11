@@ -13,7 +13,7 @@ const Member = require('./umcMember.js');
 const Form = require('./form.js');
 const Question = require('./question.js');
 const Options = require('./options.js');
-const Answer = require('./answer.js');
+const Response = require('./Response.js');
 const SubmitForms = require('./submitForms.js');
 
 const db = {};
@@ -31,7 +31,7 @@ db.Member = Member;
 db.Form = Form;
 db.Question = Question;
 db.Options = Options;
-db.Answer = Answer;
+db.Response = Response;
 db.SubmitForms = SubmitForms;
 
 Major.init(sequelize);
@@ -45,7 +45,7 @@ Member.init(sequelize);
 Form.init(sequelize);
 Question.init(sequelize);
 Options.init(sequelize);
-Answer.init(sequelize);
+Response.init(sequelize);
 SubmitForms.init(sequelize);
 
 Major.associate(db);
@@ -59,7 +59,7 @@ Member.associate(db);
 Form.associate(db);
 Question.associate(db);
 Options.associate(db);
-Answer.associate(db);
+Response.associate(db);
 SubmitForms.associate(db);
 
 // export default db;
