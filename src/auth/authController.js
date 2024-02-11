@@ -49,14 +49,16 @@ exports.login = async (req, res, next) => {
 //AccessToken Refresh
 
 exports.refreshAToken = async (req, res, next) => {
-    if (!req.headers.accessToken || !req.headers.refreshToken) {
-        return res.send(errResponse(baseResponse.JWT_TOKEN_NOT_FOUND));
-    }
     try {
-        const result = await authService.refreshAToken(req.headers.accessToken, req.headers.refreshToken);
+        // if (!aToken || !rToken) {
+        //     return res.send(errResponse(baseResponse.JWT_TOKEN_NOT_FOUND));
+        // }
+        console.log('테스트헤더', req.headers.rr);
+        console.log('rtoken', req.headers.rToken);
+        const result = await authService.refreshAToken(req.headers.aToken, req.headers.rToken);
         return res.send(result);
     } catch (error) {
-        // logger.error(`토큰 재발급 에러: {에러문: ${error}}`);
+        console.error(error);
         return next(error);
     }
 };

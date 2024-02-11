@@ -14,7 +14,7 @@ require('./seeders/role.seed');
 // const cors = require('cors');
 const { insertMajorList } = require('./seeders/major.seed');
 const { insertRoleList } = require('./seeders/role.seed');
-
+const cors = require('cors');
 require('dotenv').config();
 
 db.sequelize

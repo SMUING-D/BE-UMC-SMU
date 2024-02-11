@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const authProvider = require('./authProvider');
 const emailService = require('../../util/email');
 const { encrypt, decrypt } = require('../../util/crypter');
@@ -97,8 +98,9 @@ exports.login = async (studentId, password) => {
 //refresh AccessToken
 exports.refreshAToken = async (aToken, rToken) => {
     try {
+        console.log(aToken);
         const user = jwt.decode(aToken);
-        console.log(user);
+        console.log('decoding한', user);
         //rToken 유효기간 검증
         const rTokenStatus = await jwtUtil.verifyRToken(user.id, rToken);
         //rToken 유효
@@ -110,7 +112,7 @@ exports.refreshAToken = async (aToken, rToken) => {
             return errResponse(baseResponse.JWT_REFRESH_TOKEN_EXPIRED);
         }
     } catch (error) {
-        return next(error);
+        console.error(error);
     }
 };
 
