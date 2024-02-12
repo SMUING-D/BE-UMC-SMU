@@ -16,9 +16,9 @@ exports.getAllUsersRole = async () => {
 };
 
 //사용자 권한 변경
-exports.updateUserRole = async (userId, newRoleId) => {
+exports.updateUserRole = async (userId, role) => {
     try {
-        const updateRole = await userProvider.updateUserRole(userId, newRoleId);
+        const updateRole = await userProvider.updateUserRole(userId, role);
         if (!updateRole) {
             return errResponse(baseResponse.BAD_REQUEST);
         }

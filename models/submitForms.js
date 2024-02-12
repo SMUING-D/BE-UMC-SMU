@@ -1,6 +1,6 @@
 const { Sequelize } = require('sequelize');
 
-module.exports = class Member extends Sequelize.Model {
+module.exports = class SubmitForms extends Sequelize.Model {
     static init(sequelize) {
         return super.init(
             {
@@ -10,29 +10,27 @@ module.exports = class Member extends Sequelize.Model {
                     primaryKey: true,
                     autoIncrement: true,
                 },
-                studentId: {
+                status: {
+                    type: Sequelize.ENUM('제출 완료', '서류 합격', '최종 합격', '불합격'),
+                    allowNull: false,
+                    defaultValue: '제출 완료',
+                },
+                userId: {
                     type: Sequelize.INTEGER,
-                    allowNull: true,
+                    allowNull: false,
                 },
-                name: {
-                    type: Sequelize.STRING(15),
-                    allowNull: true,
-                },
-                nickname: {
-                    type: Sequelize.STRING(30),
-                    allowNull: true,
-                },
-                majorId: {
+                formId: {
                     type: Sequelize.INTEGER,
-                    allowNull: true,
+                    allowNull: false,
                 },
+
                 createdAt: {
                     type: Sequelize.DATE,
-                    allowNull: true,
+                    allowNull: false,
                 },
                 updatedAt: {
                     type: Sequelize.DATE,
-                    allowNull: true,
+                    allowNull: false,
                 },
                 deletedAt: {
                     type: Sequelize.DATE,
@@ -41,18 +39,19 @@ module.exports = class Member extends Sequelize.Model {
             },
             {
                 sequelize,
-                modelName: 'Member',
-                tableName: 'member',
+                modelName: 'SubmitForms',
+                tableName: 'submitForms',
                 timestamps: true,
                 paranoid: true,
             }
         );
     }
-    static associate(db) {
-        // User 모델과 Major 모델 간의 다대일 관계 설정
-        Member.belongsTo(db.Major, { foreignKey: 'majorId' });
 
-        // User 모델과 ProjectUser 모델 간의 일대다 관계 설정
-        Member.hasMany(db.ProjectUser, { foreignKey: 'userId' });
+    static associate(db) {
+        // Submit 모델과 User 모델 간의 다대일 관계 설정
+        SubmitForms.belongsTo(db.User, { foreignKey: 'userId' });
+
+        // Submit 모델과 Form 모델 간의 다대일 관계 설정
+        SubmitForms.belongsTo(db.Form, { foreignKey: 'formId' });
     }
 };

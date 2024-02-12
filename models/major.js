@@ -1,6 +1,6 @@
 // models/Major.js
 
-const {Sequelize} = require('sequelize');
+const { Sequelize } = require('sequelize');
 
 module.exports = class Major extends Sequelize.Model {
     static init(sequelize) {
@@ -37,7 +37,7 @@ module.exports = class Major extends Sequelize.Model {
     static associate(db) {
         // Major 모델과 User 모델 간의 관계 설정
         Major.hasMany(db.User, { foreignKey: 'majorId' });
-        
+
         // Major 모델과 Member 모델 간의 관계 설정
         Major.hasMany(db.Member, { foreignKey: 'majorId' });
     }

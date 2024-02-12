@@ -1,8 +1,6 @@
-// models/Role.js
-
 const { Sequelize } = require('sequelize');
 
-module.exports = class Role extends Sequelize.Model {
+module.exports = class Form extends Sequelize.Model {
     static init(sequelize) {
         return super.init(
             {
@@ -12,37 +10,38 @@ module.exports = class Role extends Sequelize.Model {
                     primaryKey: true,
                     autoIncrement: true,
                 },
-                roleName: {
-                    type: Sequelize.STRING(30),
-                    allowNull: true,
+                title: {
+                    type: Sequelize.STRING,
+                    allowNull: false,
                 },
+
                 createdAt: {
                     type: Sequelize.DATE,
-                    allowNull: true,
-                },
-                deletedAt: {
-                    type: Sequelize.DATE,
-                    allowNull: true,
+                    allowNull: false,
                 },
                 updatedAt: {
+                    type: Sequelize.DATE,
+                    allowNull: false,
+                },
+                deletedAt: {
                     type: Sequelize.DATE,
                     allowNull: true,
                 },
             },
             {
                 sequelize,
-                modelName: 'Role',
-                tableName: 'role',
+                modelName: 'Form',
+                tableName: 'form',
                 timestamps: true,
                 paranoid: true,
             }
         );
     }
     static associate(db) {
-        // Role 모델과 Notice 모델 간의 일대다 관계 설정
-        Role.hasMany(db.Notice, { foreignKey: 'roleId' });
+        // Form 모델과 Question 모델 간의 일대다 관계 설정
+        Form.hasMany(db.Question, { foreignKey: 'formId' });
 
-        // Role 모델과 Project 모델 간의 일대다 관계 설정
-        Role.hasMany(db.Project, { foreignKey: 'roleId' });
+        // Form 모델과 SubmittedForms 모델 간의 일대다 관계 설정
+        Form.hasMany(db.SubmitForms, { foreignKey: 'formId' });
     }
 };

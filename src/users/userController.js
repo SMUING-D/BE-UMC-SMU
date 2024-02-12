@@ -16,8 +16,9 @@ exports.getAllUsersRole = async (req, res) => {
 //사용자 권한 변경 요청
 exports.updateUserRole = async (req, res) => {
     try {
-        const { userId, newRoleId } = req.body;
-        const result = await userService.updateUserRole(userId, newRoleId);
+        const user = res.locals.decoded.user;
+        const { role } = req.body;
+        const result = await userService.updateUserRole(user.id, role);
         return res.send(result);
     } catch (error) {
         console.error(error);
