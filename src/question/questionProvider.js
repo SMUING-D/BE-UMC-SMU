@@ -10,6 +10,7 @@ exports.createQuestion = async (userId, question, formId) => {
             userId: userId,
             formId: formId,
         });
+        return newQuestion;
     } catch (error) {
         console.error(error);
         throw error;
