@@ -14,8 +14,8 @@ exports.createForm = async (userId, formInfo) => {
         const form = await formProvider.createForm(user.id, formInfo.title);
         //question들 순서대로 question 테이블에 저장
         await Promise.all(
-            questions.map(async (question) => {
-                await questionProvider.createQuestion(user.id, formInfo.questions, form.id);
+            formInfo.questions.map(async (question) => {
+                await questionProvider.createQuestion(user.id, question, form.id);
             })
         );
         return response(baseResponse.SUCCESS_CREATE_FORM);

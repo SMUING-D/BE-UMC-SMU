@@ -15,12 +15,12 @@ module.exports = class Question extends Sequelize.Model {
                     allowNull: false,
                 },
                 type: {
-                    type: Sequelize.ENUM('SHORT,LONG,SINGLE,MULTIPLE,UPLOAD'),
+                    type: Sequelize.ENUM('SHORT', 'LONG', 'SINGLE', 'MULTIPLE', 'UPLOAD'),
                     allowNull: false,
                 },
                 isNecessary: {
                     type: Sequelize.BOOLEAN,
-                    allowNull: false,
+                    allowNull: true,
                     default: false, //기본값은 빈 값 안됨
                 },
                 formId: {
@@ -51,6 +51,6 @@ module.exports = class Question extends Sequelize.Model {
     }
     static associate(db) {
         Question.belongsTo(db.Form, { foreignKey: 'formId' });
-        Question.hasMany(db.Options, { foreignKey: 'questionId' });
+        Question.hasMany(db.Selection, { foreignKey: 'questionId' });
     }
 };

@@ -12,7 +12,7 @@ const ProjectUser = require('./projectUser.js');
 const Member = require('./umcMember.js');
 const Form = require('./form.js');
 const Question = require('./question.js');
-const Options = require('./options.js');
+const Selection = require('./selection.js');
 const Response = require('./Response.js');
 const SubmitForms = require('./submitForms.js');
 
@@ -30,7 +30,7 @@ db.ProjectUser = ProjectUser;
 db.Member = Member;
 db.Form = Form;
 db.Question = Question;
-db.Options = Options;
+db.Selection = Selection;
 db.Response = Response;
 db.SubmitForms = SubmitForms;
 
@@ -44,7 +44,7 @@ ProjectUser.init(sequelize);
 Member.init(sequelize);
 Form.init(sequelize);
 Question.init(sequelize);
-Options.init(sequelize);
+Selection.init(sequelize);
 Response.init(sequelize);
 SubmitForms.init(sequelize);
 
@@ -58,7 +58,7 @@ ProjectUser.associate(db);
 Member.associate(db);
 Form.associate(db);
 Question.associate(db);
-Options.associate(db);
+Selection.associate(db);
 Response.associate(db);
 SubmitForms.associate(db);
 

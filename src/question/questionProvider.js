@@ -6,7 +6,7 @@ exports.createQuestion = async (userId, question, formId) => {
         const newQuestion = await Question.create({
             content: question.content,
             type: question.type,
-            isNeccesary: question.isNeccesary,
+            isNecessary: question.isNecessary,
             userId: userId,
             formId: formId,
         });

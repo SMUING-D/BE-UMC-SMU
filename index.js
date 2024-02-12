@@ -21,8 +21,8 @@ db.sequelize
     .sync()
     .then(async () => {
         console.log('db 연결 성공');
-        await insertMajorList(db.Major);
-        await insertRoleList(db.Role);
+        // await insertMajorList(db.Major);
+        // await insertRoleList(db.Role);
     })
     .catch(console.error);
 

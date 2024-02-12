@@ -1,6 +1,6 @@
 const { Sequelize } = require('sequelize');
 
-module.exports = class Options extends Sequelize.Model {
+module.exports = class Selection extends Sequelize.Model {
     static init(sequelize) {
         return super.init(
             {
@@ -33,8 +33,8 @@ module.exports = class Options extends Sequelize.Model {
             },
             {
                 sequelize,
-                modelName: 'Option',
-                tableName: 'option',
+                modelName: 'Selection',
+                tableName: 'selection',
                 timestamps: true,
                 paranoid: true,
             }
@@ -42,7 +42,7 @@ module.exports = class Options extends Sequelize.Model {
     }
 
     static associate(db) {
-        // Option 모델과 Question 모델 간의 다대일 관계 설정
-        Options.belongsTo(db.Question, { foreignKey: 'questionId' });
+        // Selection 모델과 Question 모델 간의 다대일 관계 설정
+        Selection.belongsTo(db.Question, { foreignKey: 'questionId' });
     }
 };

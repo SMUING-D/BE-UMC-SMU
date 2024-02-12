@@ -4,9 +4,10 @@ const baseResponse = require('../../config/response.status');
 
 exports.createForm = async (req, res, next) => {
     try {
-        const user = res.locals.decoded.user;
+        const user = res.locals.decoded;
         const { title, questions } = req.body;
-        const result = await formService.createForm(user.id, req.body);
+        console.log(req.body, user.id);
+        const result = await formService.createForm(user.userId, { title, questions });
         return res.send(result);
     } catch (error) {
         console.error(error);
