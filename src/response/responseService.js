@@ -2,7 +2,7 @@ const { response, errResponse } = require('../../config/response');
 const baseResponse = require('../../config/response.status');
 
 /*답변 저장하기*/
-exports.createForm = async (userId, responses) => {
+exports.saveResponses = async (userId, responses) => {
     try {
         const user = await findExistUser(userId);
         const form = await formProvider.createForm(user.id, formInfo.title);

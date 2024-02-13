@@ -83,6 +83,7 @@ exports.getForm = async (userId, formId) => {
                             id: question.id,
                             content: question.content,
                             type: question.type,
+                            isNecessary: question.isNecessary,
                             selections: await Promise.all(
                                 question.Selections.map(async (selection) => ({
                                     id: selection.id,
@@ -96,6 +97,7 @@ exports.getForm = async (userId, formId) => {
                             id: question.id,
                             content: question.content,
                             type: question.type,
+                            isNecessary: question.isNecessary,
                         };
                     }
                 })
