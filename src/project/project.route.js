@@ -8,6 +8,9 @@ module.exports = function (app) {
     //프로젝트 불러오기
     app.get('/project/show/:period', asyncHandler(projectController.projectShow));
 
+    //멤버 불러오기
+    app.get('/project/member/:period', asyncHandler(projectController.projectMember));
+
     //프로젝트 작성
     app.post('/project/create', verifyAToken, imageUploader.imageUploader.array('images', 10), asyncHandler(projectController.projectCreate));
 

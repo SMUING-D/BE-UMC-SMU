@@ -92,6 +92,22 @@ exports.previewProjectResponseDTO = async (period, projectId, size) => {
     else return EX_PROJECT_MEMBER;
 };
 
+exports.previewProjectMemberResponseDTO = async (period) => {
+    console.log("period", period);
+    const EX_USER = 
+    period < 6 ? await Member.findAll({
+        where: {
+            year: period
+        }
+    })
+    : await User.findAll({
+    });
+
+    if (EX_USER === null) return false;
+    return EX_USER;
+};
+
+
 exports.previewMemberResponseDTO = async (memberId) => {
     const EX_USER = await Member.findOne({
         where: {
