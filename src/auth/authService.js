@@ -36,7 +36,7 @@ exports.join = async (userData) => {
             return errResponse(baseResponse.MEMBER_ALREADY_EXISTS);
         }
 
-        const isValidUser = await this.verifyEmail;
+        // const isValidUser = await this.verifyEmail;
         // 비밀번호 조건 확인
         const isValidPwd = await isValidPassword(password);
         if (!isValidPwd) {
@@ -85,7 +85,7 @@ exports.login = async (studentId, password) => {
         if (!comparePassword) {
             return errResponse(baseResponse.WRONG_PASSWORD);
         }
-        const aToken = jwtUtil.signAToken(user.id);
+        const aToken = jwtUtil.signAToken(user.id, user.roleId);
         const rToken = await jwtUtil.signRToken(user.id);
         // redisClient.set(user.id, rToken.refreshToken);
         return getSuccessSignInJson(user.id, aToken, rToken.refreshToken, rToken.expirationDateTime);

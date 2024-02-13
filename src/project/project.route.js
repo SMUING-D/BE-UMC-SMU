@@ -1,7 +1,7 @@
 const { verifyAToken } = require('../../middlewares/index.js');
+const asyncHandler = require('express-async-handler');
 
 module.exports = function (app) {
-    const asyncHandler = require('express-async-handler');
     const imageUploader = require('../../middlewares/image.uploader.js');
     const projectController = require('./project.controller.js');
 

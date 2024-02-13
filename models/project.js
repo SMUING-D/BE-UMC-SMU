@@ -78,8 +78,5 @@ module.exports = class Project extends Sequelize.Model {
         
         // Project 모델과 ProjectUser 모델 간의 일대다 관계 설정
         Project.hasMany(db.ProjectUser, { foreignKey: 'projectId' });
-
-        // Project 모델과 Image 모델 간의 일대다 관계 설정
-        Project.hasMany(db.Image, { foreignKey: 'contentId' });
     }
 };

@@ -10,9 +10,10 @@ module.exports = {
         return token;
     },
 
-    signAToken: (userId) => {
+    signAToken: (userId, roleId) => {
         const payload = {
             userId: userId,
+            roleId: roleId,
         };
         return jwt.sign(payload, process.env.JWT_SECRET, {
             algorithm: process.env.JWT_SIGN_ALGORITHM,

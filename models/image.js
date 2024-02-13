@@ -45,10 +45,5 @@ module.exports = class Image extends Sequelize.Model {
         );
     }
     static associate(db) {
-        // Image 모델과 Notice 모델 간의 다대일 관계 설정
-        Image.belongsTo(db.Notice, { foreignKey: 'contentId' });
-
-        // Image 모델과 Project 모델 간의 다대일 관계 설정
-        Image.belongsTo(db.Project, { foreignKey: 'contentId' });
     }
 };

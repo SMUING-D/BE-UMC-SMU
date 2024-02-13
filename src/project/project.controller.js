@@ -4,16 +4,16 @@ const status = require('../../config/response.status.js');
 const { response, errResponse } = require('../../config/response.js');
 const url = require('url');
 
-exports.projectSCreate = async (req, res, next) => {
+exports.projectCreate = async (req, res, next) => {
     try {
+        const roleId = res.locals.decoded.roleId;
         const image = req.files;
         const path = image.map(img => img.location);
-        if (image === undefined) {
+        if (!image || image.length === 0) {
             return res.status(400).json({ success: false, message: "실패" });
-        } else {
-            res.status(200).json({ success: true, message: "성공" });
         }
-        const newProject = await projectService.createProject(typeof req.body.data === 'object' ? req.body.data : JSON.parse(req.body.data), path);
+        const newProject = await projectService.createProject(roleId, typeof req.body.data === 'object' ? req.body.data : JSON.parse(req.body.data), path);
+        
         return res.send(response(status.SUCCESS, newProject));
     } catch (error) {
         res.status(400).json({ success: false, message: error.message });
@@ -33,11 +33,12 @@ exports.projectShow = async (req, res, next) => {
 
 exports.projectEdit = async (req, res, next) => {
     try {
+        const roleId = res.locals.decoded.roleId;
         const projectId = req.params.id;
         const image = req.files;
         const path = image ? image.map(img => img.location) : [];
 
-        const updatedProject = await projectService.modifyProject(projectId, typeof req.body.data === 'object' ? req.body.data : JSON.parse(req.body.data), path);
+        const updatedProject = await projectService.modifyProject(roleId, projectId, typeof req.body.data === 'object' ? req.body.data : JSON.parse(req.body.data), path);
         
         res.send(response(status.SUCCESS, updatedProject));
     } catch (error) {
@@ -48,9 +49,10 @@ exports.projectEdit = async (req, res, next) => {
 
 exports.projectDelete = async (req, res, next) => {
     try {
+        const roleId = res.locals.decoded.roleId;
         const projectId = req.params.id;
         // 삭제된 프로젝트 정보 반환
-        const deleteProject = await projectService.deleteNotice(projectId, req.query);
+        const deleteProject = await projectService.deleteProject(roleId, projectId);
 
         // 성공 응답
         return res.send(response(status.SUCCESS, deleteProject));

@@ -24,6 +24,7 @@ exports.imageUploader = multer({
         contentType: multerS3.AUTO_CONTENT_TYPE, // Content-type, 자동으로 찾도록 설정
         key: (req, file, callback) => {
             // 파일명
+            console.log("req.query.directory", req.query.directory);
             const uploadDirectory = req.query.directory ?? ''; // 디렉토리 path 설정을 위해서
             const extension = path.extname(file.originalname); // 파일 이름 얻어오기
             const uuid = createUUID(); // UUID 생성

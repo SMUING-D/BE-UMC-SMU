@@ -1,8 +1,8 @@
 const status = require('../../config/response.status.js');
 const noticeDao =  require('./notice.dao.js');
 
-exports.createNotice = async (body, path) => {
-    const { roleId, title, content } = body;
+exports.createNotice = async (roleId, body, path) => {
+    const { title, content } = body;
     const directory = "notice";
     try {
         //접근권한 설정
@@ -34,14 +34,14 @@ exports.createNotice = async (body, path) => {
             });
         }
 
-        return response(status.SUCCESS_CREATE_NOTICE, newNotice);
+        return newNotice
     } catch (error) {
         throw error;
     }
 };
 
-exports.modifyNotice = async (noticeId, body, path) => {
-    const { roleId, title, content } = body;
+exports.modifyNotice = async (roleId, noticeId, body, path) => {
+    const { title, content } = body;
     try {
         // 접근 권한 설정
         if (roleId !== 3) {
@@ -64,7 +64,6 @@ exports.modifyNotice = async (noticeId, body, path) => {
         // 업데이트된 이미지 정보를 updatedNotice에 추가
         updatedNotice.dataValues.img = updatedImages.map(image => image.location);
 
-        console.log("updatedNotice", updatedNotice);
         return updatedNotice;
     } catch (error) {
         throw error;
@@ -72,10 +71,8 @@ exports.modifyNotice = async (noticeId, body, path) => {
 };
 
 
-exports.deleteNotice = async (noticeId, query) => {
-    const { roleId } = query;
+exports.deleteNotice = async (roleId, noticeId) => {
     try {
-        console.log("roleId", roleId);
         //접근권한 설정
         if(parseInt(roleId) !== 3){
             throw new Error(status.ACCESS_DENIED.message);
