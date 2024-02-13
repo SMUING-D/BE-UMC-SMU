@@ -4,7 +4,7 @@ const status = require('../../config/response.status.js');
 const { response, errResponse } = require('../../config/response.js');
 const url = require('url');
 
-exports.noticeCreate = async (req, res, next) => {
+exports.projectSCreate = async (req, res, next) => {
     try {
         const image = req.files;
         const path = image.map(img => img.location);

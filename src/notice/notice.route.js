@@ -1,5 +1,4 @@
-// const express = require('express');
-// const router = express.Router();
+const { verifyAToken } = require('../../middlewares/index.js');
 
 module.exports = function (app) {
     const asyncHandler = require('express-async-handler');
@@ -10,11 +9,11 @@ module.exports = function (app) {
     app.get('/notice/show', asyncHandler(noticeController.noticeShow));
 
     //공지사항 작성
-    app.post('/notice/create', imageUploader.imageUploader.array('images', 10), asyncHandler(noticeController.noticeCreate));
+    app.post('/notice/create', verifyAToken, imageUploader.imageUploader.array('images', 10), asyncHandler(noticeController.noticeCreate));
 
     // 공지사항 수정
-    app.put('/notice/update/:id', imageUploader.imageUploader.array('images', 10), asyncHandler(noticeController.noticeEdit));
+    app.put('/notice/update/:id', verifyAToken, imageUploader.imageUploader.array('images', 10), asyncHandler(noticeController.noticeEdit));
 
     // 공지사항 및 이미지 삭제
-    app.delete('/notice/delete/:id', asyncHandler(noticeController.noticeDelete));
+    app.delete('/notice/delete/:id', verifyAToken, asyncHandler(noticeController.noticeDelete));
 };
