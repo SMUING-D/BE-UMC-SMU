@@ -8,7 +8,10 @@ const selectionProvider = require('../selection/selectionProvider');
 /*지원서 생성*/
 exports.createForm = async (userId, formInfo) => {
     try {
-        const user = await findExistUser(userId);
+        const user = await userProvider.findExistUser(userId);
+        if (!user) {
+            throw new Error(baseResponse.MEMBER_NOT_FOUND);
+        }
         const form = await formProvider.createForm(user.id, formInfo.title);
         //question들 순서대로 question 테이블에 저장
         await Promise.all(
@@ -27,10 +30,13 @@ exports.createForm = async (userId, formInfo) => {
 exports.updateForm = async (userId, formInfo) => {
     try {
         const { formId, title, questions } = formInfo;
-        const user = await findExistUser(userId);
+        const user = await userProvider.findExistUser(userId);
+        if (!user) {
+            throw new Error(baseResponse.MEMBER_NOT_FOUND);
+        }
         const form = await formProvider.findExistForm(user.id, formId);
         if (!form) {
-            return errResponse(baseResponse.FORM_NOT_FOUND);
+            throw new Error(baseResponse.FORM_NOT_FOUND);
         }
         //지원서 제목을 수정하는 경우
         if (title) {
@@ -50,6 +56,52 @@ exports.updateForm = async (userId, formInfo) => {
             );
         }
         return response(baseResponse.SUCCESS_UPDATE_FORM);
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+/*생성한 지원서 불러오기*/
+exports.getForm = async (userId, formId) => {
+    try {
+        const user = await userProvider.findExistUser(userId);
+        if (!user) {
+            return errResponse(baseResponse.MEMBER_NOT_FOUND);
+        }
+        const form = await formProvider.findExistForm(user.id, formId);
+        if (!form) {
+            return errResponse(baseResponse.FORM_NOT_FOUND);
+        }
+        const formData = {
+            id: form.id,
+            title: form.title,
+            questions: await Promise.all(
+                form.Questions.map(async (question) => {
+                    if (question.type === 'SINGLE' || question.type === 'MULTIPLE') {
+                        // 객관식인 경우 선택지도 함께 반환
+                        return {
+                            id: question.id,
+                            content: question.content,
+                            type: question.type,
+                            selections: await Promise.all(
+                                question.Selections.map(async (selection) => ({
+                                    id: selection.id,
+                                    content: selection.content,
+                                }))
+                            ),
+                        };
+                    } else {
+                        // 객관식이 아닌 경우 선택지는 반환하지 않음
+                        return {
+                            id: question.id,
+                            content: question.content,
+                            type: question.type,
+                        };
+                    }
+                })
+            ),
+        };
+        return response(baseResponse.SUCCESS_GET_FORM, formData);
     } catch (error) {
         console.error(error);
     }
@@ -119,12 +171,4 @@ const updateQuestion = async (question, formId) => {
             console.error(error);
     }
     return updatedQuestion;
-};
-
-const findExistUser = async (userId) => {
-    const user = await userProvider.findExistUser(userId);
-    if (!user) {
-        throw new Error(baseResponse.MEMBER_NOT_FOUND);
-    }
-    return user;
 };
