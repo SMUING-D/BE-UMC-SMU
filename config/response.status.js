@@ -4,7 +4,7 @@ module.exports = {
     // success
     SUCCESS: { isSuccess: true, code: 2000, message: 'success!' },
     USER_CAN_SIGNUP: { isSuccess: true, code: 2001, message: '가입이 가능한 학번입니다.' },
-    SUCCESS_REGISTRATION: { isSuccess: true, code: 2002, message: '회원가입이 성공적으로 완료되었습니다.' },
+    SUCCESS_REGISTRATION: { isSuccess: true, code: 2002, message: '회원가입이 완료되었습니다.' },
     SUCCESS_EMAIL_SEND: { isSuccess: true, code: 2002, message: '인증 메일 전송 성공!' },
     SUCCESS_EMAIL_VERIFICATION: { isSuccess: true, code: 2002, message: '메일 인증에 성공했습니다.' },
     SUCCESS_UPDATE_ROLE: { isSuccess: true, code: 2003, message: '권한을 변경했습니다.' },
@@ -15,6 +15,10 @@ module.exports = {
     SUCCESS_CREATE_NOTICE: { isSuccess: true, code: 2009, message: '공지사항이 성공적으로 작성되었습니다.' },
     SUCCESS_CREATE_PROJECT: { isSuccess: true, code: 2009, message: '프로젝트가 성공적으로 작성되었습니다.' },
     SUCCESS_LOGIN: { isSuccess: true, code: 2008, message: '로그인되었습니다.' },
+    SUCCESS_CREATE_FORM: { isSuccess: true, code: 2002, message: '지원서가 생성되었습니다.' },
+    SUCCESS_UPDATE_FORM: { isSuccess: true, code: 2002, message: '지원서가 수정되었습니다.' },
+    SUCCESS_GET_FORM: { isSuccess: true, code: 2002, message: '지원서를 불러왔습니다.' },
+    SUCCESS_CREATE_QUESTION: { isSuccess: true, code: 2002, message: '질문이 생성되었습니다.' },
 
     // error
 
@@ -40,7 +44,7 @@ module.exports = {
     MEMBER_NOT_FOUND: { isSuccess: false, code: 'MEMBER4001', message: '사용자가 없습니다.' },
     ROLE_NOT_FOUND: { isSuccess: false, code: 'MEMBER4002', message: '역할이 없습니다.' },
     NICKNAME_NOT_EXIST: { isSuccess: false, code: 'MEMBER4003', message: '닉네임은 필수입니다.' },
-    JOIN_EMPTY: { isSuccess: false, code: 'MEMBER4004', message: '필수 정보가 누락되었습니다.' },
+    IS_REQUIRED_EMPTY: { isSuccess: false, code: 'MEMBER4004', message: '필수 정보가 누락되었습니다.' },
     MEMBER_ALREADY_EXISTS: { isSuccess: false, code: 'MEMBER4005', message: '이미 존재하는 회원입니다.' },
     INVALID_PASSWORD_RULES: {
         isSuccess: false,
@@ -56,6 +60,9 @@ module.exports = {
     FAILED_EMAIL_SEND: { isSuccess: false, code: 'MEMBER4009', message: '메일 전송에 실패했습니다.' },
     INVALID_EMAIL_VERIFICATION_CODE: { isSuccess: false, code: 'MEMBER4010', message: '유효하지 않은 코드입니다.' },
     FAILED_EMAIL_VERIFICATION: { isSuccess: false, code: 'MEMBER4011', message: '메일 인증에 실패했습니다.' },
+
+    //form err
+    FORM_NOT_FOUND: { isSuccess: false, code: 'FORM4001', message: '지원서가 없습니다' },
 
     // article err
     ARTICLE_NOT_FOUND: { isSuccess: false, code: 'ARTICLE4001', message: '게시글이 없습니다.' },

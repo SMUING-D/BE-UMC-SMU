@@ -38,10 +38,14 @@ module.exports = class User extends Sequelize.Model {
                     type: Sequelize.INTEGER,
                     allowNull: true,
                 },
-                roleId: {
-                    type: Sequelize.INTEGER,
+                // roleId: {
+                //     type: Sequelize.INTEGER,
+                //     allowNull: true,
+                //     defaultValue: 1,
+                // },
+                role: {
+                    type: Sequelize.ENUM('GUEST', 'MEMBER', 'STAFF'),
                     allowNull: true,
-                    defaultValue: 1,
                 },
                 sex: {
                     type: Sequelize.ENUM('MALE', 'FEMALE'),
@@ -88,9 +92,15 @@ module.exports = class User extends Sequelize.Model {
         User.belongsTo(db.Major, { foreignKey: 'majorId' });
 
         // User 모델과 Role 모델 간의 다대일 관계 설정
-        User.belongsTo(db.Role, { foreignKey: 'roleId' });
+        // User.belongsTo(db.Role, { foreignKey: 'roleId' });
 
         // User 모델과 ProjectUser 모델 간의 일대다 관계 설정
         User.hasMany(db.ProjectUser, { foreignKey: 'userId' });
+
+        // User 모델과 Forms 모델 간의 일대다 관계 설정
+        User.hasMany(db.Form, { foreignKey: 'userId' });
+
+        // User 모델과 SubmittedForms 모델 간의 일대다 관계 설정
+        User.hasMany(db.SubmitForms, { foreignKey: 'userId' });
     }
 };
