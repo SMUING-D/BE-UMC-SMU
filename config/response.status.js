@@ -15,6 +15,7 @@ module.exports = {
     SUCCESS_CREATE_NOTICE: { isSuccess: true, code: 2002, message: '공지사항이 성공적으로 작성되었습니다.' },
     SUCCESS_LOGIN: { isSuccess: true, code: 2008, message: '로그인되었습니다.' },
     SUCCESS_CREATE_FORM: { isSuccess: true, code: 2002, message: '지원서가 생성되었습니다.' },
+    SUCCESS_UPDATE_FORM: { isSuccess: true, code: 2002, message: '지원서가 수정되었습니다.' },
     SUCCESS_CREATE_QUESTION: { isSuccess: true, code: 2002, message: '질문이 생성되었습니다.' },
 
     // error
@@ -57,6 +58,9 @@ module.exports = {
     FAILED_EMAIL_SEND: { isSuccess: false, code: 'MEMBER4009', message: '메일 전송에 실패했습니다.' },
     INVALID_EMAIL_VERIFICATION_CODE: { isSuccess: false, code: 'MEMBER4010', message: '유효하지 않은 코드입니다.' },
     FAILED_EMAIL_VERIFICATION: { isSuccess: false, code: 'MEMBER4011', message: '메일 인증에 실패했습니다.' },
+
+    //form err
+    FORM_NOT_FOUND: { isSuccess: false, code: 'FORM4001', message: '지원서가 없습니다' },
 
     // article err
     ARTICLE_NOT_FOUND: { isSuccess: false, code: 'ARTICLE4001', message: '게시글이 없습니다.' },

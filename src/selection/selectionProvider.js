@@ -1,6 +1,6 @@
 const Selection = require('../../models/selection');
 
-//Selection테이블에 질문 추가
+//Selection테이블에 선택지 추가
 exports.createSelection = async (questionId, selection) => {
     try {
         const newSelection = await Selection.create({
@@ -11,4 +11,16 @@ exports.createSelection = async (questionId, selection) => {
         console.error(error);
         throw error;
     }
+};
+
+//selection테이블에 선택지 수정
+exports.updateSelection = async (selectionId, selection) => {
+    const updateSelection = await Selection.update(
+        {
+            content: selection.content,
+        },
+        {
+            where: { id: selectionId },
+        }
+    );
 };

@@ -97,6 +97,9 @@ module.exports = class User extends Sequelize.Model {
         // User 모델과 ProjectUser 모델 간의 일대다 관계 설정
         User.hasMany(db.ProjectUser, { foreignKey: 'userId' });
 
+        // User 모델과 Forms 모델 간의 일대다 관계 설정
+        User.hasMany(db.Form, { foreignKey: 'userId' });
+
         // User 모델과 SubmittedForms 모델 간의 일대다 관계 설정
         User.hasMany(db.SubmitForms, { foreignKey: 'userId' });
     }
