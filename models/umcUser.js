@@ -38,15 +38,15 @@ module.exports = class User extends Sequelize.Model {
                     type: Sequelize.INTEGER,
                     allowNull: true,
                 },
-                // roleId: {
-                //     type: Sequelize.INTEGER,
-                //     allowNull: true,
-                //     defaultValue: 1,
-                // },
-                role: {
-                    type: Sequelize.ENUM('GUEST', 'MEMBER', 'STAFF'),
+                roleId: {
+                    type: Sequelize.INTEGER,
                     allowNull: true,
+                    defaultValue: 1,
                 },
+                // role: {
+                //     type: Sequelize.ENUM('GUEST', 'MEMBER', 'STAFF'),
+                //     allowNull: true,
+                // },
                 sex: {
                     type: Sequelize.ENUM('MALE', 'FEMALE'),
                     allowNull: true,

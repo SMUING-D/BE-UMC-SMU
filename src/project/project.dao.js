@@ -117,7 +117,6 @@ exports.updateProjectUsers = async (period, projectId, member) => {
                     id: project_user.userId
                 }
             });
-            // console.log(user.dataValues);
             return user.dataValues;
         }));
 
