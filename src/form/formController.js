@@ -14,3 +14,17 @@ exports.createForm = async (req, res, next) => {
         next(error);
     }
 };
+
+exports.updateForm = async (req, res, next) => {
+    try {
+        const user = res.locals.decoded;
+        const { formId } = req.params;
+        const { title, questions } = req.body;
+        console.log(req.body, user.id);
+        const result = await formService.updateForm(user.userId, { formId, title, questions });
+        return res.send(result);
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+};

@@ -13,3 +13,22 @@ exports.createForm = async (userId, title) => {
         throw error;
     }
 };
+//Form 수정
+exports.updateForm = async (formId, title) => {
+    const updateForm = await Form.update(
+        { title: title },
+        {
+            where: { id: formId },
+        }
+    );
+};
+
+exports.findExistForm = async (userId, formId) => {
+    const form = await Form.findOne({
+        where: {
+            id: formId,
+            userId: userId,
+        },
+    });
+    return form;
+};

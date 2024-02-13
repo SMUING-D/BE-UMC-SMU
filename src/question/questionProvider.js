@@ -10,8 +10,23 @@ exports.createQuestion = async (userId, question, formId) => {
             userId: userId,
             formId: formId,
         });
+        return newQuestion;
     } catch (error) {
         console.error(error);
         throw error;
     }
+};
+
+//Question테이블에 질문 수정
+exports.updateQuestion = async (question) => {
+    const updateQuestion = await Question.update(
+        {
+            content: question.content,
+            type: question.type,
+            isNecessary: question.isNecessary,
+        },
+        {
+            where: { id: question.id },
+        }
+    );
 };
