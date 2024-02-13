@@ -1,4 +1,6 @@
 const Form = require('../../models/form');
+const Question = require('../../models/question');
+const Selection = require('../../models/selection');
 
 //Form테이블에 질문 추가
 exports.createForm = async (userId, title) => {
@@ -29,6 +31,16 @@ exports.findExistForm = async (userId, formId) => {
             id: formId,
             userId: userId,
         },
+        include: [
+            {
+                model: Question,
+                include: [
+                    {
+                        model: Selection,
+                    },
+                ],
+            },
+        ],
     });
     return form;
 };

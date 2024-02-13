@@ -28,3 +28,15 @@ exports.updateForm = async (req, res, next) => {
         next(error);
     }
 };
+
+exports.getForm = async (req, res, next) => {
+    try {
+        const user = res.locals.decoded;
+        const { formId } = req.params;
+        const result = await formService.getForm(user.userId, formId);
+        return res.send(result);
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+};
