@@ -31,6 +31,17 @@ exports.projectShow = async (req, res, next) => {
     }
 };
 
+exports.projectMember = async (req, res, next) => {
+    try {
+        const period = req.params.period;
+        const getMember = await projectProvider.getMember(period);
+        return res.send(response(status.SUCCESS, getMember));
+    } catch (error) {
+        console.error('Error controler member:', error);
+        res.status(400).json({ success: false, message: error.message });
+    }
+};
+
 exports.projectEdit = async (req, res, next) => {
     try {
         const roleId = res.locals.decoded.roleId;
