@@ -12,10 +12,12 @@ exports.saveResponses = async (userId, formId, responses) => {
         console.log('form', form);
         //response들 순서대로 response 테이블에 저장
         await Promise.all(
-            responses.map(async (response, index) => {
-                console.log(form.Questions[index]);
-                console.log('응답', response.content);
-                const saveResponse = await responseProvider.saveResponse(user.id, form.Questions[index].id, response);
+            responses.map(async (response) => {
+                if (response.id) {
+                    await responseProvider.updateResponse(response);
+                } else {
+                    await responseProvider.saveResponse(user.id, response);
+                }
             })
         );
         return response(baseResponse.SUCCESS_SAVE_RESPONSE);
