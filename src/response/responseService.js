@@ -1,19 +1,24 @@
 const { response, errResponse } = require('../../config/response');
 const baseResponse = require('../../config/response.status');
+const userProvider = require('../users/userProvider');
+const formProvider = require('../form/formProvider');
+const responseProvider = require('../response/responseProvider');
 
 /*답변 저장하기*/
-exports.saveResponses = async (userId, responses) => {
+exports.saveResponses = async (userId, formId, responses) => {
     try {
-        const user = await findExistUser(userId);
-        const form = await formProvider.createForm(user.id, formInfo.title);
-        //question들 순서대로 question 테이블에 저장
+        const user = await userProvider.findExistUser(userId);
+        const form = await formProvider.findExistForm(formId);
+        console.log('form', form);
+        //response들 순서대로 response 테이블에 저장
         await Promise.all(
-            formInfo.questions.map(async (question) => {
-                // 질문 생성 함수 호출
-                await createQuestion(user.id, question, form.id);
+            responses.map(async (response, index) => {
+                console.log(form.Questions[index]);
+                console.log('응답', response.content);
+                const saveResponse = await responseProvider.saveResponse(user.id, form.Questions[index].id, response);
             })
         );
-        return response(baseResponse.SUCCESS_CREATE_FORM);
+        return response(baseResponse.SUCCESS_SAVE_RESPONSE);
     } catch (error) {
         console.error(error);
     }

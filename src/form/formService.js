@@ -68,7 +68,7 @@ exports.getForm = async (userId, formId) => {
         if (!user) {
             return errResponse(baseResponse.MEMBER_NOT_FOUND);
         }
-        const form = await formProvider.findExistForm(user.id, formId);
+        const form = await formProvider.findExistForm(formId);
         if (!form) {
             return errResponse(baseResponse.FORM_NOT_FOUND);
         }

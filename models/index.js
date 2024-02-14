@@ -13,7 +13,7 @@ const Member = require('./umcMember.js');
 const Form = require('./form.js');
 const Question = require('./question.js');
 const Selection = require('./selection.js');
-const Response = require('./Response.js');
+const Response = require('./response.js');
 const SubmitForms = require('./submitForms.js');
 
 const db = {};

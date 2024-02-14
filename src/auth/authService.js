@@ -85,7 +85,7 @@ exports.login = async (studentId, password) => {
         if (!comparePassword) {
             return errResponse(baseResponse.WRONG_PASSWORD);
         }
-        const aToken = jwtUtil.signAToken(user.id);
+        const aToken = jwtUtil.signAToken(user.id, user.roleId);
         const rToken = await jwtUtil.signRToken(user.id);
         // redisClient.set(user.id, rToken.refreshToken);
         return getSuccessSignInJson(user.id, aToken, rToken.refreshToken, rToken.expirationDateTime);
@@ -100,7 +100,7 @@ exports.refreshAToken = async (aToken, rToken) => {
         const user = jwt.decode(aToken);
         console.log(user);
         //rToken 유효기간 검증
-        const rTokenStatus = await jwtUtil.verifyRToken(user.id, rToken);
+        const rTokenStatus = await jwtUtil.verifyRToken(user.userId, rToken);
         //rToken 유효
         if (rTokenStatus) {
             const refreshAToken = jwtUtil.signAToken(user.id);

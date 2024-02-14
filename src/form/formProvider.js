@@ -25,11 +25,10 @@ exports.updateForm = async (formId, title) => {
     );
 };
 
-exports.findExistForm = async (userId, formId) => {
+exports.findExistForm = async (formId) => {
     const form = await Form.findOne({
         where: {
             id: formId,
-            userId: userId,
         },
         include: [
             {

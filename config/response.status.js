@@ -18,6 +18,9 @@ module.exports = {
     SUCCESS_UPDATE_FORM: { isSuccess: true, code: 2002, message: '지원서가 수정되었습니다.' },
     SUCCESS_GET_FORM: { isSuccess: true, code: 2002, message: '지원서를 불러왔습니다.' },
     SUCCESS_CREATE_QUESTION: { isSuccess: true, code: 2002, message: '질문이 생성되었습니다.' },
+    SUCCESS_SAVE_RESPONSE: { isSuccess: true, code: 2002, message: '답변이 저장되었습니다.' },
+    SUCCESS_UPDATE_RESPONSE: { isSuccess: true, code: 2002, message: '답변이 수정되었습니다.' },
+    SUCCESS_SUBMIT_RESPONSE: { isSuccess: true, code: 2002, message: '답변이 제출되었습니다.' },
 
     // error
 
