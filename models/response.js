@@ -25,11 +25,6 @@ module.exports = class Response extends Sequelize.Model {
                     allowNull: false,
                 },
 
-                formId: {
-                    type: Sequelize.INTEGER,
-                    allowNull: false,
-                },
-
                 createdAt: {
                     type: Sequelize.DATE,
                     allowNull: false,

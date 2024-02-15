@@ -10,9 +10,10 @@ module.exports = {
         return token;
     },
 
-    signAToken: (userId) => {
+    signAToken: (userId, roleId) => {
         const payload = {
             userId: userId,
+            roleId: roleId,
         };
         return jwt.sign(payload, process.env.JWT_SECRET, {
             algorithm: process.env.JWT_SIGN_ALGORITHM,
@@ -41,13 +42,14 @@ module.exports = {
     /*verifyAToken -> middlewares.index.js*/
 
     verifyRToken: async (userId, rToken) => {
-        const getAsync = promisify(redisClient.get).bind(redisClient);
         try {
             //redis에서 refreshToken 가져오기
+            const getAsync = redisClient.get.bind(redisClient);
             const redisToken = await getAsync(toString(userId));
             if (rToken === redisToken) {
                 try {
-                    jwt.verify(rToken, process.env.JWT_SECRET); //유효 시간 체크
+                    const checktime = jwt.verify(rToken, process.env.JWT_SECRET); //유효 시간 체크
+                    console.log('time', checktime);
                     return true;
                 } catch (error) {
                     return false;

@@ -5,6 +5,7 @@ const baseResponse = require('../../config/response.status');
 // 사용자 권한 조회
 exports.getAllUsersRole = async (req, res) => {
     try {
+        const user = res.locals.decoded.user;
         const result = await userService.getAllUsersRole();
         return res.send(result);
     } catch (error) {
@@ -16,9 +17,10 @@ exports.getAllUsersRole = async (req, res) => {
 //사용자 권한 변경 요청
 exports.updateUserRole = async (req, res) => {
     try {
-        const user = res.locals.decoded.user;
-        const { role } = req.body;
-        const result = await userService.updateUserRole(user.id, role);
+        const user = res.locals.decoded;
+        const { userId } = req.params;
+        const { newRoleId } = req.body;
+        const result = await userService.updateUserRole(userId, newRoleId);
         return res.send(result);
     } catch (error) {
         console.error(error);
@@ -28,9 +30,9 @@ exports.updateUserRole = async (req, res) => {
 //닉네임 변경하기
 exports.updateNickname = async (req, res) => {
     try {
-        const user = res.locals.decoded.user;
+        const user = res.locals.decoded;
         const { nickname } = req.body;
-        const result = await userService.updateNickname(user.id, nickname);
+        const result = await userService.updateNickname(user.userId, nickname);
         return res.send(result);
     } catch (error) {
         console.error(error);

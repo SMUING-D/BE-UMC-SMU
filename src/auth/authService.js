@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const authProvider = require('./authProvider');
 const emailService = require('../../util/email');
 const { encrypt, decrypt } = require('../../util/crypter');
+const jwt = require('jsonwebtoken');
 const jwtUtil = require('../../util/jwtUtil');
 const redisClient = require('../../util/redis');
 const renderAuthEmail = require('../../views/ejsRender');
@@ -85,7 +86,7 @@ exports.login = async (studentId, password) => {
         if (!comparePassword) {
             return errResponse(baseResponse.WRONG_PASSWORD);
         }
-        const aToken = jwtUtil.signAToken(user.id);
+        const aToken = jwtUtil.signAToken(user.id, user.roleId);
         const rToken = await jwtUtil.signRToken(user.id);
         // redisClient.set(user.id, rToken.refreshToken);
         return getSuccessSignInJson(user.id, aToken, rToken.refreshToken, rToken.expirationDateTime);
@@ -98,19 +99,20 @@ exports.login = async (studentId, password) => {
 exports.refreshAToken = async (aToken, rToken) => {
     try {
         const user = jwt.decode(aToken);
+        console.log('user.id', user.id, 'userId', user.userId);
         console.log(user);
         //rToken 유효기간 검증
-        const rTokenStatus = await jwtUtil.verifyRToken(user.id, rToken);
+        const rTokenStatus = await jwtUtil.verifyRToken(user.userId, rToken);
         //rToken 유효
         if (rTokenStatus) {
-            const refreshAToken = jwtUtil.signAToken(user.id);
-            return response(baseResponse.JWT_GET_ACCESS_TOKEN_SUCCESS, refreshAToken);
+            const refreshAToken = jwtUtil.signAToken(user.userId);
+            return response(baseResponse.JWT_GET_ACCESS_TOKEN_SUCCESS, { refreshAToken: refreshAToken });
         } else {
             //rToken 무효
             return errResponse(baseResponse.JWT_REFRESH_TOKEN_EXPIRED);
         }
     } catch (error) {
-        return next(error);
+        console.error(error);
     }
 };
 

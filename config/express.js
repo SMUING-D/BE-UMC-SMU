@@ -36,5 +36,7 @@ module.exports = function () {
     require('../src/project/project.route')(app);
     require('../src/form/formRoute')(app);
     require('../src/question/questionRoute')(app);
+    require('../src/response/responseRoute')(app);
+    require('../src/submitForms/submitFormsRoute')(app);
     return app;
 };

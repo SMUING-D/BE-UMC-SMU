@@ -8,17 +8,29 @@ const userProvider = require('./userProvider');
 //사용자 권한 조회
 exports.getAllUsersRole = async () => {
     try {
-        const usersRole = await userProvider.getAllUsersRole();
-        return usersRole;
+        const users = await userProvider.getAllUsersRole();
+        const roleData = await Promise.all(
+            users.map(async (user) => {
+                return {
+                    id: user.id,
+                    name: user.name,
+                    role: {
+                        id: user.roleId,
+                        roleName: user.Role.roleName,
+                    },
+                };
+            })
+        );
+        return response(baseResponse.SUCCESS_GET_ROLE, roleData);
     } catch (error) {
         console.error(error);
     }
 };
 
 //사용자 권한 변경
-exports.updateUserRole = async (userId, role) => {
+exports.updateUserRole = async (userId, newRoleId) => {
     try {
-        const updateRole = await userProvider.updateUserRole(userId, role);
+        const updateRole = await userProvider.updateUserRole(userId, newRoleId);
         if (!updateRole) {
             return errResponse(baseResponse.BAD_REQUEST);
         }
