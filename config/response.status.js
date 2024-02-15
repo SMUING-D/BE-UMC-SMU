@@ -8,6 +8,7 @@ module.exports = {
     SUCCESS_EMAIL_SEND: { isSuccess: true, code: 2002, message: '인증 메일 전송 성공!' },
     SUCCESS_EMAIL_VERIFICATION: { isSuccess: true, code: 2002, message: '메일 인증에 성공했습니다.' },
     SUCCESS_UPDATE_ROLE: { isSuccess: true, code: 2003, message: '권한을 변경했습니다.' },
+    SUCCESS_GET_ROLE: { isSuccess: true, code: 2002, message: '권한을 불러왔습니다.' },
     SUCCESS_CHANGE_PASSWORD: { isSuccess: true, code: 2007, message: '비밀번호가 변경되었습니다.' },
     SUCCESS_CHANGE_NICKNAME: { isSuccess: true, code: 2007, message: '닉네임이 변경되었습니다.' },
     SUCCESS_CHANGE_PROFILE_IMG: { isSuccess: true, code: 2007, message: '프로필 사진이 변경되었습니다.' },
