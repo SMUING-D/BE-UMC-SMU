@@ -34,7 +34,7 @@ exports.updateForm = async (userId, formInfo) => {
         if (!user) {
             throw new Error(baseResponse.MEMBER_NOT_FOUND);
         }
-        const form = await formProvider.findExistForm(user.id, formId);
+        const form = await formProvider.findExistForm(formId);
         if (!form) {
             throw new Error(baseResponse.FORM_NOT_FOUND);
         }

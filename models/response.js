@@ -12,7 +12,7 @@ module.exports = class Response extends Sequelize.Model {
                 },
                 content: {
                     type: Sequelize.STRING,
-                    allowNull: false,
+                    allowNull: true,
                 },
 
                 userId: {
