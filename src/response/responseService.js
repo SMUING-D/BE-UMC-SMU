@@ -46,17 +46,21 @@ exports.submitResponse = async (userId, formId, responses) => {
         if (await submitFormsProvider.findExistSubmitForm(user.id, form.id)) {
             return errResponse(baseResponse.SUBMITTED_FORM_ALREADY_EXISTS);
         }
-        await form.Questions.forEach(async (question, index) => {
-            console.log('response.content', responses[index].content);
-            if (question.isNecessary && responses[index].content === null) {
-                return errResponse(baseResponse.IS_REQUIRED_EMPTY);
-            } else {
-                const response = await saveResponse(user.id, responses[index]);
-            }
-        });
+        console.log(form.Questions);
+        await Promise.all(
+            form.Questions.map(async (question, index) => {
+                console.log('response.content', responses[index].content);
+                if (question.isNecessary && responses[index].content === null) {
+                    const error = errResponse(baseResponse.IS_REQUIRED_EMPTY);
+                    throw error;
+                } else {
+                    const response = await saveResponse(user.id, responses[index]);
+                }
+            })
+        );
         await submitFormsProvider.createSubmitForm(user.id, form.id);
         return response(baseResponse.SUCCESS_SUBMIT_RESPONSE);
     } catch (error) {
-        console.error(error);
+        return errResponse(error);
     }
 };
