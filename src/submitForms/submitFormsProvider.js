@@ -24,3 +24,13 @@ exports.getMySubmitForm = async (userId, submitId) => {
     });
     return submitForm;
 };
+
+exports.findExistSubmitForm = async (userId, formId) => {
+    const submitForm = await SubmitForms.findOne({
+        where: {
+            userId: userId,
+            formId: formId,
+        },
+    });
+    return submitForm;
+};
