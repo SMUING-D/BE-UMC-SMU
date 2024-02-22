@@ -62,3 +62,14 @@ exports.findExistUser = async (userId) => {
     if (user === null) return false;
     else return user;
 };
+
+//운영진인지 확인하기
+exports.findExistStaff = async (userId, roleId) => {
+    const staff = await User.findOne({
+        where: {
+            id: userId,
+            roleId: roleId,
+        },
+    });
+    return staff;
+};

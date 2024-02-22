@@ -3,8 +3,21 @@ const submitFormsService = require('./submitFormsService');
 exports.getMySubmitForm = async (req, res, next) => {
     try {
         const user = res.locals.decoded;
-        const { submitId } = req.body;
+        const { submitId } = req.params;
         const result = await submitFormsService.getMySubmitForm(user.userId, submitId);
+        return res.send(result);
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+};
+
+//formId를 req.params로 받아야할까?
+exports.getAllSubmitForms = async (req, res, next) => {
+    try {
+        const user = res.locals.decoded;
+        const { formId } = req.params;
+        const result = await submitFormsService.getAllSubmitForms(user, formId);
         return res.send(result);
     } catch (error) {
         console.error(error);

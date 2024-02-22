@@ -2,6 +2,7 @@ const SubmitForms = require('../../models/submitForms');
 const Response = require('../../models/response');
 const Question = require('../../models/question');
 const Form = require('../../models/form');
+const User = require('../../models/umcUser');
 
 /*지원서 제출하기*/
 exports.createSubmitForm = async (userId, formId) => {
@@ -33,4 +34,14 @@ exports.findExistSubmitForm = async (userId, formId) => {
         },
     });
     return submitForm;
+};
+
+exports.findAllSubmitForms = async (formId) => {
+    const submitForms = await SubmitForms.findAll({
+        where: {
+            formId: formId,
+        },
+        include: [{ model: Form }, { model: User }],
+    });
+    return submitForms;
 };

@@ -60,3 +60,27 @@ exports.getMySubmitForm = async (userId, submitId) => {
         console.error(error);
     }
 };
+
+exports.getAllSubmitForms = async (user, formId) => {
+    try {
+        const staff = await userProvider.findExistStaff(user.userId, user.roleId);
+        if (!staff) {
+            const error = errResponse(baseResponse.MEMBER_NOT_FOUND);
+            throw error;
+        }
+        const submitForms = await submitFormsProvider.findAllSubmitForms(formId);
+        if (!submitForms) {
+            return errResponse(baseResponse.FORM_NOT_FOUND);
+        }
+        const submitList = submitForms.map((submitForm) => {
+            return {
+                id: submitForm.id,
+                title: submitForm.Form.title,
+                name: submitForm.User.name,
+            };
+        });
+        return response(baseResponse.SUCCESS_GET_FORM, submitList);
+    } catch (error) {
+        return errResponse(error);
+    }
+};
