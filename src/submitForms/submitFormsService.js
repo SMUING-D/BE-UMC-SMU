@@ -60,3 +60,120 @@ exports.getMySubmitForm = async (userId, submitId) => {
         console.error(error);
     }
 };
+exports.getIndividualSubmitForm = async (userId, submitId) => {
+    try {
+        const user = await userProvider.findExistUser(userId);
+        if (!user) {
+            throw error(baseResponse.MEMBER_NOT_FOUND);
+        }
+        const submitForm = await submitFormsProvider.getMySubmitForm(submitId);
+        const submitFormData = await formData(submitForm);
+        return response(baseResponse.SUCCESS_GET_FORM, submitFormData);
+    } catch (error) {
+        return errResponse(error);
+    }
+};
+
+const formData = async (submitForm) => {
+    let form = submitForm.Form;
+    let questions = form.Questions;
+    await Promise.all(
+        questions.map(async (question) => {
+            const response = await Promise.all(
+                question.Responses.map(async (response) => ({
+                    id: response.id,
+                    content: response.content,
+                    questionId: response.questionId,
+                }))
+            );
+            console.log('response', response);
+            switch (question.type) {
+                case 'SINGLE':
+                case 'MULTIPLE':
+                    const selections = await Promise.all(
+                        question.Selections.map(async (selection) => ({
+                            id: selection.id,
+                            content: selection.content,
+                        }))
+                    );
+
+                    return {
+                        id: question.id,
+                        content: question.content,
+                        type: question.type,
+                        isNecessary: question.isNecessary,
+                        selections: selections,
+                        response: response,
+                    };
+                default:
+                    return {
+                        id: question.id,
+                        content: question.content,
+                        type: question.type,
+                        isNecessary: question.isNecessary,
+                        response: response,
+                    };
+            }
+        })
+    );
+};
+
+/*
+const formData = {
+            id: form.id,
+            title: form.title,
+            questions: await Promise.all(
+                form.Questions.map(async (question) => {
+                    if (question.type === 'SINGLE' || question.type === 'MULTIPLE') {
+                        // 객관식인 경우 선택지도 함께 반환
+                        return {
+                            id: question.id,
+                            content: question.content,
+                            type: question.type,
+                            isNecessary: question.isNecessary,
+                            selections: await Promise.all(
+                                question.Selections.map(async (selection) => ({
+                                    id: selection.id,
+                                    content: selection.content,
+                                }))
+                            ),
+                        };
+                    } else {
+                        // 객관식이 아닌 경우 선택지는 반환하지 않음
+                        return {
+                            id: question.id,
+                            content: question.content,
+                            type: question.type,
+                            isNecessary: question.isNecessary,
+                        };
+                    }
+                })
+            ),
+        };
+        return response(baseResponse.SUCCESS_GET_FORM, formData);
+*/
+
+//제출한 지원서 전체 불러오기 (운영진)
+exports.getAllSubmitForms = async (user, formId) => {
+    try {
+        const staff = await userProvider.findExistStaff(user.userId, user.roleId);
+        if (!staff) {
+            const error = errResponse(baseResponse.MEMBER_NOT_FOUND);
+            throw error;
+        }
+        const submitForms = await submitFormsProvider.findAllSubmitForms(formId);
+        if (submitForms.length === 0) {
+            return errResponse(baseResponse.FORM_NOT_FOUND);
+        }
+        const submitList = submitForms.map((submitForm) => {
+            return {
+                id: submitForm.id,
+                title: submitForm.Form.title,
+                name: submitForm.User.name,
+            };
+        });
+        return response(baseResponse.SUCCESS_GET_FORM, submitList);
+    } catch (error) {
+        return errResponse(error);
+    }
+};

@@ -2,6 +2,8 @@ const SubmitForms = require('../../models/submitForms');
 const Response = require('../../models/response');
 const Question = require('../../models/question');
 const Form = require('../../models/form');
+const User = require('../../models/umcUser');
+const Selection = require('../../models/selection');
 
 /*지원서 제출하기*/
 exports.createSubmitForm = async (userId, formId) => {
@@ -17,10 +19,20 @@ exports.createSubmitForm = async (userId, formId) => {
 };
 
 /*지원서 불러오기 - 본인*/
-exports.getMySubmitForm = async (userId, submitId) => {
+exports.getMySubmitForm = async (submitId) => {
     const submitForm = await SubmitForms.findOne({
-        where: { id: submitId, userId: userId },
-        include: [{ model: Form, include: [{ model: Question, include: [{ model: Response }] }] }],
+        where: { id: submitId },
+        include: [
+            {
+                model: Form,
+                include: [
+                    {
+                        model: Question,
+                        include: [{ model: Response, where: { userId: submitForm.userId } }, { model: Selection }],
+                    },
+                ],
+            },
+        ],
     });
     return submitForm;
 };
@@ -33,4 +45,14 @@ exports.findExistSubmitForm = async (userId, formId) => {
         },
     });
     return submitForm;
+};
+
+exports.findAllSubmitForms = async (formId) => {
+    const submitForms = await SubmitForms.findAll({
+        where: {
+            formId: formId,
+        },
+        include: [{ model: Form }, { model: User }],
+    });
+    return submitForms;
 };
