@@ -1,3 +1,4 @@
+const { Sequelize } = require('sequelize');
 const SubmitForms = require('../../models/submitForms');
 const Response = require('../../models/response');
 const Question = require('../../models/question');
@@ -28,7 +29,7 @@ exports.getMySubmitForm = async (submitId) => {
                 include: [
                     {
                         model: Question,
-                        include: [{ model: Response, where: { userId: submitForm.userId } }, { model: Selection }],
+                        include: [{ model: Response, where: { userId: Sequelize.col('SubmitForms.userId') } }, { model: Selection }],
                     },
                 ],
             },
