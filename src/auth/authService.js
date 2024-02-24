@@ -176,9 +176,9 @@ exports.findPassword = async (studentId) => {
 };
 
 //비밀번호 확인
-exports.checkPassword = async (now_user, password) => {
+exports.checkPassword = async (userId, password) => {
     try {
-        const user = await authProvider.checkUserExistByUserId(now_user);
+        const user = await authProvider.checkUserExistByUserId(userId);
         if (!user) {
             return errResponse(baseResponse.MEMBER_NOT_FOUND);
         }
