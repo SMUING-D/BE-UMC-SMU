@@ -79,14 +79,12 @@ const formData = async (submitForm) => {
     let questions = form.Questions;
     await Promise.all(
         questions.map(async (question) => {
-            const response = await Promise.all(
-                question.Responses.map(async (response) => ({
-                    id: response.id,
-                    content: response.content,
-                    questionId: response.questionId,
-                }))
-            );
-            console.log('response', response);
+            const response = await responseProvider.getResponse(question.id, submitForm.userId);
+            const responseInfo = {
+                id: response.id,
+                content: response.content,
+                questionId: response.questionId,
+            };
             switch (question.type) {
                 case 'SINGLE':
                 case 'MULTIPLE':
@@ -103,7 +101,7 @@ const formData = async (submitForm) => {
                         type: question.type,
                         isNecessary: question.isNecessary,
                         selections: selections,
-                        response: response,
+                        response: responseInfo,
                     };
                 default:
                     return {
@@ -111,13 +109,12 @@ const formData = async (submitForm) => {
                         content: question.content,
                         type: question.type,
                         isNecessary: question.isNecessary,
-                        response: response,
+                        response: responseInfo,
                     };
             }
         })
     );
 };
-
 /*
 const formData = {
             id: form.id,
