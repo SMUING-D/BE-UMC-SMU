@@ -67,7 +67,9 @@ exports.getIndividualSubmitForm = async (userId, submitId) => {
             throw error(baseResponse.MEMBER_NOT_FOUND);
         }
         const submitForm = await submitFormsProvider.getMySubmitForm(submitId);
+        console.log(submitForm);
         const submitFormData = await formData(submitForm);
+        console.log('submitFormData', submitFormData);
         return response(baseResponse.SUCCESS_GET_FORM, submitFormData);
     } catch (error) {
         return errResponse(error);
@@ -77,14 +79,11 @@ exports.getIndividualSubmitForm = async (userId, submitId) => {
 const formData = async (submitForm) => {
     let form = submitForm.Form;
     let questions = form.Questions;
-    await Promise.all(
+    const formData = await Promise.all(
         questions.map(async (question) => {
+            console.log('questionId', question.id);
             const response = await responseProvider.getResponse(question.id, submitForm.userId);
-            const responseInfo = {
-                id: response.id,
-                content: response.content,
-                questionId: response.questionId,
-            };
+            console.log('responseId', response.id);
             switch (question.type) {
                 case 'SINGLE':
                 case 'MULTIPLE':
@@ -94,14 +93,14 @@ const formData = async (submitForm) => {
                             content: selection.content,
                         }))
                     );
-
+                    console.log(selections);
                     return {
                         id: question.id,
                         content: question.content,
                         type: question.type,
                         isNecessary: question.isNecessary,
                         selections: selections,
-                        response: responseInfo,
+                        response: response ? { id: response.id, content: response.content } : null,
                     };
                 default:
                     return {
@@ -109,11 +108,12 @@ const formData = async (submitForm) => {
                         content: question.content,
                         type: question.type,
                         isNecessary: question.isNecessary,
-                        response: responseInfo,
+                        response: response ? { id: response.id, content: response.content } : null,
                     };
             }
         })
     );
+    return formData;
 };
 /*
 const formData = {
