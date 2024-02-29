@@ -20,3 +20,13 @@ exports.updateResponse = async (response) => {
     );
     return updateResponse;
 };
+
+exports.getResponse = async (questionId, userId) => {
+    const response = await Response.findOne({
+        where: {
+            questionId: questionId,
+            userId: userId,
+        },
+    });
+    return response;
+};

@@ -29,7 +29,7 @@ exports.getMySubmitForm = async (submitId) => {
                 include: [
                     {
                         model: Question,
-                        include: [{ model: Response, where: { userId: Sequelize.col('SubmitForms.userId') } }, { model: Selection }],
+                        include: [{ model: Selection }],
                     },
                 ],
             },
