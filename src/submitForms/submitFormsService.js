@@ -6,6 +6,30 @@ const responseProvider = require('../response/responseProvider');
 const userProvider = require('../users/userProvider');
 const submitFormsProvider = require('../submitForms/submitFormsProvider');
 
+//제출한 지원서 전체 불러오기 (운영진)
+exports.getAllSubmitForms = async (user, formId) => {
+    try {
+        const staff = await userProvider.findExistStaff(user.userId, user.roleId);
+        if (!staff) {
+            const error = errResponse(baseResponse.MEMBER_NOT_FOUND);
+            throw error;
+        }
+        const submitForms = await submitFormsProvider.findAllSubmitForms(formId);
+        if (submitForms.length === 0) {
+            return errResponse(baseResponse.FORM_NOT_FOUND);
+        }
+        const submitList = submitForms.map((submitForm) => {
+            return {
+                id: submitForm.id,
+                title: submitForm.Form.title,
+                name: submitForm.User.name,
+            };
+        });
+        return response(baseResponse.SUCCESS_GET_FORM, submitList);
+    } catch (error) {
+        return errResponse(error);
+    }
+};
 /*내가 제출한 지원서 불러오기*/
 /*개별 지원서 불러오기*/
 exports.getIndividualSubmitForm = async (userId, submitId) => {
@@ -62,29 +86,4 @@ const formData = async (submitForm) => {
         })
     );
     return formData;
-};
-
-//제출한 지원서 전체 불러오기 (운영진)
-exports.getAllSubmitForms = async (user, formId) => {
-    try {
-        const staff = await userProvider.findExistStaff(user.userId, user.roleId);
-        if (!staff) {
-            const error = errResponse(baseResponse.MEMBER_NOT_FOUND);
-            throw error;
-        }
-        const submitForms = await submitFormsProvider.findAllSubmitForms(formId);
-        if (submitForms.length === 0) {
-            return errResponse(baseResponse.FORM_NOT_FOUND);
-        }
-        const submitList = submitForms.map((submitForm) => {
-            return {
-                id: submitForm.id,
-                title: submitForm.Form.title,
-                name: submitForm.User.name,
-            };
-        });
-        return response(baseResponse.SUCCESS_GET_FORM, submitList);
-    } catch (error) {
-        return errResponse(error);
-    }
 };
