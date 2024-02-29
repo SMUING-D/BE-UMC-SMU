@@ -38,6 +38,16 @@ exports.getMySubmitForm = async (submitId) => {
     return submitForm;
 };
 
+/*지원서 상태 변경하기*/
+exports.updateFormStatus = async (newStatus, submitId) => {
+    const updateStatus = await SubmitForms.update(
+        { status: newStatus },
+        {
+            where: { id: submitId },
+        }
+    );
+};
+
 exports.findExistSubmitForm = async (userId, formId) => {
     const submitForm = await SubmitForms.findOne({
         where: {
