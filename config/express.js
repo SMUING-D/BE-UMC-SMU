@@ -31,7 +31,7 @@ module.exports = function () {
     // CORS 활성화
     app.use(
         cors({
-            origin: 'http://localhost:5173/', // 클라이언트 도메인
+            origin: true, // 클라이언트 도메인
             credentials: false, // 인증 정보 포함 여부
         })
     ); //자신이 속하지 않은 다른 도메인, 다른 프로토콜, 혹은 다른 포트에 있는 리소스를 요청하는 cross-origin HTTP 요청 방식
