@@ -22,6 +22,7 @@ module.exports = {
     SUCCESS_SAVE_RESPONSE: { isSuccess: true, code: 2002, message: '답변이 저장되었습니다.' },
     SUCCESS_UPDATE_RESPONSE: { isSuccess: true, code: 2002, message: '답변이 수정되었습니다.' },
     SUCCESS_SUBMIT_RESPONSE: { isSuccess: true, code: 2002, message: '답변이 제출되었습니다.' },
+    SUCCESS_UPDATE_STATUS: { isSuccess: true, code: 2007, message: '상태가 변경되었습니다.' },
 
     // error
 

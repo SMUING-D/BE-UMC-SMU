@@ -11,7 +11,7 @@ exports.getAllSubmitForms = async (user, formId) => {
     try {
         const staff = await userProvider.findExistStaff(user.userId, user.roleId);
         if (!staff) {
-            const error = errResponse(baseResponse.MEMBER_NOT_FOUND);
+            const error = errResponse(baseResponse.UNAUTHORIZED);
             throw error;
         }
         const submitForms = await submitFormsProvider.findAllSubmitForms(formId);
@@ -39,9 +39,7 @@ exports.getIndividualSubmitForm = async (userId, submitId) => {
             throw error(baseResponse.MEMBER_NOT_FOUND);
         }
         const submitForm = await submitFormsProvider.getMySubmitForm(submitId);
-        console.log(submitForm);
         const submitFormData = await formData(submitForm);
-        console.log('submitFormData', submitFormData);
         return response(baseResponse.SUCCESS_GET_FORM, submitFormData);
     } catch (error) {
         return errResponse(error);
@@ -86,4 +84,20 @@ const formData = async (submitForm) => {
         })
     );
     return formData;
+};
+//제출한 지원서 상태 변경하기
+//'제출 완료', '서류 합격', '최종 합격', '불합격'
+exports.updateFormStatus = async (user, submitId, newStatus) => {
+    try {
+        //운영진인지 확인하기
+        const staff = await userProvider.findExistStaff(user.userId, user.roleId);
+        if (!staff) {
+            const error = errResponse(baseResponse.UNAUTHORIZED);
+            throw error;
+        }
+        const updateForm = await submitFormsProvider.updateFormStatus(newStatus, submitId);
+        return response(baseResponse.SUCCESS_UPDATE_STATUS);
+    } catch (error) {
+        return errResponse(error);
+    }
 };
