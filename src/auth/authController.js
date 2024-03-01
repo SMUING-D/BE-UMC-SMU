@@ -49,11 +49,12 @@ exports.login = async (req, res, next) => {
 //AccessToken Refresh
 
 exports.refreshAToken = async (req, res, next) => {
-    if (!req.headers.accessToken || !req.headers.refreshToken) {
-        return res.send(errResponse(baseResponse.JWT_TOKEN_NOT_FOUND));
-    }
     try {
-        const result = await authService.refreshAToken(req.headers.accessToken, req.headers.refreshToken);
+        const { atoken, rtoken } = req.headers;
+        if (!atoken || !rtoken) {
+            return res.send(errResponse(baseResponse.JWT_TOKEN_NOT_FOUND));
+        }
+        const result = await authService.refreshAToken(atoken, rtoken);
         return res.send(result);
     } catch (error) {
         // logger.error(`토큰 재발급 에러: {에러문: ${error}}`);
@@ -86,6 +87,7 @@ exports.verifyEmail = async (req, res) => {
 //비밀번호 찾기
 exports.findPassword = async (req, res, next) => {
     try {
+        const user = res.locals.decoded;
         const { studentId } = req.body;
         if (!studentId) {
             return res.send(errResponse(baseResponse.BAD_REQUEST));
@@ -101,10 +103,9 @@ exports.findPassword = async (req, res, next) => {
 //비밀번호 확인하기
 exports.checkPassword = async (req, res, next) => {
     try {
-        //jwt토큰 추가 후 수정
-        // const user = await this.checkStudentId(res.locals.decodes.user_id);
-        const { user, password } = req.body;
-        const result = await authService.checkPassword(user, password);
+        const user = res.locals.decoded;
+        const { password } = req.body;
+        const result = await authService.checkPassword(user.userId, password);
         return res.send(result);
     } catch (error) {
         console.error(error);
@@ -114,10 +115,9 @@ exports.checkPassword = async (req, res, next) => {
 //비밀번호 변경하기
 exports.changePassword = async (req, res, next) => {
     try {
-        //jwt토큰 추가 후 수정
-        // const user = await this.checkStudentId(res.locals.decodes.user_id);
-        const { userId, newPassword, confirmPassword } = req.body;
-        const result = await authService.changePassword(userId, newPassword, confirmPassword);
+        const user = res.locals.decoded;
+        const { newPassword, confirmPassword } = req.body;
+        const result = await authService.changePassword(user.userId, newPassword, confirmPassword);
         return res.send(result);
     } catch (error) {
         console.error(error);

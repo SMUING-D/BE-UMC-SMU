@@ -52,5 +52,6 @@ module.exports = class Question extends Sequelize.Model {
     static associate(db) {
         Question.belongsTo(db.Form, { foreignKey: 'formId' });
         Question.hasMany(db.Selection, { foreignKey: 'questionId' });
+        Question.hasMany(db.Response, { foreignKey: 'questionId' });
     }
 };

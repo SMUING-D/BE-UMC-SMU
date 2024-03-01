@@ -43,10 +43,6 @@ module.exports = class User extends Sequelize.Model {
                     allowNull: true,
                     defaultValue: 1,
                 },
-                // role: {
-                //     type: Sequelize.ENUM('GUEST', 'MEMBER', 'STAFF'),
-                //     allowNull: true,
-                // },
                 sex: {
                     type: Sequelize.ENUM('MALE', 'FEMALE'),
                     allowNull: true,
@@ -91,7 +87,7 @@ module.exports = class User extends Sequelize.Model {
         // User 모델과 Major 모델 간의 다대일 관계 설정
         User.belongsTo(db.Major, { foreignKey: 'majorId' });
 
-        // User 모델과 Role 모델 간의 다대일 관계 설정
+        //User 모델과 Role 모델 간의 다대일 관계 설정
         User.belongsTo(db.Role, { foreignKey: 'roleId' });
 
         // User 모델과 ProjectUser 모델 간의 일대다 관계 설정

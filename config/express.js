@@ -15,7 +15,7 @@ const express = require('express');
 const compression = require('compression');
 const methodOverride = require('method-override');
 const morgan = require('morgan');
-var cors = require('cors');
+const cors = require('cors');
 require('dotenv').config();
 
 module.exports = function () {
@@ -28,7 +28,13 @@ module.exports = function () {
     app.use(morgan('dev')); // 로그 확인 (response 색상 입힌 개발용)
     app.use(express.static('public')); // 정적 파일 접근
     app.use(bodyParser.json()); // JSON 형식의 요청 본문 파싱을 위한 미들웨어 설정
-    app.use(cors()); //자신이 속하지 않은 다른 도메인, 다른 프로토콜, 혹은 다른 포트에 있는 리소스를 요청하는 cross-origin HTTP 요청 방식
+    // CORS 활성화
+    app.use(
+        cors({
+            origin: true, // 클라이언트 도메인
+            credentials: false, // 인증 정보 포함 여부
+        })
+    ); //자신이 속하지 않은 다른 도메인, 다른 프로토콜, 혹은 다른 포트에 있는 리소스를 요청하는 cross-origin HTTP 요청 방식
 
     require('../src/auth/authRoute')(app);
     require('../src/users/userRoute')(app);
@@ -36,5 +42,7 @@ module.exports = function () {
     require('../src/project/project.route')(app);
     require('../src/form/formRoute')(app);
     require('../src/question/questionRoute')(app);
+    require('../src/response/responseRoute')(app);
+    require('../src/submitForms/submitFormsRoute')(app);
     return app;
 };

@@ -6,7 +6,8 @@ const Role = require('../../models/role');
 exports.getAllUsersRole = async () => {
     try {
         const users = await User.findAll({
-            attributes: ['id', 'name', 'role'],
+            // attributes: ['id', 'name', 'roleId'],
+            include: [{ model: Role }],
         });
         return users;
     } catch (error) {
@@ -16,10 +17,10 @@ exports.getAllUsersRole = async () => {
 };
 
 // 사용자 권한 변경
-exports.updateUserRole = async (userId, role) => {
+exports.updateUserRole = async (userId, newRoleId) => {
     try {
         const updateRole = await User.update(
-            { role: role },
+            { roleId: newRoleId },
             {
                 where: { id: userId },
             }
@@ -50,6 +51,23 @@ exports.updateNickname = async (userId, nickname) => {
     }
 };
 
+//프로필 사진 변경하기
+exports.changeProfileImage = async (userId, newProfileImageUrl) => {
+    try {
+        const updateProfileImage = await User.update(
+            {
+                profileImgUrl: newProfileImageUrl,
+            },
+            {
+                where: { id: userId },
+            }
+        );
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
+
 //userId로 조회하기
 exports.findExistUser = async (userId) => {
     const user = await User.findOne({
@@ -60,4 +78,15 @@ exports.findExistUser = async (userId) => {
     //사용자 미존재
     if (user === null) return false;
     else return user;
+};
+
+//운영진인지 확인하기
+exports.findExistStaff = async (userId, roleId) => {
+    const staff = await User.findOne({
+        where: {
+            id: userId,
+            roleId: roleId,
+        },
+    });
+    return staff;
 };

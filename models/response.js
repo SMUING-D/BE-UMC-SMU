@@ -12,7 +12,7 @@ module.exports = class Response extends Sequelize.Model {
                 },
                 content: {
                     type: Sequelize.STRING,
-                    allowNull: false,
+                    allowNull: true,
                 },
 
                 userId: {
@@ -21,11 +21,6 @@ module.exports = class Response extends Sequelize.Model {
                 },
 
                 questionId: {
-                    type: Sequelize.INTEGER,
-                    allowNull: false,
-                },
-
-                formId: {
                     type: Sequelize.INTEGER,
                     allowNull: false,
                 },
