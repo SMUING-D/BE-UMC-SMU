@@ -47,8 +47,5 @@ module.exports = class Notice extends Sequelize.Model {
     static associate(db) {
         // Notice 모델과 Role 모델 간의 다대일 관계 설정
         Notice.belongsTo(db.Role, { foreignKey: 'roleId' });
-        
-        // Notice 모델과 Image 모델 간의 일대다 관계 설정
-        Notice.hasMany(db.Image, { foreignKey: 'contentId' });
     }
 };

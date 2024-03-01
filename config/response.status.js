@@ -13,7 +13,8 @@ module.exports = {
     SUCCESS_CHANGE_NICKNAME: { isSuccess: true, code: 2007, message: '닉네임이 변경되었습니다.' },
     SUCCESS_CHANGE_PROFILE_IMG: { isSuccess: true, code: 2007, message: '프로필 사진이 변경되었습니다.' },
     CHECK_PASSWORD: { isSuccess: true, code: 2006, message: '비민번호가 확인되었습니다.' },
-    SUCCESS_CREATE_NOTICE: { isSuccess: true, code: 2002, message: '공지사항이 성공적으로 작성되었습니다.' },
+    SUCCESS_CREATE_NOTICE: { isSuccess: true, code: 2009, message: '공지사항이 성공적으로 작성되었습니다.' },
+    SUCCESS_CREATE_PROJECT: { isSuccess: true, code: 2009, message: '프로젝트가 성공적으로 작성되었습니다.' },
     SUCCESS_LOGIN: { isSuccess: true, code: 2008, message: '로그인되었습니다.' },
     SUCCESS_CREATE_FORM: { isSuccess: true, code: 2002, message: '지원서가 생성되었습니다.' },
     SUCCESS_UPDATE_FORM: { isSuccess: true, code: 2002, message: '지원서가 수정되었습니다.' },
@@ -73,7 +74,7 @@ module.exports = {
     ARTICLE_NOT_FOUND: { isSuccess: false, code: 'ARTICLE4001', message: '게시글이 없습니다.' },
 
     //notice, project err
-    ACCESS_DENIED: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: 'NOTICE4001', message: '작성 권한이 없습니다.' },
-    PARAMETER_IS_EMPTY: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: 'NOTICE4002', message: '필수 내용이 누락되었습니다.' },
-    CREATION_FAILED: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: 'NOTICE4003', message: '생성을 실패하였습니다.' },
+    ACCESS_DENIED: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: 'NOTICE_PROJECT4001', message: '작성 권한이 없습니다.' },
+    PARAMETER_IS_EMPTY: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: 'NOTICE_PROJECT4002', message: '필수 내용이 누락되었습니다.' },
+    CREATION_FAILED: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: 'NOTICE_PROJECT4003', message: '생성을 실패하였습니다.' },
 };

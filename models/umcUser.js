@@ -43,7 +43,6 @@ module.exports = class User extends Sequelize.Model {
                     allowNull: true,
                     defaultValue: 1,
                 },
-
                 sex: {
                     type: Sequelize.ENUM('MALE', 'FEMALE'),
                     allowNull: true,
