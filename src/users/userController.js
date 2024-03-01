@@ -38,3 +38,15 @@ exports.updateNickname = async (req, res) => {
         console.error(error);
     }
 };
+
+//프로필 이미지 변경하기
+exports.changeProfileImage = async (req, res) => {
+    try {
+        const user = res.locals.decoded;
+        const profileImg = req.file;
+        const result = await userService.changeProfileImage(user.userId, profileImg);
+        return res.send(result);
+    } catch (error) {
+        console.error(error);
+    }
+};
