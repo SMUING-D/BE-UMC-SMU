@@ -36,6 +36,19 @@ module.exports = function () {
         })
     ); //자신이 속하지 않은 다른 도메인, 다른 프로토콜, 혹은 다른 포트에 있는 리소스를 요청하는 cross-origin HTTP 요청 방식
 
+    // app.use('/health', healthRoute);
+
+    // app.get('/', (req, res, next) => {
+    //     res.send(response(status.SUCCESS, "루트 페이지!"));
+    // })
+
+    // // error handling
+    // app.use((req, res, next) => {
+    //     const err = new BaseError(status.NOT_FOUND);
+    //     next(err);
+    // });
+
+    require('../src/health/health.route')(app);
     require('../src/auth/authRoute')(app);
     require('../src/users/userRoute')(app);
     require('../src/notice/notice.route')(app);
