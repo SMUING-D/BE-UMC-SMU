@@ -40,7 +40,7 @@ exports.getIndividualSubmitForm = async (userId, submitId) => {
         }
         const submitForm = await submitFormsProvider.getMySubmitForm(submitId);
         const submitFormData = await formData(submitForm);
-        return response(baseResponse.SUCCESS_GET_FORM, submitFormData);
+        return response(baseResponse.SUCCESS_GET_FORM, { submitId: submitForm.id, submitFormData });
     } catch (error) {
         return errResponse(error);
     }
@@ -65,19 +65,23 @@ const formData = async (submitForm) => {
                     );
                     console.log(selections);
                     return {
-                        id: question.id,
-                        content: question.content,
-                        type: question.type,
-                        isNecessary: question.isNecessary,
-                        selections: selections,
+                        question: {
+                            id: question.id,
+                            content: question.content,
+                            type: question.type,
+                            isNecessary: question.isNecessary,
+                            selections: selections,
+                        },
                         response: response ? { id: response.id, content: response.content } : null,
                     };
                 default:
                     return {
-                        id: question.id,
-                        content: question.content,
-                        type: question.type,
-                        isNecessary: question.isNecessary,
+                        question: {
+                            id: question.id,
+                            content: question.content,
+                            type: question.type,
+                            isNecessary: question.isNecessary,
+                        },
                         response: response ? { id: response.id, content: response.content } : null,
                     };
             }
