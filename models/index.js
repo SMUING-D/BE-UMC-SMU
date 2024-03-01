@@ -15,9 +15,14 @@ const Question = require('./question.js');
 const Selection = require('./selection.js');
 const Response = require('./response.js');
 const SubmitForms = require('./submitForms.js');
+const Part = require('./part/part.js');
+const UserPart = require('./part/userPart.js');
 
 const db = {};
-const sequelize = new Sequelize(config.database, config.username, config.password, config);
+const sequelize = new Sequelize(config.database, config.username, config.password, {
+    ...config,
+    logging: console.log,
+});
 
 db.sequelize = sequelize;
 db.Major = Major;
@@ -33,6 +38,8 @@ db.Question = Question;
 db.Selection = Selection;
 db.Response = Response;
 db.SubmitForms = SubmitForms;
+db.Part = Part;
+db.UserPart = UserPart;
 
 Major.init(sequelize);
 Role.init(sequelize);
@@ -47,6 +54,8 @@ Question.init(sequelize);
 Selection.init(sequelize);
 Response.init(sequelize);
 SubmitForms.init(sequelize);
+Part.init(sequelize);
+UserPart.init(sequelize);
 
 Major.associate(db);
 Role.associate(db);
@@ -61,6 +70,8 @@ Question.associate(db);
 Selection.associate(db);
 Response.associate(db);
 SubmitForms.associate(db);
+Part.associate(db);
+UserPart.associate(db);
 
 // export default db;
 module.exports = db;

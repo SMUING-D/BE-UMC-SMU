@@ -91,6 +91,9 @@ module.exports = class User extends Sequelize.Model {
         //User 모델과 Role 모델 간의 다대일 관계 설정
         User.belongsTo(db.Role, { foreignKey: 'roleId' });
 
+        // User 모델과 UserPart 모델 간의 다대다 관계 설정
+        User.belongsToMany(db.Part, { through: 'UserPart', foreignKey: 'userId' });
+
         // User 모델과 ProjectUser 모델 간의 일대다 관계 설정
         User.hasMany(db.ProjectUser, { foreignKey: 'userId' });
 
