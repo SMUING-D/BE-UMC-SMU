@@ -37,7 +37,7 @@ exports.join = async (userData) => {
             return errResponse(baseResponse.MEMBER_ALREADY_EXISTS);
         }
 
-        const isValidUser = await this.verifyEmail;
+        // const isValidUser = await this.verifyEmail;
         // 비밀번호 조건 확인
         const isValidPwd = await isValidPassword(password);
         if (!isValidPwd) {

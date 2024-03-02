@@ -1,10 +1,10 @@
 const status = require('../../config/response.status.js');
 const projectDao =  require('./project.dao.js');
 const authProvider = require('../auth/authProvider.js');
-const Member = require('../../models/umcMember.js');
+const projectProvider = require('../project/project.provider.js');
 
-exports.createProject = async (body, path) => {
-    const { roleId, title, subTitle, content, github, period, frontEnd, backEnd, startDate, endDate, member } = body;
+exports.createProject = async (roleId, body, path) => {
+    const { title, subTitle, content, github, period, frontEnd, backEnd, startDate, endDate, member } = body;
     const directory = "project";
     try {
         //접근권한 설정
@@ -13,21 +13,18 @@ exports.createProject = async (body, path) => {
         }
 
         // 필수 내용 누락 여부 체크
-        if (!title || !content || !period) {
+        if (!title || !content || !period || !member) {
             throw new Error(status.PARAMETER_IS_EMPTY.message);
         }
 
-        const user = await Promise.all(member.map(async (id) => {
-            if(period > 5){
-                return authProvider.checkUserExistByUserId(id)
-            } else {
-                return await Member.findOne({
-                    where: {
-                        id: id,
-                    },
-                });
-            }
-        }));
+        //5기 초과면 현재 user 테이블에서 유저 불러오고 5기 이하면 이전 member 테이블에서 멤버 불러오기
+        // const user = await Promise.all(member.map(async (id) => {
+        //     if(period > 5){
+        //         return authProvider.checkUserExistByUserId(id)
+        //     } else {
+        //         return projectProvider.checkUserExistByMemberId(id);
+        //     }
+        // }));
         
         //프로젝트 생성
         const newProject = await projectDao.addProject({
@@ -55,14 +52,21 @@ exports.createProject = async (body, path) => {
             });
         }
 
-        return response(status.SUCCESS_CREATE_NOTICE, newProject);
+        member.forEach(id => {
+            projectDao.addProjectUser({
+                userId: id,
+                projectId: contentId
+            });
+        });
+
+        return newProject;
     } catch (error) {
         throw error;
     }
 };
 
-exports.modifyProject = async (projectId, body, path) => {
-    const { roleId, title, subTitle, content, github, period, frontEnd, backEnd, startDate, endDate } = body;
+exports.modifyProject = async (roleId, projectId, body, path) => {
+    const {title, subTitle, content, github, period, frontEnd, backEnd, startDate, endDate, member } = body;
     try {
         // 접근 권한 설정
         if (roleId !== 3) {
@@ -70,9 +74,9 @@ exports.modifyProject = async (projectId, body, path) => {
         }
 
         // 필수 내용 누락 여부 체크
-        if (!title || !content) {
-            throw new Error(status.PARAMETER_IS_EMPTY.message);
-        }
+        // if (!title || !content) {
+        //     throw new Error(status.PARAMETER_IS_EMPTY.message);
+        // }
 
         const updatedProject = await projectDao.updateProject(projectId, {
             roleId, 
@@ -95,6 +99,15 @@ exports.modifyProject = async (projectId, body, path) => {
 
         // 업데이트된 이미지 정보를 updatedProject에 추가
         updatedProject.dataValues.img = updatedImages.map(image => image.location);
+        
+        // 사용자가 존재하는 경우 사용자 업데이트 수행
+        let updatedUsers = [];
+        if (member.length > 0) {
+            updatedUsers = await projectDao.updateProjectUsers(period, projectId, member);
+        }
+
+        // 업데이트된 유저 정보를 updatedProject에 추가
+        updatedProject.dataValues.user = updatedUsers.map(user => user);
 
         return updatedProject;
     } catch (error) {
@@ -103,10 +116,8 @@ exports.modifyProject = async (projectId, body, path) => {
 };
 
 
-exports.deleteProject = async (projectId, query) => {
-    const { roleId } = query;
+exports.deleteProject = async (roleId, projectId) => {
     try {
-        console.log("roleId", roleId);
         //접근권한 설정
         if(parseInt(roleId) !== 3){
             throw new Error(status.ACCESS_DENIED.message);

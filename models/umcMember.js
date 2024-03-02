@@ -10,7 +10,7 @@ module.exports = class Member extends Sequelize.Model {
                     primaryKey: true,
                     autoIncrement: true,
                 },
-                studentId: {
+                year: {
                     type: Sequelize.INTEGER,
                     allowNull: true,
                 },
@@ -22,8 +22,20 @@ module.exports = class Member extends Sequelize.Model {
                     type: Sequelize.STRING(30),
                     allowNull: true,
                 },
-                majorId: {
-                    type: Sequelize.INTEGER,
+                part: {
+                    type: Sequelize.STRING,
+                    allowNull: true,
+                },
+                position: {
+                    type: Sequelize.STRING,
+                    allowNull: true,
+                },
+                github: {
+                    type: Sequelize.STRING,
+                    allowNull: true,
+                },
+                sex: {
+                    type: Sequelize.ENUM('MALE', 'FEMALE'),
                     allowNull: true,
                 },
                 createdAt: {
@@ -49,10 +61,7 @@ module.exports = class Member extends Sequelize.Model {
         );
     }
     static associate(db) {
-        // User 모델과 Major 모델 간의 다대일 관계 설정
-        Member.belongsTo(db.Major, { foreignKey: 'majorId' });
-
-        // User 모델과 ProjectUser 모델 간의 일대다 관계 설정
+        // Member 모델과 ProjectUser 모델 간의 일대다 관계 설정
         Member.hasMany(db.ProjectUser, { foreignKey: 'userId' });
     }
 };
