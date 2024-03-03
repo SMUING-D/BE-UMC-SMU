@@ -42,6 +42,8 @@ exports.findSubmitFormsByPart = async (formId, partId) => {
             partId: partId,
         },
         include: [{ model: Form }, { model: User }],
+        offset: offset,
+        limit: limit,
     });
     return submitForms;
 };

@@ -37,14 +37,17 @@ exports.getAllSubmitForms = async (user, formId, nowPage, pageSize) => {
 };
 
 //파트별로 지원서 불러오기 (운영지)
-exports.getSubmitFormsByPart = async (user, formId, partId) => {
+exports.getSubmitFormsByPart = async (user, formId, partId, nowPage, pageSize) => {
     try {
         const staff = await userProvider.findExistStaff(user.userId, user.roleId);
         if (staff.roleId !== 3) {
             const error = errResponse(baseResponse.UNAUTHORIZED);
             throw error;
         }
-        const submitForms = await submitFormsProvider.findSubmitFormsByPart(formId, partId);
+        // 페이지 번호와 페이지 크기에 따라 쿼리 옵션 설정
+        const offset = (nowPage - 1) * pageSize;
+        const limit = pageSize;
+        const submitForms = await submitFormsProvider.findSubmitFormsByPart(formId, partId, offset, limit);
         if (submitForms.length === 0) {
             return errResponse(baseResponse.FORM_NOT_FOUND);
         }
