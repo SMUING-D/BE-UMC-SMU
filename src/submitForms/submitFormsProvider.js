@@ -22,12 +22,14 @@ exports.createSubmitForm = async (userId, formId, partId) => {
 };
 
 /*전체 지원서 불러오기*/
-exports.findAllSubmitForms = async (formId) => {
+exports.findAllSubmitForms = async (formId, offset, limit) => {
     const submitForms = await SubmitForms.findAll({
         where: {
             formId: formId,
         },
         include: [{ model: Form }, { model: User }],
+        offset: offset,
+        limit: limit,
     });
     return submitForms;
 };
@@ -40,6 +42,8 @@ exports.findSubmitFormsByPart = async (formId, partId) => {
             partId: partId,
         },
         include: [{ model: Form }, { model: User }],
+        offset: offset,
+        limit: limit,
     });
     return submitForms;
 };
