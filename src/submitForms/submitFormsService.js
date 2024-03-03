@@ -39,21 +39,22 @@ exports.getIndividualSubmitForm = async (userId, submitId) => {
             throw error(baseResponse.MEMBER_NOT_FOUND);
         }
         const submitForm = await submitFormsProvider.getMySubmitForm(submitId);
-        const submitFormData = await formData(submitForm);
-        return response(baseResponse.SUCCESS_GET_FORM, { submitId: submitForm.id, submitFormData });
+        // Part 정보 가져오기
+        const part = { id: submitForm.Part.id, name: submitForm.Part.name };
+        // 지원서 데이터 가져오기
+        const submitFormData = await findExistFormData(submitForm);
+        return response(baseResponse.SUCCESS_GET_FORM, { submitId: submitForm.id, part: part, submitFormData });
     } catch (error) {
         return errResponse(error);
     }
 };
 
-const formData = async (submitForm) => {
+const findExistFormData = async (submitForm) => {
     let form = submitForm.Form;
     let questions = form.Questions;
     const formData = await Promise.all(
         questions.map(async (question) => {
-            console.log('questionId', question.id);
             const response = await responseProvider.getResponse(question.id, submitForm.userId);
-            console.log('responseId', response.id);
             switch (question.type) {
                 case 'SINGLE':
                 case 'MULTIPLE':

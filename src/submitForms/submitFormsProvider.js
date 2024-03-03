@@ -4,14 +4,16 @@ const Response = require('../../models/response');
 const Question = require('../../models/question');
 const Form = require('../../models/form');
 const User = require('../../models/umcUser');
+const Part = require('../../models/part/part');
 const Selection = require('../../models/selection');
 
 /*지원서 제출하기*/
-exports.createSubmitForm = async (userId, formId) => {
+exports.createSubmitForm = async (userId, formId, partId) => {
     try {
         const submitForm = await SubmitForms.create({
             formId: formId,
             userId: userId,
+            partId: partId,
         });
     } catch (error) {
         console.error(error);
@@ -32,6 +34,9 @@ exports.getMySubmitForm = async (submitId) => {
                         include: [{ model: Selection }],
                     },
                 ],
+            },
+            {
+                model: Part,
             },
         ],
     });

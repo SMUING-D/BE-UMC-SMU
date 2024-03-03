@@ -19,10 +19,7 @@ const Part = require('./part/part.js');
 const UserPart = require('./part/userPart.js');
 
 const db = {};
-const sequelize = new Sequelize(config.database, config.username, config.password, {
-    ...config,
-    logging: console.log,
-});
+const sequelize = new Sequelize(config.database, config.username, config.password, config);
 
 db.sequelize = sequelize;
 db.Major = Major;

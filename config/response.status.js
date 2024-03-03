@@ -68,6 +68,7 @@ module.exports = {
     //form err
     FORM_NOT_FOUND: { isSuccess: false, code: 'FORM4001', message: '지원서가 없습니다' },
     SUBMITTED_FORM_ALREADY_EXISTS: { isSuccess: false, code: 'FORM4002', message: '지원서를 이미 제출했습니다.' },
+    PART_NOT_FOUND: { isSuccess: false, code: 'FORM4003', message: '역할이 없습니다' },
 
     // article err
     ARTICLE_NOT_FOUND: { isSuccess: false, code: 'ARTICLE4001', message: '게시글이 없습니다.' },

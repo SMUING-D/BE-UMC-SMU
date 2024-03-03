@@ -28,5 +28,8 @@ module.exports = class Part extends Sequelize.Model {
     static associate(db) {
         // Part 모델과 UserPart 모델 간의 다대다 관계 설정
         Part.belongsToMany(db.User, { through: 'UserPart', foreignKey: 'partId' });
+
+        // Part 모델과 SubmittedForms 모델 간의 일대다 관계 설정
+        Part.hasMany(db.SubmitForms, { foreignKey: 'partId' });
     }
 };
