@@ -8,14 +8,18 @@ const submitFormsProvider = require('../submitForms/submitFormsProvider');
 const UserPart = require('../../models/part/userPart');
 
 //제출한 지원서 전체 불러오기 (운영진)
-exports.getAllSubmitForms = async (user, formId) => {
+exports.getAllSubmitForms = async (user, formId, nowPage, pageSize) => {
     try {
         const staff = await userProvider.findExistStaff(user.userId, user.roleId);
         if (staff.roleId !== 3) {
             const error = errResponse(baseResponse.UNAUTHORIZED);
             throw error;
         }
-        const submitForms = await submitFormsProvider.findAllSubmitForms(formId);
+        // 페이지 번호와 페이지 크기에 따라 쿼리 옵션 설정
+        const offset = (nowPage - 1) * pageSize;
+        const limit = pageSize;
+
+        const submitForms = await submitFormsProvider.findAllSubmitForms(formId, offset, limit);
         if (submitForms.length === 0) {
             return errResponse(baseResponse.FORM_NOT_FOUND);
         }

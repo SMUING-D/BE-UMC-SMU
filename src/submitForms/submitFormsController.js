@@ -17,7 +17,10 @@ exports.getAllSubmitForms = async (req, res, next) => {
     try {
         const user = res.locals.decoded;
         const { formId } = req.params;
-        const result = await submitFormsService.getAllSubmitForms(user, formId);
+        let { nowPage, pageSize } = req.query;
+        nowPage = parseInt(nowPage);
+        pageSize = parseInt(pageSize);
+        const result = await submitFormsService.getAllSubmitForms(user, formId, nowPage, pageSize);
         return res.send(result);
     } catch (error) {
         console.error(error);
