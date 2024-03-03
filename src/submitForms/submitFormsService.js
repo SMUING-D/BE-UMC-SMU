@@ -5,6 +5,7 @@ const questionProvider = require('../question/questionProvider');
 const responseProvider = require('../response/responseProvider');
 const userProvider = require('../users/userProvider');
 const submitFormsProvider = require('../submitForms/submitFormsProvider');
+const UserPart = require('../../models/part/userPart');
 
 //제출한 지원서 전체 불러오기 (운영진)
 exports.getAllSubmitForms = async (user, formId) => {
@@ -100,7 +101,18 @@ exports.updateFormStatus = async (user, submitId, newStatus) => {
             const error = errResponse(baseResponse.UNAUTHORIZED);
             throw error;
         }
-        const updateForm = await submitFormsProvider.updateFormStatus(newStatus, submitId);
+        // 제출한 지원서 가져오기
+        const submitForm = await submitFormsProvider.getMySubmitForm(submitId);
+        // 상태 변경
+        const updateStatus = await submitFormsProvider.updateFormStatus(newStatus, submitForm.id);
+        // 만약 상태가 '최종 합격'인 경우에만 UserPart 테이블에 데이터 추가
+        if (newStatus === '최종 합격') {
+            await UserPart.create({
+                userId: submitForm.userId,
+                partId: submitForm.partId,
+                year: submitForm.Form.year,
+            });
+        }
         return response(baseResponse.SUCCESS_UPDATE_STATUS);
     } catch (error) {
         return errResponse(error);

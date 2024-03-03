@@ -18,6 +18,10 @@ module.exports = class UserPart extends Sequelize.Model {
                     type: Sequelize.INTEGER,
                     allowNull: false,
                 },
+                year: {
+                    type: Sequelize.INTEGER,
+                    allowNull: false,
+                },
             },
             {
                 sequelize,
