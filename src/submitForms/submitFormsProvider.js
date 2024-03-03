@@ -21,6 +21,29 @@ exports.createSubmitForm = async (userId, formId, partId) => {
     }
 };
 
+/*전체 지원서 불러오기*/
+exports.findAllSubmitForms = async (formId) => {
+    const submitForms = await SubmitForms.findAll({
+        where: {
+            formId: formId,
+        },
+        include: [{ model: Form }, { model: User }],
+    });
+    return submitForms;
+};
+
+/*파트별로 지원서 불러오기*/
+exports.findSubmitFormsByPart = async (formId, partId) => {
+    const submitForms = await SubmitForms.findAll({
+        where: {
+            formId: formId,
+            partId: partId,
+        },
+        include: [{ model: Form }, { model: User }],
+    });
+    return submitForms;
+};
+
 /*지원서 불러오기 - 본인*/
 exports.getMySubmitForm = async (submitId) => {
     const submitForm = await SubmitForms.findOne({
@@ -61,14 +84,4 @@ exports.findExistSubmitForm = async (userId, formId) => {
         },
     });
     return submitForm;
-};
-
-exports.findAllSubmitForms = async (formId) => {
-    const submitForms = await SubmitForms.findAll({
-        where: {
-            formId: formId,
-        },
-        include: [{ model: Form }, { model: User }],
-    });
-    return submitForms;
 };
