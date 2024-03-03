@@ -11,7 +11,7 @@ const UserPart = require('../../models/part/userPart');
 exports.getAllSubmitForms = async (user, formId) => {
     try {
         const staff = await userProvider.findExistStaff(user.userId, user.roleId);
-        if (!staff) {
+        if (staff.roleId !== 3) {
             const error = errResponse(baseResponse.UNAUTHORIZED);
             throw error;
         }
@@ -36,7 +36,7 @@ exports.getAllSubmitForms = async (user, formId) => {
 exports.getSubmitFormsByPart = async (user, formId, partId) => {
     try {
         const staff = await userProvider.findExistStaff(user.userId, user.roleId);
-        if (!staff) {
+        if (staff.roleId !== 3) {
             const error = errResponse(baseResponse.UNAUTHORIZED);
             throw error;
         }
