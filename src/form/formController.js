@@ -5,9 +5,9 @@ const baseResponse = require('../../config/response.status');
 exports.createForm = async (req, res, next) => {
     try {
         const user = res.locals.decoded;
-        const { title, questions } = req.body;
+        const { title, year, questions } = req.body;
         console.log(req.body, user.id);
-        const result = await formService.createForm(user.userId, { title, questions });
+        const result = await formService.createForm(user.userId, { title, year, questions });
         return res.send(result);
     } catch (error) {
         console.error(error);
@@ -19,9 +19,9 @@ exports.updateForm = async (req, res, next) => {
     try {
         const user = res.locals.decoded;
         const { formId } = req.params;
-        const { title, questions } = req.body;
+        const { year, title, questions } = req.body;
         console.log(req.body, user.id);
-        const result = await formService.updateForm(user.userId, { formId, title, questions });
+        const result = await formService.updateForm(user.userId, { formId, year, title, questions });
         return res.send(result);
     } catch (error) {
         console.error(error);

@@ -10,6 +10,10 @@ module.exports = class Form extends Sequelize.Model {
                     primaryKey: true,
                     autoIncrement: true,
                 },
+                year: {
+                    type: Sequelize.INTEGER,
+                    allowNull: false,
+                },
                 title: {
                     type: Sequelize.STRING,
                     allowNull: false,

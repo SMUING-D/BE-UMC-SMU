@@ -120,7 +120,7 @@ exports.refreshAToken = async (aToken, rToken) => {
 exports.sendVerificationEmail = async (studentId) => {
     try {
         // 이메일 인증 랜덤 코드 생성
-        const AUTH_CODE = generateRandomCode(10);
+        const AUTH_CODE = generateRandomCode(6);
         const AUTH_HTML = await renderAuthEmail.renderAuthEmail(AUTH_CODE);
         // 이메일 보내기
         const sendMail = emailService.sendVerificationEmail(studentId, '이메일 인증', AUTH_HTML);

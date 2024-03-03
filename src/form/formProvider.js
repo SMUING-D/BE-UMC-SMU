@@ -3,9 +3,10 @@ const Question = require('../../models/question');
 const Selection = require('../../models/selection');
 
 //Form테이블에 질문 추가
-exports.createForm = async (userId, title) => {
+exports.createForm = async (userId, year, title) => {
     try {
         const newForm = await Form.create({
+            year: year,
             title: title,
             userId: userId,
         });
@@ -15,10 +16,10 @@ exports.createForm = async (userId, title) => {
         throw error;
     }
 };
-//Form 수정
-exports.updateForm = async (formId, title) => {
-    const updateForm = await Form.update(
-        { title: title },
+//Form 수정 - title
+exports.updateForm = async (formId, year, title) => {
+    const form = await Form.update(
+        { title: title, year: year },
         {
             where: { id: formId },
         }

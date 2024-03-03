@@ -16,8 +16,8 @@ exports.saveResponses = async (req, res, next) => {
 exports.submitResponse = async (req, res, next) => {
     try {
         const user = res.locals.decoded;
-        const { formId, responses } = req.body;
-        const result = await responseService.submitResponse(user.userId, formId, responses);
+        const { formId, partId, responses } = req.body;
+        const result = await responseService.submitResponse(user.userId, formId, partId, responses);
         return res.send(result);
     } catch (error) {
         console.error(error);

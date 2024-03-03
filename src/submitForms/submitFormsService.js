@@ -5,16 +5,42 @@ const questionProvider = require('../question/questionProvider');
 const responseProvider = require('../response/responseProvider');
 const userProvider = require('../users/userProvider');
 const submitFormsProvider = require('../submitForms/submitFormsProvider');
+const UserPart = require('../../models/part/userPart');
 
 //제출한 지원서 전체 불러오기 (운영진)
 exports.getAllSubmitForms = async (user, formId) => {
     try {
         const staff = await userProvider.findExistStaff(user.userId, user.roleId);
-        if (!staff) {
+        if (staff.roleId !== 3) {
             const error = errResponse(baseResponse.UNAUTHORIZED);
             throw error;
         }
         const submitForms = await submitFormsProvider.findAllSubmitForms(formId);
+        if (submitForms.length === 0) {
+            return errResponse(baseResponse.FORM_NOT_FOUND);
+        }
+        const submitList = submitForms.map((submitForm) => {
+            return {
+                id: submitForm.id,
+                title: submitForm.Form.title,
+                name: submitForm.User.name,
+            };
+        });
+        return response(baseResponse.SUCCESS_GET_FORM, submitList);
+    } catch (error) {
+        return errResponse(error);
+    }
+};
+
+//파트별로 지원서 불러오기 (운영지)
+exports.getSubmitFormsByPart = async (user, formId, partId) => {
+    try {
+        const staff = await userProvider.findExistStaff(user.userId, user.roleId);
+        if (staff.roleId !== 3) {
+            const error = errResponse(baseResponse.UNAUTHORIZED);
+            throw error;
+        }
+        const submitForms = await submitFormsProvider.findSubmitFormsByPart(formId, partId);
         if (submitForms.length === 0) {
             return errResponse(baseResponse.FORM_NOT_FOUND);
         }
@@ -39,21 +65,22 @@ exports.getIndividualSubmitForm = async (userId, submitId) => {
             throw error(baseResponse.MEMBER_NOT_FOUND);
         }
         const submitForm = await submitFormsProvider.getMySubmitForm(submitId);
-        const submitFormData = await formData(submitForm);
-        return response(baseResponse.SUCCESS_GET_FORM, { submitId: submitForm.id, submitFormData });
+        // Part 정보 가져오기
+        const part = { id: submitForm.Part.id, name: submitForm.Part.name };
+        // 지원서 데이터 가져오기
+        const submitFormData = await findExistFormData(submitForm);
+        return response(baseResponse.SUCCESS_GET_FORM, { submitId: submitForm.id, part: part, submitFormData });
     } catch (error) {
         return errResponse(error);
     }
 };
 
-const formData = async (submitForm) => {
+const findExistFormData = async (submitForm) => {
     let form = submitForm.Form;
     let questions = form.Questions;
     const formData = await Promise.all(
         questions.map(async (question) => {
-            console.log('questionId', question.id);
             const response = await responseProvider.getResponse(question.id, submitForm.userId);
-            console.log('responseId', response.id);
             switch (question.type) {
                 case 'SINGLE':
                 case 'MULTIPLE':
@@ -99,7 +126,18 @@ exports.updateFormStatus = async (user, submitId, newStatus) => {
             const error = errResponse(baseResponse.UNAUTHORIZED);
             throw error;
         }
-        const updateForm = await submitFormsProvider.updateFormStatus(newStatus, submitId);
+        // 제출한 지원서 가져오기
+        const submitForm = await submitFormsProvider.getMySubmitForm(submitId);
+        // 상태 변경
+        const updateStatus = await submitFormsProvider.updateFormStatus(newStatus, submitForm.id);
+        // 만약 상태가 '최종 합격'인 경우에만 UserPart 테이블에 데이터 추가
+        if (newStatus === '최종 합격') {
+            await UserPart.create({
+                userId: submitForm.userId,
+                partId: submitForm.partId,
+                year: submitForm.Form.year,
+            });
+        }
         return response(baseResponse.SUCCESS_UPDATE_STATUS);
     } catch (error) {
         return errResponse(error);
