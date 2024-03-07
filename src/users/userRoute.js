@@ -11,4 +11,6 @@ module.exports = function (app) {
     app.put('/api/update/nickname', verifyAToken, userController.updateNickname);
     // 4.프로필 이미지 변경하기
     app.put('/api/update/profile-image', verifyAToken, imageUploader.imageUploader.single('profileImg'), userController.changeProfileImage);
+    // 5.프로필 수정하기
+    app.put('/api/update/profile', verifyAToken, userController.updateProfile);
 };

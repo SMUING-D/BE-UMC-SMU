@@ -50,3 +50,15 @@ exports.changeProfileImage = async (req, res) => {
         console.error(error);
     }
 };
+
+//프로필 수정하기
+exports.updateProfile = async (req, res) => {
+    try {
+        const user = res.locals.decoded;
+        const { name, nickname, description } = req.body;
+        const result = await userService.updateProfile(user.userId, req.body);
+        return res.send(result);
+    } catch (error) {
+        console.error(error);
+    }
+};
