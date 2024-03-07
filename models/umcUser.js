@@ -44,7 +44,7 @@ module.exports = class User extends Sequelize.Model {
                     defaultValue: 1,
                 },
                 sex: {
-                    type: Sequelize.ENUM(0, 1),
+                    type: Sequelize.ENUM('0', '1'),
                     allowNull: true,
                 },
                 profileImgUrl: {

@@ -11,6 +11,7 @@ module.exports = {
     SUCCESS_GET_ROLE: { isSuccess: true, code: 2002, message: '권한을 불러왔습니다.' },
     SUCCESS_CHANGE_PASSWORD: { isSuccess: true, code: 2007, message: '비밀번호가 변경되었습니다.' },
     SUCCESS_CHANGE_NICKNAME: { isSuccess: true, code: 2007, message: '닉네임이 변경되었습니다.' },
+    SUCCESS_UPDATE_PROFILE: { isSuccess: true, code: 2007, message: '프로필을 수정했습니다.' },
     SUCCESS_CHANGE_PROFILE_IMG: { isSuccess: true, code: 2007, message: '프로필 사진이 변경되었습니다.' },
     CHECK_PASSWORD: { isSuccess: true, code: 2006, message: '비민번호가 확인되었습니다.' },
     SUCCESS_CREATE_NOTICE: { isSuccess: true, code: 2009, message: '공지사항이 성공적으로 작성되었습니다.' },
@@ -76,6 +77,11 @@ module.exports = {
 
     //notice, project err
     ACCESS_DENIED: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: 'NOTICE_PROJECT4001', message: '작성 권한이 없습니다.' },
-    PARAMETER_IS_EMPTY: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: 'NOTICE_PROJECT4002', message: '필수 내용이 누락되었습니다.' },
+    PARAMETER_IS_EMPTY: {
+        status: StatusCodes.BAD_REQUEST,
+        isSuccess: false,
+        code: 'NOTICE_PROJECT4002',
+        message: '필수 내용이 누락되었습니다.',
+    },
     CREATION_FAILED: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: 'NOTICE_PROJECT4003', message: '생성을 실패하였습니다.' },
 };

@@ -82,3 +82,21 @@ exports.changeProfileImage = async (userId, profileImg) => {
         throw new Error(baseResponse.INTERNAL_SERVER_ERROR);
     }
 };
+
+//프로필 수정하기
+exports.updateProfile = async (userId, profileInfo) => {
+    try {
+        // const { name, nickname, description } = profileInfo;
+        const user = await userProvider.findExistUser(userId);
+        if (!user) {
+            return errResponse(baseResponse.MEMBER_NOT_FOUND);
+        }
+        if (profileInfo.name === null || profileInfo.nickname === null) {
+            throw error;
+        }
+        const profile = await userProvider.updateProfile(user.id, profileInfo);
+        return response(baseResponse.SUCCESS_UPDATE_PROFILE);
+    } catch (error) {
+        return errResponse(baseResponse.IS_REQUIRED_EMPTY);
+    }
+};
