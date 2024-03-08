@@ -13,7 +13,7 @@ exports.verifyAToken = (req, res, next) => {
         //logger.error(error);
         if (error.name === 'TokenExpiredError') {
             // 유효 기간 초과
-            return res.send(errResponse(baseResponse.JWT_ACCESS_TOKEN_EXPIRESIN));
+            return res.send(errResponse(baseResponse.JWT_TOKEN_EXPIRED));
         } else {
             // 잘못된 토큰
             return res.send(errResponse(baseResponse.JWT_TOKEN_WRONG));
