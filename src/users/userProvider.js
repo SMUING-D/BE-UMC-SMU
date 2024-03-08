@@ -68,6 +68,25 @@ exports.changeProfileImage = async (userId, newProfileImageUrl) => {
     }
 };
 
+//프로필 수정하기
+exports.updateProfile = async (userId, profileInfo) => {
+    try {
+        const profile = await User.update(
+            {
+                name: profileInfo.name,
+                nickname: profileInfo.nickname,
+                description: profileInfo.description,
+            },
+            {
+                where: { id: userId },
+            }
+        );
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
+
 //userId로 조회하기
 exports.findExistUser = async (userId) => {
     const user = await User.findOne({
