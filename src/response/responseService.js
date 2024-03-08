@@ -38,7 +38,7 @@ const saveResponse = async (userId, response) => {
 /*답변 제출하기*/
 //TO DO : 필수 질문 확인
 //TO DO : 중복 제출 불가
-exports.submitResponse = async (userId, formId, responses) => {
+exports.submitResponse = async (userId, formId, partId, responses) => {
     try {
         const user = await userProvider.findExistUser(userId);
         const form = await formProvider.findExistForm(formId);
@@ -58,7 +58,7 @@ exports.submitResponse = async (userId, formId, responses) => {
                 }
             })
         );
-        await submitFormsProvider.createSubmitForm(user.id, form.id);
+        await submitFormsProvider.createSubmitForm(user.id, form.id, partId);
         return response(baseResponse.SUCCESS_SUBMIT_RESPONSE);
     } catch (error) {
         return errResponse(error);

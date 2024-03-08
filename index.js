@@ -14,6 +14,7 @@ require('./seeders/role.seed');
 // const cors = require('cors');
 const { insertMajorList } = require('./seeders/major.seed');
 const { insertRoleList } = require('./seeders/role.seed');
+const insertPartList = require('./seeders/part.seed');
 
 require('dotenv').config();
 
@@ -23,6 +24,7 @@ db.sequelize
         console.log('db 연결 성공');
         // await insertMajorList(db.Major);
         // await insertRoleList(db.Role);
+        // await insertPartList();
     })
     .catch(console.error);
 

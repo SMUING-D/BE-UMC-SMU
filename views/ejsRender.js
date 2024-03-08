@@ -4,7 +4,7 @@ const ejs = require('ejs');
 exports.renderAuthEmail = async (authNum) => {
     try {
         let emailTemplate;
-        await ejs.renderFile('./views/authEmailFormat.ejs', { auth_num: authNum }, function (err, data) {
+        await ejs.renderFile('./views/authEmailFormat.ejs', { authNum: authNum }, function (err, data) {
             if (err) {
                 throw new Error(err);
             }

@@ -23,6 +23,10 @@ module.exports = class SubmitForms extends Sequelize.Model {
                     type: Sequelize.INTEGER,
                     allowNull: false,
                 },
+                partId: {
+                    type: Sequelize.INTEGER,
+                    allowNull: false,
+                },
 
                 createdAt: {
                     type: Sequelize.DATE,
@@ -53,5 +57,8 @@ module.exports = class SubmitForms extends Sequelize.Model {
 
         // Submit 모델과 Form 모델 간의 다대일 관계 설정
         SubmitForms.belongsTo(db.Form, { foreignKey: 'formId' });
+
+        // Submit 모델과 Part 모델 간의 다대일 관계 설정
+        SubmitForms.belongsTo(db.Part, { foreignKey: 'partId' });
     }
 };

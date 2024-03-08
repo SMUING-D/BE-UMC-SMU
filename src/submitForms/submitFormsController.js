@@ -17,7 +17,25 @@ exports.getAllSubmitForms = async (req, res, next) => {
     try {
         const user = res.locals.decoded;
         const { formId } = req.params;
-        const result = await submitFormsService.getAllSubmitForms(user, formId);
+        let { nowPage, pageSize } = req.query;
+        nowPage = parseInt(nowPage);
+        pageSize = parseInt(pageSize);
+        const result = await submitFormsService.getAllSubmitForms(user, formId, nowPage, pageSize);
+        return res.send(result);
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+};
+//제출한 지원서 파트별로 불러오기 (운영진)
+exports.getSubmitFormsByPart = async (req, res, next) => {
+    try {
+        const user = res.locals.decoded;
+        const { formId, partId } = req.params;
+        let { nowPage, pageSize } = req.query;
+        nowPage = parseInt(nowPage);
+        pageSize = parseInt(pageSize);
+        const result = await submitFormsService.getSubmitFormsByPart(user, formId, partId, nowPage, pageSize);
         return res.send(result);
     } catch (error) {
         console.error(error);
