@@ -5,7 +5,7 @@ module.exports = function (app) {
     const imageUploader = require('../../middlewares/image.uploader.js');
     const projectController = require('./project.controller.js');
 
-    //프로젝트 불러오기
+    //기수로 프로젝트 불러오기
     app.get('/project/show/:period', asyncHandler(projectController.projectShow));
 
     //멤버 불러오기

@@ -31,3 +31,25 @@ exports.previewNoticeResponseDTO = async (noticeId, size) => {
     if (EX_NOTICE_IMG === null) return false;
     else return EX_NOTICE_IMG;
 };
+
+exports.previewNoticeIdResponseDTO = async (noticeId) => {
+
+    const EX_NOTICE_ID = await Notice.findOne({
+        where: { id: noticeId },
+        raw: true // Sequelize의 데이터 값만 반환하도록 raw 옵션 추가
+    });
+    
+    const EX_NOTICE_IMG = await Image.findAll({
+        attributes: ['location'],
+        where: {
+            directory: "notice",
+            contentId: noticeId
+        },
+    });
+    
+    EX_NOTICE_ID.img = EX_NOTICE_IMG.map(img => img.dataValues);
+
+    // 공지사항 미존재
+    if (EX_NOTICE_ID === null) return false;
+    else return EX_NOTICE_ID;
+};

@@ -22,10 +22,20 @@ exports.noticeCreate = async (req, res, next) => {
 exports.noticeShow = async (req, res) => {
     try {
         const getNotice = await noticeProvider.getNotice(url.parse(req.url, true).query);
-        console.log(getNotice);
         return res.send(response(status.SUCCESS, getNotice));
     } catch (error) {
         console.error('Error controler notice:', error);
+        res.status(400).json({ success: false, message: error.message });
+    }
+};
+
+exports.noticeShowId = async (req, res) => {
+    try {
+        const noticeId = req.params.id;
+        const getNoticeId = await noticeProvider.getNoticeId(noticeId);
+        return res.send(response(status.SUCCESS, getNoticeId));
+    } catch (error) {
+        console.error('Error controler notice id:', error);
         res.status(400).json({ success: false, message: error.message });
     }
 };

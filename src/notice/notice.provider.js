@@ -5,3 +5,7 @@ exports.getNotice = async (query) => {
     const noticeId = query.noticeId;
     return noticeDto.previewNoticeResponseDTO(noticeId, size);
 };
+
+exports.getNoticeId = async (noticeId) => {
+    return noticeDto.previewNoticeIdResponseDTO(noticeId);
+};

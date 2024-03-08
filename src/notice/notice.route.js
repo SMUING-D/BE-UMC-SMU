@@ -8,6 +8,9 @@ module.exports = function (app) {
     //공지사항 불러오기
     app.get('/notice/show', asyncHandler(noticeController.noticeShow));
 
+    //아이디로 공지사항 불러오기
+    app.get('/notice/show/:id', asyncHandler(noticeController.noticeShowId));
+
     //공지사항 작성
     app.post('/notice/create', verifyAToken, imageUploader.imageUploader.array('images', 10), asyncHandler(noticeController.noticeCreate));
 
