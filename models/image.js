@@ -19,7 +19,7 @@ module.exports = class Image extends Sequelize.Model {
                     allowNull: true,
                 },
                 location: {
-                    type: Sequelize.STRING,
+                    type: Sequelize.STRING(2084),
                     allowNull: true,
                 },
                 createdAt: {
