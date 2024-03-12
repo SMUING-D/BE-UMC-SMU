@@ -15,6 +15,7 @@ require('./seeders/role.seed');
 const { insertMajorList } = require('./seeders/major.seed');
 const { insertRoleList } = require('./seeders/role.seed');
 const insertPartList = require('./seeders/part.seed');
+const insertMemberList = require('./seeders/member.seed');
 
 require('dotenv').config();
 
@@ -25,6 +26,7 @@ db.sequelize
         // await insertMajorList(db.Major);
         // await insertRoleList(db.Role);
         // await insertPartList();
+        // await insertMemberList();
     })
     .catch(console.error);
 
