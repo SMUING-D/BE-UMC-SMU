@@ -35,7 +35,7 @@ module.exports = class Member extends Sequelize.Model {
                     allowNull: true,
                 },
                 sex: {
-                    type: Sequelize.ENUM('MALE', 'FEMALE'),
+                    type: Sequelize.ENUM('0', '1'),
                     allowNull: true,
                 },
                 createdAt: {
