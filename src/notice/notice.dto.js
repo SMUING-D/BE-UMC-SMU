@@ -48,6 +48,7 @@ exports.previewNoticeIdResponseDTO = async (noticeId) => {
     });
     
     EX_NOTICE_ID.img = EX_NOTICE_IMG.map(img => img.dataValues);
+    console.log(1);
 
     // 공지사항 미존재
     if (EX_NOTICE_ID === null) return false;
